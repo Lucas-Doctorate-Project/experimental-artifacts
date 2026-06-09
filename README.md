@@ -1,7 +1,5 @@
-# Experimental Setup
+# Experimental Artifacts
 
-This repository contains most files used for our experiments.
+ONGOING CHANGES! THIS BRANCH IS UNSTABLE NOW.
 
-- The [`energy-data/`](energy-data/) folder contains the one week energy mix traces (in the format supported by our SimGrid/Batsim plugin) and the intensity factors collected from existing literature (stored in a JSON enabling easy queries).
-- The [`workloads/`](workloads/) folder contains the Batsim-compatible workloads.
-- The [`platform/`](platform/) folder contains some platforms and scripts to generate those platforms.
+All the code related to running the experiments and analyzing it can be found at [experimental-campaigns](https://github.com/Lucas-Doctorate-Project/experimental-campaigns).
