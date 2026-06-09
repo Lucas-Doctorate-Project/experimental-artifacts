@@ -1,8 +1,6 @@
 venv/*
 .python-version
 __pycache__/
-outputs/
 .DS_Store
-workloads/mustang_release_v1.0beta.csv
-workloads/mustang_release_v1.0beta.csv.gz
-plots/
+.env
+.envrc
