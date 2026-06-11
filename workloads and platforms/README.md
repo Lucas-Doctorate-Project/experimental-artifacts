@@ -1,11 +1,32 @@
-# Workloads
+# Workloads and platform
 
-These workloads were created using traces from the LANL Mustang supercomputer. The traces span from 2011 to 2016. We selected three 7-day periods, each with a different job profile. We wanted periods with many small jobs (which allow more scheduling flexibility), many large jobs (which limit scheduling options), and a mix of both. We excluded unusual periods that did not reflect normal system behavior using the methodology below.
+Batsim workloads and a SimGrid platform built from the LANL Mustang trace. The cluster had 1600 identical compute nodes (38400 AMD Opteron 2.3GHz cores). The trace covers 61 months of operation, from October 2011 to November 2016, with 2.1 million multi-node jobs from 565 users.
 
-## Methodology
+The whole pipeline lives in [mustang.ipynb](mustang.ipynb). It produces `mustang_slack.json`, `mustang_stress.json`, and `mustang.xml`.
 
-We analyzed 7-day windows throughout the entire trace period (2011-2016) using two criteria. First, we measured how regularly jobs arrived by analyzing submission patterns (Poisson similarity). Weeks where jobs arrived at steady intervals were preferred, while weeks with highly irregular patterns were excluded. Second, we classified weeks by their job size distribution, looking at the percentage of large jobs (≥120 nodes) and small jobs (≤10 nodes) to ensure we captured different types of workloads.
+## Extract selection
 
-Three specific weeks were selected to represent different scenarios. The week of 2012-02-07 was chosen because it had a high proportion of large jobs (approximately 55% with ≥120 nodes), selected from weeks with at least 200 total jobs and regular arrival patterns. The week of 2015-08-06 represents the opposite extreme, with ~97% small jobs (≤10 nodes) and over 22,000 total submissions. The week of 2012-12-13 was selected to provide a balanced mix of small and large jobs. Each week was manually selected from the top candidates to ensure we covered all three workload types.
+The goal is to replay 4-week windows in Batsim to evaluate environmental-aware scheduling (carbon and water intensity signals) against FCFS and EASY backfilling baselines. The windows must span multiple weeks because intensity signals vary on diurnal and weather timescales, and they must exercise both a relaxed and a saturated regime.
 
-Each selected week was then converted to a Batsim-compatible format with 12 job profiles (4 CPU performance levels and 3 communication levels) assigned based on percentile ranking using a weighted combination (α_cpu=0.70, α_com=0.85).
+Candidate windows cover the whole trace, anchored at Monday 00:00 UTC and slid by 1 week, so the weekly phase is identical across extracts. Each window is described by metrics normalized by machine size: mean and standard deviation of node utilization, fraction of saturated hours (>= 95% capacity), fraction and longest streak of low-utilization hours (< 20%), normalized queue depth, top-user share, node-seconds share of wide jobs (>= 10% of the machine), and the share of narrow short jobs that EASY can backfill.
+
+Feasibility constraints shared by both regimes exclude pathological periods (ramp-up, drains, single-user bursts):
+
+- `frac_low <= 0.05` and `max_low_streak_h <= 6`
+- `top_user_share <= 0.5`
+- `wide_ns_share >= 0.2` and `frac_bf_candidates >= 0.3`, so EASY actually differs from FCFS
+
+Two extracts are then selected, one per regime:
+
+- **slack**: busy but not saturated (`0.5 <= mean_util <= 0.9`, `frac_saturated <= 0.3`). Ranked by `z(std_util) + z(mean_queue_norm)`. The friendly regime for time-shifting jobs.
+- **stress**: heavily saturated (`mean_util <= 0.95`, `0.3 < frac_saturated <= 0.5`). Ranked by `z(frac_saturated) + z(mean_queue_norm)`. The regime where disabling backfilling has real consequences.
+
+## Workload generation
+
+Each job gets its own `parallel_homogeneous` profile with `cpu = runtime * node_speed` and `com = 0` (network not modelled). Walltimes come from the trace's `wallclock_limit`, clipped so that `runtime <= walltime` always holds, since walltime violations are not modelled. EASY needs these estimates to build its reservations.
+
+The simulation starts with an empty machine, so warm-up jobs reconstruct the system state at the extract start `T0`. Jobs running at `T0` are submitted at `t = 0` with their remaining runtime and walltime, ordered by original start time. Jobs queued at `T0` are submitted at `t = 0` with their full runtime, ordered by original submit time. The steady state begins when the first replay job (submitted inside the 4-week window) arrives. Evaluation metrics should be computed on the steady state only.
+
+## Platform generation
+
+`mustang.xml` is a homogeneous SimGrid platform modelled after Mustang. Hosts are full nodes (no `core` attribute) computing at full-node speed. Power states use the SimGrid `wattage_per_state` format `idle:epsilon:all_cores`.
