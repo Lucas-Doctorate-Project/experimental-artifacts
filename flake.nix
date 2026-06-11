@@ -24,6 +24,9 @@
               python-pkgs.pandas
               python-pkgs.matplotlib
               python-pkgs.entsoe-py
+              python-pkgs.notebook
+              python-pkgs.jupyterlab
+              python-pkgs.ipykernel
             ]))
           ];
         };
