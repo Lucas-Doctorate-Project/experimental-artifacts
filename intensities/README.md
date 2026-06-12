@@ -50,7 +50,7 @@ Outputs:
 
 ## Intensity factors
 
-Lookup table of intensity factors for water consumption and carbon emissions from energy generation technologies. The water factors are from Macknick et al. 2012, while carbon factors are from IPCC 2014 and UNECE 2020 reports. The units are L/kWh (liters per kilowatt-hour) for water and gCO2eq/kWh (grams of CO2 equivalent per kilowatt-hour) for carbon. Water values were converted from gallons/MWh to L/kWh. Entries named "average" are the mean of all listed entries of that fuel type.
+Lookup table of intensity factors for water consumption and carbon emissions from energy generation technologies. The water factors are from Macknick et al. 2012[^macknick2012], while carbon factors are from IPCC 2014[^ipcc2014] and UNECE 2020[^unece2020] reports, as compiled by Wikipedia[^wikipedia]. The units are L/kWh (liters per kilowatt-hour) for water and gCO2eq/kWh (grams of CO2 equivalent per kilowatt-hour) for carbon. Water values were converted from gallons/MWh to L/kWh. Entries named "average" are the mean of all listed entries of that fuel type.
 
 ### Mapping to ENTSO-E production types
 
@@ -179,9 +179,7 @@ The trace generator uses UNECE 2020 values where available, else IPCC 2014:
 | Ocean, default | 17 | | |
 | Ocean, tidal and wave | 17 | | |
 
-### References
-
-- Macknick, J., et al. (2012). "Operational water consumption and withdrawal factors for electricity generating technologies: a review of existing literature." Environmental Research Letters 7(4): 045802.
-- Wiki with the carbon intensity. https://en.wikipedia.org/wiki/Life-cycle_greenhouse_gas_emissions_of_energy_sources.
-- IPCC (2014). Climate Change 2014: Mitigation of Climate Change. Working Group III Contribution to the Fifth Assessment Report.
-- UNECE (2020). Life Cycle Assessment of Electricity Generation Options. United Nations Economic Commission for Europe.
+[^macknick2012]: Macknick, J., et al. (2012). "Operational water consumption and withdrawal factors for electricity generating technologies: a review of existing literature." Environmental Research Letters 7(4): 045802.
+[^ipcc2014]: IPCC (2014). Climate Change 2014: Mitigation of Climate Change. Working Group III Contribution to the Fifth Assessment Report.
+[^unece2020]: UNECE (2020). Life Cycle Assessment of Electricity Generation Options. United Nations Economic Commission for Europe.
+[^wikipedia]: Life-cycle greenhouse gas emissions of energy sources. https://en.wikipedia.org/wiki/Life-cycle_greenhouse_gas_emissions_of_energy_sources.
