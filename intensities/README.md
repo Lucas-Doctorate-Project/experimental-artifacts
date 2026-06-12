@@ -1,20 +1,21 @@
 # Carbon and water intensity traces
 
-`generate_intensity_trace.py` builds carbon and water intensity traces from the ENTSO-E transparency platform. It fetches the actual generation per production type for a country from 2018 through 2025, computes the generation-weighted intensity of each instant, and writes a 15-minute resolution trace.
+`generate_traces.ipynb` builds the carbon and water intensity traces from the ENTSO-E transparency platform. For each country (PL, FR, DE), it takes the actual generation per production type from 2018 through 2025, computes the generation-weighted intensity of each instant, and writes a 15-minute resolution trace. The notebook also plots the full series, a zoomed sample week showing the diurnal pattern, and the generation mix of each country.
 
 ## Usage
 
-Run from the Nix dev shell at the repo root. An ENTSO-E API key is required.
+Run from the Nix dev shell at the repo root:
 
 ```sh
-export ENTSOE_API_KEY=<your key>
-python generate_intensity_trace.py <COUNTRY_CODE>   # e.g. FR, DE, PL
+jupyter nbconvert --to notebook --execute --inplace intensities/generate_traces.ipynb
 ```
+
+One run covers all three countries. With the raw caches present (`raw/<CC>.csv`, checked out via Git LFS) the notebook runs fully offline. A country is only fetched from the ENTSO-E API when its cache file is missing, which requires the `ENTSOE_API_KEY` environment variable. Delete a cache file to force a fresh download.
 
 Outputs, both tracked with Git LFS:
 
 - `traces/<CC>.csv`: the trace. Timestamps are seconds relative to the trace start, stepping by 900. The zone is always `AS0`. Two properties per instant: `carbon_intensity` (gCO2eq/kWh) and `water_intensity` (L/kWh).
-- `raw/<CC>.csv`: the raw generation data. Reruns load it instead of refetching, delete it to force a fresh download.
+- `raw/<CC>.csv`: the raw generation data, written when fetched from the API.
 
 ```
 timestamp,zone,property,value
@@ -28,11 +29,7 @@ Behavior notes:
 
 - Countries reporting hourly are upsampled to 15 minutes by linear interpolation.
 - Rows whose total generation is below 20% of the country median are reporting artifacts, for example FR's all-zero DST fall-back hour in 2018 and a near-zero row on 2023-07-20. They are treated as missing data, bridged by interpolation, and printed when dropped. Genuine totals never fall below ~35% of the median.
-- The script aborts if ENTSO-E reports a source that is missing from the intensity dicts. Add the source to both dicts and rerun.
-
-Example trace for France:
-
-![France intensity trace example](example_fr_intensities.png)
+- The notebook aborts if ENTSO-E reports a source that is missing from the intensity dicts. Add the source to both dicts and rerun.
 
 ## Window sampling
 
