@@ -34,6 +34,23 @@ Example trace for France:
 
 ![France intensity trace example](example_fr_intensities.png)
 
+## Window sampling
+
+`window_selection.ipynb` samples contiguous 4-week windows from the full traces for the scheduling experiments. Per zone, it enumerates every window anchored at a Monday 00:00 local time, then draws 3 windows per meteorological season from distinct years, using a fixed RNG seed. Each window carries descriptors for the later analysis: mean carbon and water intensity, and the swing of each signal.
+
+The swing (`swing_carbon`, `swing_water`) measures how much an intensity signal moves up and down within a typical day of the window. For each of the 28 days, take the difference between the day's highest and lowest intensity. Average these daily ranges over the window, then divide by the window's mean intensity. A swing of 0.5 means the signal moves by about half its average level within a day. It matters because the daily ups and downs are what a time-shifting scheduler exploits: a high swing means delaying a job a few hours can land it on much cleaner energy, while a low swing means the signal is flat and there is little to gain. Reporting it per window lets the analysis correlate the gains of each heuristic with how much room each signal actually offered.
+
+Run it from the Nix dev shell at the repo root:
+
+```sh
+jupyter nbconvert --to notebook --execute --inplace intensities/window_selection.ipynb
+```
+
+Outputs:
+
+- `traces/<CC>_<YYYY-MM-DD>.csv`: one extract per sampled window, named by zone and start date. Same long format as the full traces, timestamps rebased to start at 0, 2688 instants (28 days at 15-minute resolution). Tracked with Git LFS like the full traces.
+- `windows.csv`: the manifest the experiment runner iterates over, with columns `zone`, `file`, `start_date`, `season`, `year`, `mean_carbon`, `mean_water`, `swing_carbon`, `swing_water`.
+
 ## Intensity factors
 
 Lookup table of intensity factors for water consumption and carbon emissions from energy generation technologies. The water factors are from Macknick et al. 2012, while carbon factors are from IPCC 2014 and UNECE 2020 reports. The units are L/kWh (liters per kilowatt-hour) for water and gCO2eq/kWh (grams of CO2 equivalent per kilowatt-hour) for carbon. Water values were converted from gallons/MWh to L/kWh. Entries named "average" are the mean of all listed entries of that fuel type.
