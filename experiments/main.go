@@ -294,11 +294,14 @@ func runExperiment(exp Experiment, opts runOptions) error {
 	}
 	defer cleanupSocket()
 
-	batschedCmd := exec.Command(batschedProcess,
+	batschedArgs := []string{
 		"-v", exp.VariantName,
-		"--variant_options_filepath", exp.VariantOptions,
 		"--socket-endpoint", socketEndpoint,
-	)
+	}
+	if exp.VariantOptions != "" {
+		batschedArgs = append(batschedArgs, "--variant_options_filepath", exp.VariantOptions)
+	}
+	batschedCmd := exec.Command(batschedProcess, batschedArgs...)
 	batschedCmd.Stdout = batschedOut
 	batschedCmd.Stderr = batschedErrLog
 	batschedCmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}

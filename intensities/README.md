@@ -45,7 +45,7 @@ jupyter nbconvert --to notebook --execute --inplace intensities/window_selection
 
 Outputs:
 
-- `traces/<CC>_<YYYY-MM-DD>.csv`: one extract per sampled window, named by zone and start date. Same long format as the full traces, timestamps rebased to start at 0, 2688 instants (28 days at 15-minute resolution). Tracked with Git LFS like the full traces.
+- `traces/<CC>_<YYYY-MM-DD>.csv`: one extract per sampled window, named by zone and start date. Same long format as the full traces, timestamps rebased to start at 0, 3360 instants (35 days at 15-minute resolution). Each extract covers the 28-day scheduling window plus a 7-day tail so the intensity trace outlasts simulations whose jobs spill past the 4-week mark. Window descriptors are computed on the 28-day portion only. Tracked with Git LFS like the full traces.
 - `windows.csv`: the manifest the experiment runner iterates over, with columns `zone`, `file`, `start_date`, `season`, `year`, `mean_carbon`, `mean_water`, `swing_carbon`, `swing_water`.
 
 ## Intensity factors

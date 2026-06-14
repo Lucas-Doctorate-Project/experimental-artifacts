@@ -7,3 +7,4 @@ __pycache__/
 .direnv
 workloads and platforms/datasets
 experiments/out/
+experiments/experimental-campaigns
