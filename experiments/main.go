@@ -84,22 +84,15 @@ func openAppendFile(path string) (*os.File, error) {
 	return os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, logFileMode)
 }
 
-// openProcessLogs opens the stdout (.log) and stderr (.err) destinations
-// for the named process inside dir. On failure it closes any file it
-// already opened so the caller never leaks a descriptor.
-func openProcessLogs(dir, name string) (stdout, stderr *os.File, err error) {
-	stdout, err = openAppendFile(filepath.Join(dir, name+".log"))
+// openProcessLog opens the combined stdout and stderr destination (.log)
+// for the named process inside dir. Both streams share one file so their
+// output is interleaved in submission order. The caller closes the file.
+func openProcessLog(dir, name string) (*os.File, error) {
+	logFile, err := openAppendFile(filepath.Join(dir, name+".log"))
 	if err != nil {
-		return nil, nil, fmt.Errorf("opening %s.log: %w", name, err)
+		return nil, fmt.Errorf("opening %s.log: %w", name, err)
 	}
-
-	stderr, err = openAppendFile(filepath.Join(dir, name+".err"))
-	if err != nil {
-		stdout.Close()
-		return nil, nil, fmt.Errorf("opening %s.err: %w", name, err)
-	}
-
-	return stdout, stderr, nil
+	return logFile, nil
 }
 
 // killGroup terminates the process group led by cmd and any children
@@ -264,7 +257,7 @@ func validateCampaign(campaign Campaign) error {
 }
 
 // runExperiment executes one experiment under opts. It creates
-// out/<name>, opens the four log files, allocates a unique IPC
+// out/<name>, opens the two combined log files, allocates a unique IPC
 // endpoint, then starts batsched and batsim in their own process
 // groups and delegates to waitWithTimeouts. Returns nil only when both
 // processes exit cleanly.
@@ -274,19 +267,17 @@ func runExperiment(exp Experiment, opts runOptions) error {
 		return fmt.Errorf("creating output dir: %w", err)
 	}
 
-	batschedOut, batschedErrLog, err := openProcessLogs(outputDir, batschedProcess)
+	batschedLog, err := openProcessLog(outputDir, batschedProcess)
 	if err != nil {
 		return err
 	}
-	defer batschedOut.Close()
-	defer batschedErrLog.Close()
+	defer batschedLog.Close()
 
-	batsimOut, batsimErrLog, err := openProcessLogs(outputDir, batsimProcess)
+	batsimLog, err := openProcessLog(outputDir, batsimProcess)
 	if err != nil {
 		return err
 	}
-	defer batsimOut.Close()
-	defer batsimErrLog.Close()
+	defer batsimLog.Close()
 
 	socketEndpoint, cleanupSocket, err := createSocketEndpoint()
 	if err != nil {
@@ -302,20 +293,20 @@ func runExperiment(exp Experiment, opts runOptions) error {
 		batschedArgs = append(batschedArgs, "--variant_options_filepath", exp.VariantOptions)
 	}
 	batschedCmd := exec.Command(batschedProcess, batschedArgs...)
-	batschedCmd.Stdout = batschedOut
-	batschedCmd.Stderr = batschedErrLog
+	batschedCmd.Stdout = batschedLog
+	batschedCmd.Stderr = batschedLog
 	batschedCmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	batsimCmd := exec.Command(batsimProcess,
 		"-p", exp.Platform,
 		"-w", exp.Workload,
-		"-e", outputDir,
+		"-e", filepath.Join(outputDir, "out"),
 		"--socket-endpoint", socketEndpoint,
 		"--energy",
 		"--environmental-footprint-dynamic", exp.EnvironmentalTrace,
 	)
-	batsimCmd.Stdout = batsimOut
-	batsimCmd.Stderr = batsimErrLog
+	batsimCmd.Stdout = batsimLog
+	batsimCmd.Stderr = batsimLog
 	batsimCmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	if err := batschedCmd.Start(); err != nil {
