@@ -6,11 +6,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1781403465,
-        "narHash": "sha256-+eTLXldtrqybkrv5+1MbehAvzcCTcOwbytq7EaBmeko=",
+        "lastModified": 1781466846,
+        "narHash": "sha256-g1AwROzcTyD/AjcWDwslKRvDhJ+Sd4hApj3xgbP/Sco=",
         "owner": "Lucas-Doctorate-Project",
         "repo": "batsched",
-        "rev": "1b7b557113a6659897e85b062d08a5f1aed17316",
+        "rev": "51db20f73e33fa6f5d08e8db969092c8c6e9399a",
         "type": "github"
       },
       "original": {
@@ -25,11 +25,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1779968710,
-        "narHash": "sha256-eLe0BhajimbfD7kfTNtjRuW4qXLgncU+dLxQJ30lznI=",
+        "lastModified": 1781466868,
+        "narHash": "sha256-GNK3oVzCyRtVO+8+ZQn1wX9sMFOkr4+GQa+a4n+mqkM=",
         "owner": "Lucas-Doctorate-Project",
         "repo": "batsim",
-        "rev": "7856932847ae42dceb67f2327657aca2013cd2d4",
+        "rev": "707d7215a486fbedfa43efbb9b2c8867129cc6ad",
         "type": "github"
       },
       "original": {
