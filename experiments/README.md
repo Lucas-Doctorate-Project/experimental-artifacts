@@ -48,12 +48,13 @@ The file referenced by `variant_options` is JSON handed to Batsched untouched. F
 {
     "intensity_trace": "../intensities/traces/FR_2020-01-06.csv",
     "intensity_zone": "AS0",
+    "signal": "carbon",
     "smoothing_factor": 0.3,
-    "ema_threshold": 1.0,
-    "backfilling_combinator": "and",
     "greenfilling_debug": true
 }
 ```
+
+`signal` selects the intensity signal to optimize for (`carbon` or `water`, defaults to `carbon`).
 
 See the Batsched documentation for the keys accepted by each variant.
 

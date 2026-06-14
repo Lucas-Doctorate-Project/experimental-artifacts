@@ -6,11 +6,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1779967539,
-        "narHash": "sha256-1U0vhYAKNQtThI5WidBB++X4elXAgQ/42mWLBKk6B14=",
+        "lastModified": 1781403465,
+        "narHash": "sha256-+eTLXldtrqybkrv5+1MbehAvzcCTcOwbytq7EaBmeko=",
         "owner": "Lucas-Doctorate-Project",
         "repo": "batsched",
-        "rev": "a05a42c6c6cb204abbcaef5f66c0bdbba3ca85d6",
+        "rev": "1b7b557113a6659897e85b062d08a5f1aed17316",
         "type": "github"
       },
       "original": {
