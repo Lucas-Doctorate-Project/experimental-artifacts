@@ -1,0 +1,7 @@
+{
+    "intensity_trace": "../intensities/traces/small/FR_2025-08-18.csv",
+    "intensity_zone": "AS0",
+    "signal": "carbon",
+    "smoothing_factor": 0.5,
+    "greenfilling_debug": true
+}
