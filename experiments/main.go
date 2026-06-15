@@ -4,13 +4,13 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"sync"
 	"syscall"
 	"time"
@@ -35,10 +35,16 @@ const (
 	// launched together for each experiment.
 	coRunningProcesses = 2
 
-	// Default timeout policy applied when the corresponding flag is unset.
-	defaultSimulationTimeout = time.Hour
-	defaultFailureTimeout    = 30 * time.Second
-	defaultSuccessTimeout    = 30 * time.Second
+	// maxConcurrentExperiments bounds how many experiments run at once. Each
+	// experiment is a batsim+batsched pair locked in ZMQ step, so the live
+	// process count is twice this. Kept well under the core count on purpose:
+	// oversubscribing these lock-step pairs collapses throughput, since every
+	// protocol round-trip then waits on the OS to reschedule the counterpart.
+	maxConcurrentExperiments = 4
+
+	// Default grace periods applied when the corresponding flag is unset.
+	defaultFailureTimeout = 30 * time.Second
+	defaultSuccessTimeout = 30 * time.Second
 )
 
 // batschedProcess and batsimProcess name the two co-running executables.
@@ -49,13 +55,13 @@ const (
 )
 
 // runOptions carries the execution policy shared by all experiments.
-// simulationTimeout caps the runtime of one experiment. failureTimeout
-// and successTimeout are the grace periods granted to the surviving
-// process after the other exits with a non-zero or zero status.
+// failureTimeout and successTimeout are the grace periods granted to the
+// surviving process after the other exits with a non-zero or zero status.
+// There is no cap on overall experiment runtime: simulations run to
+// completion however long they take.
 type runOptions struct {
-	simulationTimeout time.Duration
-	failureTimeout    time.Duration
-	successTimeout    time.Duration
+	failureTimeout time.Duration
+	successTimeout time.Duration
 }
 
 // Experiment describes one run decoded from the campaign TOML.
@@ -121,13 +127,11 @@ type experimentResult struct {
 	batsimErr   error
 }
 
-// waitForResults applies the timeout policy to process results emitted
-// by wait goroutines. kill is called when a timeout fires. The returned
-// error is non-nil only for a timeout, not for a process exit error.
+// waitForResults waits for both process results emitted by the wait
+// goroutines. Once the first process exits, a grace timer bounds the wait for
+// the second; kill is called if it overruns. The returned error is non-nil
+// only for that grace-period overrun, not for a process exit error.
 func waitForResults(results <-chan processResult, opts runOptions, kill func()) (experimentResult, error) {
-	simTimer := time.NewTimer(opts.simulationTimeout)
-	defer simTimer.Stop()
-
 	var result experimentResult
 	remaining := coRunningProcesses
 
@@ -171,11 +175,6 @@ func waitForResults(results <-chan processResult, opts runOptions, kill func()) 
 		select {
 		case r := <-results:
 			recordResult(r)
-		case <-simTimer.C:
-			kill()
-			drainResults()
-			stopGraceTimer()
-			return experimentResult{}, fmt.Errorf("simulation timeout exceeded (%s)", opts.simulationTimeout)
 		case <-graceTimerC:
 			// A buffered final result can race the grace timer; prefer it.
 			select {
@@ -196,11 +195,10 @@ func waitForResults(results <-chan processResult, opts runOptions, kill func()) 
 }
 
 // waitWithTimeouts waits for both processes to exit under the policy in
-// opts. A simulation timer runs from entry. When the first process
-// exits, a second timer arms for successTimeout or failureTimeout
-// depending on its exit status. Any timer firing kills both groups and
-// drains the pending Wait calls. The function returns nil only when
-// both processes exit cleanly.
+// opts. When the first process exits, a timer arms for successTimeout or
+// failureTimeout depending on its exit status. That timer firing kills both
+// groups and drains the pending Wait calls. The function returns nil only
+// when both processes exit cleanly.
 func waitWithTimeouts(batsched, batsim *exec.Cmd, opts runOptions) error {
 	results := make(chan processResult, coRunningProcesses)
 	go func() { results <- processResult{name: batschedProcess, err: batsched.Wait()} }()
@@ -254,6 +252,20 @@ func validateCampaign(campaign Campaign) error {
 	}
 
 	return nil
+}
+
+// experimentComplete reports whether the experiment's output already holds a
+// finished schedule summary. Batsim writes out/<name>/out_schedule.csv (a
+// header plus a value row) only at a clean end of simulation, so its presence
+// marks a run that need not be repeated. Delete the output directory to force
+// a re-run.
+func experimentComplete(name string) bool {
+	path := filepath.Join(outputRootDir, name, "out_schedule.csv")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return false
+	}
+	return bytes.Count(data, []byte("\n")) >= 2
 }
 
 // runExperiment executes one experiment under opts. It creates
@@ -327,15 +339,13 @@ func runExperiment(exp Experiment, opts runOptions) error {
 // experiment succeeds, 1 otherwise.
 func main() {
 	campaignPath := flag.String("campaign", "experiments.toml", "Path to the campaign TOML file")
-	simulationTimeout := flag.Duration("simulation-timeout", defaultSimulationTimeout, "Maximum runtime for a single experiment")
 	failureTimeout := flag.Duration("failure-timeout", defaultFailureTimeout, "Grace period for the surviving process after the other fails")
 	successTimeout := flag.Duration("success-timeout", defaultSuccessTimeout, "Grace period for the surviving process after the other succeeds")
 	flag.Parse()
 
 	opts := runOptions{
-		simulationTimeout: *simulationTimeout,
-		failureTimeout:    *failureTimeout,
-		successTimeout:    *successTimeout,
+		failureTimeout: *failureTimeout,
+		successTimeout: *successTimeout,
 	}
 
 	var campaign Campaign
@@ -346,14 +356,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	maxConcurrent := runtime.NumCPU()
-	sem := make(chan struct{}, maxConcurrent)
+	sem := make(chan struct{}, maxConcurrentExperiments)
 
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	failedCount := 0
 
 	for _, exp := range campaign.Experiments {
+		if experimentComplete(exp.Name) {
+			fmt.Printf("Skipping experiment (already complete): %s\n", exp.Name)
+			continue
+		}
+
 		wg.Add(1)
 		sem <- struct{}{}
 

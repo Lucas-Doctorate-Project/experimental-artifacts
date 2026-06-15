@@ -2,7 +2,7 @@
 
 Campaign runner for Batsim simulations driven by Batsched. It takes the artifacts produced in this repository (intensity traces from `intensities/`, workloads and platforms from `workloads and platforms/`) and runs them as reproducible experimental campaigns.
 
-Each experiment launches Batsim and Batsched as co-running processes wired over a ZMQ socket. The runner captures their logs, enforces timeouts, and writes output into a per-experiment directory.
+Each experiment launches Batsim and Batsched as co-running processes wired over a ZMQ socket. The runner captures their logs and writes output into a per-experiment directory.
 
 ## Set up the dev shell
 
@@ -70,18 +70,19 @@ Flags:
 | Flag | Default | Purpose |
 | --- | --- | --- |
 | `--campaign` | `experiments.toml` | Path to the campaign TOML file. |
-| `--simulation-timeout` | `1h` | Max wall-clock time per experiment. |
 | `--failure-timeout` | `30s` | Grace period after the other process fails. |
 | `--success-timeout` | `30s` | Grace period after the other process exits cleanly. |
 
-The runner launches experiments in declaration order, with up to `runtime.NumCPU()` experiments running at once. Each experiment gets its own temporary IPC socket endpoint. A failed experiment does not abort the campaign. The program exits `0` only when every experiment succeeds, `1` otherwise.
+The runner launches experiments in declaration order, with up to 4 experiments running at once. The cap is fixed and deliberately well below the core count: each experiment is a batsim+batsched pair locked in ZMQ step, so the live process count is twice the cap, and oversubscribing these lock-step pairs collapses throughput. Each experiment gets its own temporary IPC socket endpoint. There is no cap on per-experiment runtime; simulations run to completion. A failed experiment does not abort the campaign. The program exits `0` only when every experiment succeeds, `1` otherwise.
+
+The runner skips any experiment whose `out/<name>/out_schedule.csv` already exists, so an interrupted campaign resumes where it left off. Delete an experiment's output directory to force it to run again.
 
 ## Inspect the output
 
 For an experiment named `example`:
 
-- `out/example/batsched.log`, `out/example/batsched.err`: Batsched stdout and stderr.
-- `out/example/batsim.log`, `out/example/batsim.err`: Batsim stdout and stderr.
+- `out/example/batsched.log`: Batsched stdout and stderr, combined into one file.
+- `out/example/batsim.log`: Batsim stdout and stderr, combined into one file.
 - `out/example/out_*.csv`: Batsim exports. The main ones are `out_jobs.csv` (per-job metrics) and `out_schedule.csv` (run aggregates).
 
-Log files are opened in append mode. Delete the directory between runs for a clean slate.
+Log files are opened in append mode. Since the runner skips experiments that already have an `out_schedule.csv`, delete an experiment's directory to give it a clean slate and force a re-run.

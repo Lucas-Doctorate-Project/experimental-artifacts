@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 )
 
 func TestValidateCampaignRejectsDuplicateNames(t *testing.T) {
@@ -47,9 +46,8 @@ func TestCreateSocketEndpointCleansUpTempDir(t *testing.T) {
 
 func TestWaitForResultsDoesNotTreatBufferedExitAsGraceTimeout(t *testing.T) {
 	opts := runOptions{
-		simulationTimeout: time.Second,
-		failureTimeout:    0,
-		successTimeout:    0,
+		failureTimeout: 0,
+		successTimeout: 0,
 	}
 
 	for i := 0; i < 128; i++ {
