@@ -1,6 +1,6 @@
 # Workloads and platforms
 
-Batsim workloads and SimGrid platforms built from production cluster traces. Each trace gets its own notebook implementing the same pipeline. The Mustang pipeline lives in [mustang.ipynb](mustang.ipynb) and produces `mustang_slack.json`, `mustang_stress.json`, and `mustang.xml`.
+Batsim workloads and SimGrid platforms built from production cluster traces. Each trace gets its own notebook implementing the same pipeline. The Mustang pipeline lives in [mustang.ipynb](mustang.ipynb) and produces `mustang_slack.json`, `mustang_stress.json`, and `mustang.xml`. A one-week pilot variant, [mustang_small.ipynb](mustang_small.ipynb), runs the same selection and generation on 1-week extracts and writes the workloads under `small/`, leaving the 4-week outputs untouched.
 
 ## Datasets
 

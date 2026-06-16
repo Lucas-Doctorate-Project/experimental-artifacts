@@ -58,6 +58,20 @@ The file referenced by `variant_options` is JSON handed to Batsched untouched. F
 
 See the Batsched documentation for the keys accepted by each variant.
 
+## Generate the one-week pilot campaign
+
+`gen_campaign.py` writes the one-week pilot campaign instead of hand-authoring it. It reads the small manifest `../intensities/traces/small/windows.csv` and emits, all repointed at the `small/` artifacts:
+
+- `experiments_small.toml`: FCFS, EASY, and greenfilling (carbon and water) over the 24 one-week windows, stress workload only, so 4 x 24 = 96 experiments.
+- `options/small/{carbon,water}_<CC>_<date>.json`: the greenfilling variant options per window and signal (48 files).
+
+Run it from this directory, then run the generated campaign:
+
+```sh
+python gen_campaign.py
+go run . --campaign experiments_small.toml
+```
+
 ## Run a campaign
 
 ```sh

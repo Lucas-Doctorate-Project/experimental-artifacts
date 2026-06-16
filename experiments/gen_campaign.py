@@ -4,7 +4,7 @@
 Reads the one-week intensity manifest at intensities/traces/small/windows.csv and
 emits, repointed at the small/ artifacts:
 
-  - experiments_small.toml: 4 schedulers x 2 workloads x 36 traces = 288 experiments
+  - experiments_small.toml: 4 schedulers x 1 workload x 24 traces = 96 experiments
   - options/small/{carbon,water}_<CC>_<date>.json: greenfilling variant options
 
 Run from the experiments/ directory (where the campaign runner is launched), so the
