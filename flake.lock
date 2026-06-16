@@ -6,11 +6,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1781466846,
-        "narHash": "sha256-g1AwROzcTyD/AjcWDwslKRvDhJ+Sd4hApj3xgbP/Sco=",
+        "lastModified": 1781629644,
+        "narHash": "sha256-Q9rBN1vVMW/CDZ979o4HYriNbqWBj+q28Vi21mcV0OQ=",
         "owner": "Lucas-Doctorate-Project",
         "repo": "batsched",
-        "rev": "51db20f73e33fa6f5d08e8db969092c8c6e9399a",
+        "rev": "a1caf24dfae39a315b106fd4d21afffbf9dcc6d0",
         "type": "github"
       },
       "original": {
@@ -242,11 +242,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1780749050,
-        "narHash": "sha256-3av0pIjlOWQ6rDbNOmpUSvbNnJkGORQKKjb4LtCZsIY=",
+        "lastModified": 1781074563,
+        "narHash": "sha256-md8WlXOlfnIeHeOScMTTHFyf2d6iaTwPl2apR5EQ3P4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
+        "rev": "9ae611a455b90cf061d8f332b977e387bda8e1ca",
         "type": "github"
       },
       "original": {
