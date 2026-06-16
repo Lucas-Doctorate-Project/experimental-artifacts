@@ -333,6 +333,71 @@ func runExperiment(exp Experiment, opts runOptions) error {
 	return waitWithTimeouts(batschedCmd, batsimCmd, opts)
 }
 
+// progress accumulates campaign-wide tallies as experiments reach a terminal
+// state. Its methods print one atomic, attributable line per experiment and
+// are safe to call from the experiment goroutines. done is the count of
+// experiments in any terminal state and drives the [k/N] progress counter.
+type progress struct {
+	mu          sync.Mutex
+	total       int
+	done        int
+	succeeded   int
+	skipped     int
+	failedNames []string
+}
+
+// skip records and reports an experiment skipped because it was already
+// complete.
+func (p *progress) skip(name string) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.done++
+	p.skipped++
+	fmt.Println(formatSkip(p.done, p.total, name))
+}
+
+// succeed records and reports an experiment that finished cleanly.
+func (p *progress) succeed(name string, dur time.Duration) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.done++
+	p.succeeded++
+	fmt.Println(formatOK(p.done, p.total, name, dur))
+}
+
+// fail records and reports a failed experiment. The line goes to stderr to
+// keep the existing failure-on-stderr convention.
+func (p *progress) fail(name string, dur time.Duration, err error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.done++
+	p.failedNames = append(p.failedNames, name)
+	fmt.Fprintln(os.Stderr, formatFail(p.done, p.total, name, dur, err))
+}
+
+// The four formatters below render single self-contained lines. Each is one
+// atomic write carrying its experiment name, so lines stay attributable when
+// the 4 concurrent experiments interleave their output. The status tag is
+// padded to a fixed width so the columns line up. Durations are rounded to the
+// second since experiments run for minutes.
+func formatOK(k, total int, name string, dur time.Duration) string {
+	return fmt.Sprintf("[%d/%d] %-4s %s  (%s)", k, total, "OK", name, dur.Round(time.Second))
+}
+
+func formatSkip(k, total int, name string) string {
+	return fmt.Sprintf("[%d/%d] %-4s %s  (already complete)", k, total, "SKIP", name)
+}
+
+func formatFail(k, total int, name string, dur time.Duration, err error) string {
+	return fmt.Sprintf("[%d/%d] %-4s %s  (%s): %v", k, total, "FAIL", name, dur.Round(time.Second), err)
+}
+
+// formatSummary renders the end-of-run tally line.
+func formatSummary(total, succeeded, skipped, failed int, elapsed time.Duration) string {
+	return fmt.Sprintf("Summary: %d total, %d succeeded, %d skipped, %d failed, elapsed %s",
+		total, succeeded, skipped, failed, elapsed.Round(time.Second))
+}
+
 // main parses flags, decodes the campaign TOML, validates experiment
 // names, and runs the experiments with bounded parallelism. A failed
 // experiment does not abort the campaign. Exits 0 only when every
@@ -356,15 +421,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	sem := make(chan struct{}, maxConcurrentExperiments)
+	prog := &progress{total: len(campaign.Experiments)}
+	start := time.Now()
 
+	sem := make(chan struct{}, maxConcurrentExperiments)
 	var wg sync.WaitGroup
-	var mu sync.Mutex
-	failedCount := 0
 
 	for _, exp := range campaign.Experiments {
 		if experimentComplete(exp.Name) {
-			fmt.Printf("Skipping experiment (already complete): %s\n", exp.Name)
+			prog.skip(exp.Name)
 			continue
 		}
 
@@ -375,20 +440,25 @@ func main() {
 			defer wg.Done()
 			defer func() { <-sem }()
 
-			fmt.Printf("Running experiment: %s\n", e.Name)
+			fmt.Printf("RUN   %s\n", e.Name)
+			expStart := time.Now()
 			if err := runExperiment(e, opts); err != nil {
-				fmt.Fprintf(os.Stderr, "experiment %q failed: %v\n", e.Name, err)
-
-				mu.Lock()
-				failedCount++
-				mu.Unlock()
+				prog.fail(e.Name, time.Since(expStart), err)
+				return
 			}
+			prog.succeed(e.Name, time.Since(expStart))
 		}(exp)
 	}
 
 	wg.Wait()
 
-	if failedCount > 0 {
+	// All goroutines have joined, so prog's fields are safe to read directly.
+	fmt.Println(formatSummary(prog.total, prog.succeeded, prog.skipped, len(prog.failedNames), time.Since(start)))
+	if len(prog.failedNames) > 0 {
+		fmt.Println("Failed:")
+		for _, name := range prog.failedNames {
+			fmt.Printf("  - %s\n", name)
+		}
 		os.Exit(1)
 	}
 }

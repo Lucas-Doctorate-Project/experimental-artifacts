@@ -77,6 +77,28 @@ The runner launches experiments in declaration order, with up to 4 experiments r
 
 The runner skips any experiment whose `out/<name>/out_schedule.csv` already exists, so an interrupted campaign resumes where it left off. Delete an experiment's output directory to force it to run again.
 
+## Read the console output
+
+Because up to 4 experiments run at once, their output interleaves. Each line is self-contained and names its experiment, so it stays attributable. A line is printed when an experiment starts and again when it reaches a terminal state:
+
+```
+RUN   greenfilling_carbon_stress_FR_2024-07-08
+[1/288] SKIP fcfs_stress_DE_2019-02-04  (already complete)
+[2/288] OK   greenfilling_carbon_stress_FR_2024-07-08  (3m12s)
+[3/288] FAIL easy_bf_stress_PL_2020-07-27  (47s): batsched=<nil> batsim=exit status 1
+```
+
+The `[k/N]` counter on terminal lines tracks how many of the `N` campaign experiments have finished, in completion order. `OK` and `FAIL` carry the experiment's wall-clock duration. `RUN` and `OK`/`SKIP` go to stdout, `FAIL` to stderr.
+
+At the end the runner prints a one-line tally and, if any experiment failed, the list of failed names:
+
+```
+Summary: 288 total, 280 succeeded, 5 skipped, 3 failed, elapsed 47m12s
+Failed:
+  - easy_bf_stress_PL_2020-07-27
+  - ...
+```
+
 ## Inspect the output
 
 For an experiment named `example`:
