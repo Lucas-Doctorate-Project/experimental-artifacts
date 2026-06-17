@@ -7,20 +7,8 @@ Batsim workloads and SimGrid platforms built from production cluster traces. Eac
 | Dataset | Settings | Main Batsim-conversion caveats |
 |---|---|---|
 | Mustang | LANL capacity cluster, 1600 homogeneous nodes (24 cores each). 61 months (2011-2016), 2.1M jobs, 565 users. | Done in [mustang.ipynb](mustang.ipynb). Invalid node counts, TIMEOUT jobs overran their walltime, 365-day default walltimes. All handled by hygiene and clipping. |
-| Trinity | LANL capability machine (Cray XC40), 9408 homogeneous nodes (32 cores each). About 3 months (Feb-Apr 2016), 25k jobs. | Same schema as Mustang. Short trace leaves few 4-week candidate windows. Covers the pre-production open-science period, so the job mix is not steady production. Failed jobs have empty `start_time`. |
+| Trinity | LANL capability machine (Cray XC40), 9408 homogeneous nodes (32 cores each). About 3 months (Feb-Apr 2016), 25k jobs. | First implementation in [trinity.ipynb](trinity.ipynb). Same formatted schema as Mustang, but the trace is short and leaves few 4-week candidate windows. Covers the pre-production open-science period, so the job mix is not steady production. Failed jobs have empty `start_time`. |
 | MetaCentrum | Czech national grid, 47 heterogeneous clusters, 34,400 cores, 42 queues (GPU, interactive, backfill). Year 2023, 10.1M jobs. | SWF format, core-level (not node-level) allocations on a heterogeneous grid, which breaks the single homogeneous platform assumption. GPU and memory dimensions have no place in our schema. Focus on cluster 17 (see to-do). |
-
-## Getting the datasets
-
-The `datasets/` directory is gitignored (several GB) and the notebooks expect it next to them, at `workloads and platforms/datasets/`. To recreate it:
-
-- **Mustang** and **Trinity**: in the ATLAS repository, <https://ftp.pdl.cmu.edu/pub/datasets/ATLAS/>. For Trinity take the *formatted* release. Decompress and save as `datasets/mustang.csv` and `datasets/trinity.csv`.
-- **MetaCentrum**: in the JSSPP Workloads Archive (see references). Save the 2023 SWF file as `datasets/metacentrum.swf`.
-
-## To do
-
-- [ ] **Trinity**: `trinity.ipynb` reusing the Mustang pipeline. Adjust the constants (9408 nodes, 32 cores, Haswell power draw). Expect the window search to need relaxed constraints, since the trace barely fits ten 4-week windows.
-- [ ] **MetaCentrum**: `metacentrum.ipynb` restricted to **cluster 17** (SWF `partition` field). It is the only cluster where backfilling has material work: 0.17% of jobs are wider than 10% of capacity but they hold 4.7% of core-seconds (jobs up to 1,024 cores on a ~3,000-core pool). It is also large and active all year (410k jobs in 2023, 61% mean utilization vs peak). Runner-up cluster 2 has more load (85% mean utilization) but zero wide jobs, so EASY would collapse to FCFS. Model resources as cores (`nb_res` = peak concurrent cores), drop the 1% GPU jobs, and use the trace's soft walltimes as the runtime estimates, which are more refined than the usual user estimates.
 
 ## Extract selection
 
