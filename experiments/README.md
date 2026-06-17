@@ -2,7 +2,7 @@
 
 Campaign runner for Batsim simulations driven by Batsched. It takes the artifacts produced in this repository (intensity traces from `intensities/`, workloads and platforms from `workloads and platforms/`) and runs them as reproducible experimental campaigns.
 
-Each experiment launches Batsim and Batsched as co-running processes wired over a ZMQ socket. The runner captures their logs, enforces timeouts, and writes output into a per-experiment directory.
+Each experiment launches Batsim and Batsched as co-running processes wired over a ZMQ socket. The runner captures their logs and writes output into a per-experiment directory.
 
 ## Set up the dev shell
 
@@ -58,6 +58,20 @@ The file referenced by `variant_options` is JSON handed to Batsched untouched. F
 
 See the Batsched documentation for the keys accepted by each variant.
 
+## Generate the one-week pilot campaign
+
+`gen_campaign.py` writes the one-week pilot campaign instead of hand-authoring it. It reads the small manifest `../intensities/traces/small/windows.csv` and emits, all repointed at the `small/` artifacts:
+
+- `experiments_small.toml`: FCFS, EASY, and greenfilling (carbon and water) over the 24 one-week windows, stress workload only, so 4 x 24 = 96 experiments.
+- `options/small/{carbon,water}_<CC>_<date>.json`: the greenfilling variant options per window and signal (48 files).
+
+Run it from this directory, then run the generated campaign:
+
+```sh
+python gen_campaign.py
+go run . --campaign experiments_small.toml
+```
+
 ## Run a campaign
 
 ```sh
@@ -70,18 +84,41 @@ Flags:
 | Flag | Default | Purpose |
 | --- | --- | --- |
 | `--campaign` | `experiments.toml` | Path to the campaign TOML file. |
-| `--simulation-timeout` | `1h` | Max wall-clock time per experiment. |
 | `--failure-timeout` | `30s` | Grace period after the other process fails. |
 | `--success-timeout` | `30s` | Grace period after the other process exits cleanly. |
 
-The runner launches experiments in declaration order, with up to `runtime.NumCPU()` experiments running at once. Each experiment gets its own temporary IPC socket endpoint. A failed experiment does not abort the campaign. The program exits `0` only when every experiment succeeds, `1` otherwise.
+The runner launches experiments in declaration order, with up to 4 experiments running at once. The cap is fixed and deliberately well below the core count: each experiment is a batsim+batsched pair locked in ZMQ step, so the live process count is twice the cap, and oversubscribing these lock-step pairs collapses throughput. Each experiment gets its own temporary IPC socket endpoint. There is no cap on per-experiment runtime; simulations run to completion. A failed experiment does not abort the campaign. The program exits `0` only when every experiment succeeds, `1` otherwise.
+
+The runner skips any experiment whose `out/<name>/out_schedule.csv` already exists, so an interrupted campaign resumes where it left off. Delete an experiment's output directory to force it to run again.
+
+## Read the console output
+
+Because up to 4 experiments run at once, their output interleaves. Each line is self-contained and names its experiment, so it stays attributable. A line is printed when an experiment starts and again when it reaches a terminal state:
+
+```
+RUN   greenfilling_carbon_stress_FR_2024-07-08
+[1/288] SKIP fcfs_stress_DE_2019-02-04  (already complete)
+[2/288] OK   greenfilling_carbon_stress_FR_2024-07-08  (3m12s)
+[3/288] FAIL easy_bf_stress_PL_2020-07-27  (47s): batsched=<nil> batsim=exit status 1
+```
+
+The `[k/N]` counter on terminal lines tracks how many of the `N` campaign experiments have finished, in completion order. `OK` and `FAIL` carry the experiment's wall-clock duration. `RUN` and `OK`/`SKIP` go to stdout, `FAIL` to stderr.
+
+At the end the runner prints a one-line tally and, if any experiment failed, the list of failed names:
+
+```
+Summary: 288 total, 280 succeeded, 5 skipped, 3 failed, elapsed 47m12s
+Failed:
+  - easy_bf_stress_PL_2020-07-27
+  - ...
+```
 
 ## Inspect the output
 
 For an experiment named `example`:
 
-- `out/example/batsched.log`, `out/example/batsched.err`: Batsched stdout and stderr.
-- `out/example/batsim.log`, `out/example/batsim.err`: Batsim stdout and stderr.
+- `out/example/batsched.log`: Batsched stdout and stderr, combined into one file.
+- `out/example/batsim.log`: Batsim stdout and stderr, combined into one file.
 - `out/example/out_*.csv`: Batsim exports. The main ones are `out_jobs.csv` (per-job metrics) and `out_schedule.csv` (run aggregates).
 
-Log files are opened in append mode. Delete the directory between runs for a clean slate.
+Log files are opened in append mode. Since the runner skips experiments that already have an `out_schedule.csv`, delete an experiment's directory to give it a clean slate and force a re-run.
