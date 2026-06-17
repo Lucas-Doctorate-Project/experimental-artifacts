@@ -10,19 +10,6 @@ Batsim workloads and SimGrid platforms built from production cluster traces. Eac
 | Trinity | LANL capability machine (Cray XC40), 9408 homogeneous nodes (32 cores each). About 3 months (Feb-Apr 2016), 25k jobs. | First implementation in [trinity.ipynb](trinity.ipynb). Same formatted schema as Mustang, but the trace is short and leaves few 4-week candidate windows. Covers the pre-production open-science period, so the job mix is not steady production. Failed jobs have empty `start_time`. |
 | MetaCentrum | Czech national grid, 47 heterogeneous clusters, 34,400 cores, 42 queues (GPU, interactive, backfill). Year 2023, 10.1M jobs. | SWF format, core-level (not node-level) allocations on a heterogeneous grid, which breaks the single homogeneous platform assumption. GPU and memory dimensions have no place in our schema. Focus on cluster 17 (see to-do). |
 
-## Getting the datasets
-
-The `datasets/` directory is gitignored (several GB) and the notebooks expect it next to them, at `workloads and platforms/datasets/`. To recreate it:
-
-- **Mustang** and **Trinity**: in the ATLAS repository, <https://ftp.pdl.cmu.edu/pub/datasets/ATLAS/>. For the current Trinity notebook, take the *formatted* release. Decompress and save as `datasets/mustang.csv` and `datasets/trinity.csv`.
-- **MetaCentrum**: in the JSSPP Workloads Archive (see references). Save the 2023 SWF file as `datasets/metacentrum.swf`.
-
-## To do
-
-- [ ] **Trinity follow-up**: the first `trinity.ipynb` implementation keeps the formatted-trace `node_count` utilization diagnostic and excludes 4-week windows that overlap the anomalous April period where summed allocations exceed the documented 9408 nodes. This is a conservative workaround, not the final accounting model. The next pass should use the Trinity raw trace to recover `allocated_host_list` and compute physical utilization as the union of active hosts. That should distinguish true machine occupancy from accounting artifacts in cancelled/timed-out jobs.
-- [ ] **Trinity follow-up**: revisit the week-selection parameters. The Mustang thresholds are too strict for the short Trinity trace, especially after excluding the anomalous period. Find selection criteria that make sense for Trinity's open-science/pre-production workload while still producing useful slack and stress regimes for FCFS/EASY comparisons.
-- [ ] **MetaCentrum**: `metacentrum.ipynb` restricted to **cluster 17** (SWF `partition` field). It is the only cluster where backfilling has material work: 0.17% of jobs are wider than 10% of capacity but they hold 4.7% of core-seconds (jobs up to 1,024 cores on a ~3,000-core pool). It is also large and active all year (410k jobs in 2023, 61% mean utilization vs peak). Runner-up cluster 2 has more load (85% mean utilization) but zero wide jobs, so EASY would collapse to FCFS. Model resources as nodes (`nb_res` = 47, `ceil(cores/64)` per job), drop the 1% GPU jobs, and use the trace's soft walltimes as the runtime estimates, which are more refined than the usual user estimates.
-
 ## Extract selection
 
 The goal is to replay 4-week windows in Batsim to evaluate environmental-aware scheduling (carbon and water intensity signals) against FCFS and EASY backfilling baselines. The windows must span multiple weeks because intensity signals vary on diurnal and weather timescales, and they must exercise both a relaxed and a saturated regime.
