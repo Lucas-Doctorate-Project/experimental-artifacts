@@ -1,2 +1,4 @@
 intensities/traces/*.csv filter=lfs diff=lfs merge=lfs -text
 intensities/raw/*.csv filter=lfs diff=lfs merge=lfs -text
+workloads[[:space:]]and[[:space:]]platforms/*.json filter=lfs diff=lfs merge=lfs -text
+workloads[[:space:]]and[[:space:]]platforms/*.xml filter=lfs diff=lfs merge=lfs -text
