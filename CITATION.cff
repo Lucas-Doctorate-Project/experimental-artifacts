@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Experimental Artifacts"
+type: software
+authors:
+  - given-names: "Lucas"
+    family-names: "de Sousa Rosa"
+  - given-names: "Andre"
+    family-names: "Schwarz"
+  - given-names: "Bruno"
+    family-names: "Lima"
+abstract: "Artifacts and runner for reproducible Batsim scheduling experiments evaluating environmental-aware heuristics."
+repository-code: "https://github.com/Lucas-Doctorate-Project/experimental-artifacts"
+license: "Apache-2.0"

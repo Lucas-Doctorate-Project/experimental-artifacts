@@ -22,3 +22,11 @@ go run . --campaign experiments.toml      # or experiments_small.toml for the on
 ```
 
 See each directory's README for details.
+
+## Citation
+
+If you use this repository, cite it using the metadata in [CITATION.cff](CITATION.cff).
+
+## License
+
+This repository is licensed under the [Apache License 2.0](LICENSE), except where otherwise noted. Third-party datasets and artifacts derived from them remain subject to their original source terms.
