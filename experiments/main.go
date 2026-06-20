@@ -35,12 +35,10 @@ const (
 	// launched together for each experiment.
 	coRunningProcesses = 2
 
-	// maxConcurrentExperiments bounds how many experiments run at once. Each
-	// experiment is a batsim+batsched pair locked in ZMQ step, so the live
-	// process count is twice this. Kept well under the core count on purpose:
-	// oversubscribing these lock-step pairs collapses throughput, since every
-	// protocol round-trip then waits on the OS to reschedule the counterpart.
-	maxConcurrentExperiments = 4
+	// defaultMaxConcurrentExperiments bounds how many experiments run at once
+	// when --concurrency is unset. Each experiment is a batsim+batsched pair, so
+	// the live process count is twice this.
+	defaultMaxConcurrentExperiments = 4
 
 	// Default grace periods applied when the corresponding flag is unset.
 	defaultFailureTimeout = 30 * time.Second
@@ -404,9 +402,13 @@ func formatSummary(total, succeeded, skipped, failed int, elapsed time.Duration)
 // experiment succeeds, 1 otherwise.
 func main() {
 	campaignPath := flag.String("campaign", "experiments.toml", "Path to the campaign TOML file")
+	concurrency := flag.Int("concurrency", defaultMaxConcurrentExperiments, "Maximum number of experiments to run at once")
 	failureTimeout := flag.Duration("failure-timeout", defaultFailureTimeout, "Grace period for the surviving process after the other fails")
 	successTimeout := flag.Duration("success-timeout", defaultSuccessTimeout, "Grace period for the surviving process after the other succeeds")
 	flag.Parse()
+	if *concurrency < 1 {
+		log.Fatal("--concurrency must be at least 1")
+	}
 
 	opts := runOptions{
 		failureTimeout: *failureTimeout,
@@ -424,7 +426,7 @@ func main() {
 	prog := &progress{total: len(campaign.Experiments)}
 	start := time.Now()
 
-	sem := make(chan struct{}, maxConcurrentExperiments)
+	sem := make(chan struct{}, *concurrency)
 	var wg sync.WaitGroup
 
 	for _, exp := range campaign.Experiments {
