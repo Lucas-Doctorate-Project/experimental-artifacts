@@ -4,13 +4,13 @@
 Reads the one-week intensity manifest at intensities/traces/small/windows.csv and
 emits, repointed at the small/ artifacts:
 
-  - experiments_small.toml: 4 schedulers x 1 workload x 24 traces = 96 experiments
+  - experiments_small.toml: 4 schedulers x 2 workloads x 24 traces = 192 experiments
   - options/small/{carbon,water}_<CC>_<date>.json: greenfilling variant options
 
 Run from the experiments/ directory (where the campaign runner is launched), so the
 relative paths it writes resolve correctly:
 
-    python gen_campaign.py
+    python3 gen_campaign.py
 """
 
 import csv
@@ -22,7 +22,7 @@ WINDOWS = os.path.join(HERE, "..", "intensities", "traces", "small", "windows.cs
 OPTIONS_DIR = os.path.join(HERE, "options", "small")
 TOML_OUT = os.path.join(HERE, "experiments_small.toml")
 
-WORKLOADS = ["stress"]  # pilot uses the stress regime only; add "slack" to widen
+WORKLOADS = ["stress", "slack"]
 SIGNALS = ["carbon", "water"]
 SMOOTHING_FACTOR = 0.5
 
