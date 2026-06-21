@@ -4,7 +4,7 @@
 Reads the one-week intensity manifest at intensities/traces/small/windows.csv and
 emits, repointed at the small/ artifacts:
 
-  - experiments_small.toml: 4 schedulers x 2 workloads x 24 traces = 192 experiments
+  - experiments_small.toml: 3 schedulers x 2 workloads x 24 traces = 144 experiments
   - options/small/{carbon,water}_<CC>_<date>.json: greenfilling variant options
 
 Run from the experiments/ directory (where the campaign runner is launched), so the
@@ -65,15 +65,14 @@ def experiment(name, workload, trace, variant, options):
 
 def write_toml(traces):
     blocks = []
-    # Baselines: schedule is independent of the trace, but kept per-trace for the
+    # Baseline: schedule is independent of the trace, but kept per-trace for the
     # pilot (the offline-scorer dedup is deferred to the 4-week campaign).
-    for variant in ["fcfs", "easy_bf"]:
-        for wl in WORKLOADS:
-            for cc, date in traces:
-                blocks.append(experiment(
-                    f"{variant}_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
-                    variant, "",
-                ))
+    for wl in WORKLOADS:
+        for cc, date in traces:
+            blocks.append(experiment(
+                f"easy_bf_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
+                "easy_bf", "",
+            ))
     # Greenfilling: one variant per intensity signal.
     for signal in SIGNALS:
         for wl in WORKLOADS:

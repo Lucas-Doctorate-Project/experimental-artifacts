@@ -12,7 +12,7 @@ Batsim workloads and SimGrid platforms built from production cluster traces. Eac
 
 ## Extract selection
 
-The goal is to replay 4-week windows in Batsim to evaluate environmental-aware scheduling (carbon and water intensity signals) against FCFS and EASY backfilling baselines. The windows must span multiple weeks because intensity signals vary on diurnal and weather timescales, and they must exercise both a relaxed and a saturated regime.
+The goal is to replay 4-week windows in Batsim to evaluate environmental-aware scheduling (carbon and water intensity signals) against an EASY backfilling baseline. The windows must span multiple weeks because intensity signals vary on diurnal and weather timescales, and they must exercise both a relaxed and a saturated regime.
 
 Candidate windows cover the whole trace, anchored at Monday 00:00 UTC and slid by 1 week, so the weekly phase is identical across extracts. Each window is described by metrics normalized by machine size: mean and standard deviation of node utilization, fraction of saturated hours (>= 95% capacity), fraction and longest streak of low-utilization hours (< 20%), normalized queue depth, top-user share, node-seconds share of wide jobs (>= 10% of the machine), and the share of narrow short jobs that EASY can backfill.
 
@@ -20,7 +20,7 @@ Feasibility constraints shared by both regimes exclude pathological periods (ram
 
 - `frac_low <= 0.05` and `max_low_streak_h <= 6`
 - `top_user_share <= 0.5`
-- `wide_ns_share >= 0.2` and `frac_bf_candidates >= 0.3`, so EASY actually differs from FCFS
+- `wide_ns_share >= 0.2` and `frac_bf_candidates >= 0.3`, so backfilling has a real effect
 
 Two extracts are then selected, one per regime:
 

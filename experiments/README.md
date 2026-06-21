@@ -62,7 +62,7 @@ See the Batsched documentation for the keys accepted by each variant.
 
 `gen_campaign.py` writes the one-week pilot campaign instead of hand-authoring it. It reads the small manifest `../intensities/traces/small/windows.csv` and emits, all repointed at the `small/` artifacts:
 
-- `experiments_small.toml`: FCFS, EASY, and greenfilling (carbon and water) over the 24 one-week windows and both small Mustang workloads, so 4 x 2 x 24 = 192 experiments.
+- `experiments_small.toml`: EASY and greenfilling (carbon and water) over the 24 one-week windows and both small Mustang workloads, so 3 x 2 x 24 = 144 experiments.
 - `options/small/{carbon,water}_<CC>_<date>.json`: the greenfilling variant options per window and signal (48 files).
 
 Run it from this directory, then run the generated campaign:
@@ -97,9 +97,9 @@ Because up to 4 experiments run at once, their output interleaves. Each line is 
 
 ```
 RUN   greenfilling_carbon_stress_FR_2024-07-08
-[1/288] SKIP fcfs_stress_DE_2019-02-04  (already complete)
-[2/288] OK   greenfilling_carbon_stress_FR_2024-07-08  (3m12s)
-[3/288] FAIL easy_bf_stress_PL_2020-07-27  (47s): batsched=<nil> batsim=exit status 1
+[1/216] SKIP greenfilling_water_stress_DE_2019-02-04  (already complete)
+[2/216] OK   greenfilling_carbon_stress_FR_2024-07-08  (3m12s)
+[3/216] FAIL easy_bf_stress_PL_2020-07-27  (47s): batsched=<nil> batsim=exit status 1
 ```
 
 The `[k/N]` counter on terminal lines tracks how many of the `N` campaign experiments have finished, in completion order. `OK` and `FAIL` carry the experiment's wall-clock duration. `RUN` and `OK`/`SKIP` go to stdout, `FAIL` to stderr.
@@ -107,7 +107,7 @@ The `[k/N]` counter on terminal lines tracks how many of the `N` campaign experi
 At the end the runner prints a one-line tally and, if any experiment failed, the list of failed names:
 
 ```
-Summary: 288 total, 280 succeeded, 5 skipped, 3 failed, elapsed 47m12s
+Summary: 216 total, 208 succeeded, 5 skipped, 3 failed, elapsed 47m12s
 Failed:
   - easy_bf_stress_PL_2020-07-27
   - ...
