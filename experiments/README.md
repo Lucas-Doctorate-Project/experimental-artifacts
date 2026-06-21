@@ -6,10 +6,10 @@ Each experiment launches Batsim and Batsched as co-running processes wired over 
 
 ## Set up the dev shell
 
-The flake at the repo root provides `go`, `batsim`, and `batsched`.
+The flake in [../nix/](../nix/) provides `go`, `batsim`, and `batsched`.
 
 ```sh
-nix develop
+nix develop ../nix
 ```
 
 All commands below assume you are inside this shell.

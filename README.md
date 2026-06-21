@@ -16,10 +16,12 @@ Two parallel campaigns share the same pipeline and differ only in window length 
 ## Quick start
 
 ```sh
-nix develop
+nix develop ./nix
 cd experiments
 go run . --campaign experiments.toml      # or experiments_small.toml for the one-week pilot
 ```
+
+The flake lives in [nix/](nix/) so that nix only ever copies the toolchain files into its store, not the multi-gigabyte data traces at the repo root.
 
 See each directory's README for details.
 
