@@ -7,6 +7,10 @@ emits, repointed at the small/ artifacts:
   - experiments_small.toml: 3 schedulers x 2 workloads x 24 traces = 144 experiments
   - options/small/{carbon,water}_<CC>_<date>.json: greenfilling variant options
 
+Experiment names carry the campaign prefix (e.g. small_easy_bf_stress_DE_...) so
+they match the per-campaign output directories and never collide with another
+campaign's runs.
+
 Run from the experiments/ directory (where the campaign runner is launched), so the
 relative paths it writes resolve correctly:
 
@@ -22,6 +26,8 @@ WINDOWS = os.path.join(HERE, "..", "intensities", "traces", "small", "windows.cs
 OPTIONS_DIR = os.path.join(HERE, "options", "small")
 TOML_OUT = os.path.join(HERE, "experiments_small.toml")
 
+CAMPAIGN = "small"
+PREFIX = f"{CAMPAIGN}_"
 WORKLOADS = ["stress", "slack"]
 SIGNALS = ["carbon", "water"]
 SMOOTHING_FACTOR = 0.5
@@ -70,7 +76,7 @@ def write_toml(traces):
     for wl in WORKLOADS:
         for cc, date in traces:
             blocks.append(experiment(
-                f"easy_bf_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
+                f"{PREFIX}easy_bf_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
                 "easy_bf", "",
             ))
     # Greenfilling: one variant per intensity signal.
@@ -78,7 +84,7 @@ def write_toml(traces):
         for wl in WORKLOADS:
             for cc, date in traces:
                 blocks.append(experiment(
-                    f"greenfilling_{signal}_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
+                    f"{PREFIX}greenfilling_{signal}_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
                     "greenfilling", f"options/small/{signal}_{cc}_{date}.json",
                 ))
     with open(TOML_OUT, "w") as f:

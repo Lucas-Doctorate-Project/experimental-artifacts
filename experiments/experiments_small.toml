@@ -1,5 +1,5 @@
 [[experiment]]
-name = "easy_bf_stress_DE_2019-02-04"
+name = "small_easy_bf_stress_DE_2019-02-04"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-02-04.csv"
@@ -7,7 +7,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2019-04-22"
+name = "small_easy_bf_stress_DE_2019-04-22"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-04-22.csv"
@@ -15,7 +15,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2022-06-27"
+name = "small_easy_bf_stress_DE_2022-06-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2022-06-27.csv"
@@ -23,7 +23,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2023-05-15"
+name = "small_easy_bf_stress_DE_2023-05-15"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2023-05-15.csv"
@@ -31,7 +31,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2024-01-01"
+name = "small_easy_bf_stress_DE_2024-01-01"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-01-01.csv"
@@ -39,7 +39,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2024-07-08"
+name = "small_easy_bf_stress_DE_2024-07-08"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-07-08.csv"
@@ -47,7 +47,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2024-09-16"
+name = "small_easy_bf_stress_DE_2024-09-16"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-09-16.csv"
@@ -55,7 +55,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_DE_2025-11-03"
+name = "small_easy_bf_stress_DE_2025-11-03"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2025-11-03.csv"
@@ -63,7 +63,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2018-02-05"
+name = "small_easy_bf_stress_FR_2018-02-05"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-02-05.csv"
@@ -71,7 +71,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2018-09-17"
+name = "small_easy_bf_stress_FR_2018-09-17"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-09-17.csv"
@@ -79,7 +79,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2021-04-26"
+name = "small_easy_bf_stress_FR_2021-04-26"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-04-26.csv"
@@ -87,7 +87,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2021-09-27"
+name = "small_easy_bf_stress_FR_2021-09-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-09-27.csv"
@@ -95,7 +95,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2023-03-06"
+name = "small_easy_bf_stress_FR_2023-03-06"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2023-03-06.csv"
@@ -103,7 +103,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2024-07-08"
+name = "small_easy_bf_stress_FR_2024-07-08"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2024-07-08.csv"
@@ -111,7 +111,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2025-01-27"
+name = "small_easy_bf_stress_FR_2025-01-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-01-27.csv"
@@ -119,7 +119,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_FR_2025-08-18"
+name = "small_easy_bf_stress_FR_2025-08-18"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-08-18.csv"
@@ -127,7 +127,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2018-02-19"
+name = "small_easy_bf_stress_PL_2018-02-19"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-02-19.csv"
@@ -135,7 +135,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2018-04-30"
+name = "small_easy_bf_stress_PL_2018-04-30"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-04-30.csv"
@@ -143,7 +143,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2018-06-04"
+name = "small_easy_bf_stress_PL_2018-06-04"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-06-04.csv"
@@ -151,7 +151,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2020-07-27"
+name = "small_easy_bf_stress_PL_2020-07-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2020-07-27.csv"
@@ -159,7 +159,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2022-11-28"
+name = "small_easy_bf_stress_PL_2022-11-28"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2022-11-28.csv"
@@ -167,7 +167,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2023-10-09"
+name = "small_easy_bf_stress_PL_2023-10-09"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2023-10-09.csv"
@@ -175,7 +175,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2025-05-12"
+name = "small_easy_bf_stress_PL_2025-05-12"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-05-12.csv"
@@ -183,7 +183,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_stress_PL_2025-12-15"
+name = "small_easy_bf_stress_PL_2025-12-15"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-12-15.csv"
@@ -191,7 +191,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2019-02-04"
+name = "small_easy_bf_slack_DE_2019-02-04"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-02-04.csv"
@@ -199,7 +199,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2019-04-22"
+name = "small_easy_bf_slack_DE_2019-04-22"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-04-22.csv"
@@ -207,7 +207,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2022-06-27"
+name = "small_easy_bf_slack_DE_2022-06-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2022-06-27.csv"
@@ -215,7 +215,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2023-05-15"
+name = "small_easy_bf_slack_DE_2023-05-15"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2023-05-15.csv"
@@ -223,7 +223,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2024-01-01"
+name = "small_easy_bf_slack_DE_2024-01-01"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-01-01.csv"
@@ -231,7 +231,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2024-07-08"
+name = "small_easy_bf_slack_DE_2024-07-08"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-07-08.csv"
@@ -239,7 +239,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2024-09-16"
+name = "small_easy_bf_slack_DE_2024-09-16"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-09-16.csv"
@@ -247,7 +247,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_DE_2025-11-03"
+name = "small_easy_bf_slack_DE_2025-11-03"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2025-11-03.csv"
@@ -255,7 +255,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2018-02-05"
+name = "small_easy_bf_slack_FR_2018-02-05"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-02-05.csv"
@@ -263,7 +263,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2018-09-17"
+name = "small_easy_bf_slack_FR_2018-09-17"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-09-17.csv"
@@ -271,7 +271,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2021-04-26"
+name = "small_easy_bf_slack_FR_2021-04-26"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-04-26.csv"
@@ -279,7 +279,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2021-09-27"
+name = "small_easy_bf_slack_FR_2021-09-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-09-27.csv"
@@ -287,7 +287,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2023-03-06"
+name = "small_easy_bf_slack_FR_2023-03-06"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2023-03-06.csv"
@@ -295,7 +295,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2024-07-08"
+name = "small_easy_bf_slack_FR_2024-07-08"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2024-07-08.csv"
@@ -303,7 +303,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2025-01-27"
+name = "small_easy_bf_slack_FR_2025-01-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-01-27.csv"
@@ -311,7 +311,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_FR_2025-08-18"
+name = "small_easy_bf_slack_FR_2025-08-18"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-08-18.csv"
@@ -319,7 +319,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2018-02-19"
+name = "small_easy_bf_slack_PL_2018-02-19"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-02-19.csv"
@@ -327,7 +327,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2018-04-30"
+name = "small_easy_bf_slack_PL_2018-04-30"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-04-30.csv"
@@ -335,7 +335,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2018-06-04"
+name = "small_easy_bf_slack_PL_2018-06-04"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-06-04.csv"
@@ -343,7 +343,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2020-07-27"
+name = "small_easy_bf_slack_PL_2020-07-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2020-07-27.csv"
@@ -351,7 +351,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2022-11-28"
+name = "small_easy_bf_slack_PL_2022-11-28"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2022-11-28.csv"
@@ -359,7 +359,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2023-10-09"
+name = "small_easy_bf_slack_PL_2023-10-09"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2023-10-09.csv"
@@ -367,7 +367,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2025-05-12"
+name = "small_easy_bf_slack_PL_2025-05-12"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-05-12.csv"
@@ -375,7 +375,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "easy_bf_slack_PL_2025-12-15"
+name = "small_easy_bf_slack_PL_2025-12-15"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-12-15.csv"
@@ -383,7 +383,7 @@ variant_name = "easy_bf"
 variant_options = ""
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2019-02-04"
+name = "small_greenfilling_carbon_stress_DE_2019-02-04"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-02-04.csv"
@@ -391,7 +391,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2019-02-04.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2019-04-22"
+name = "small_greenfilling_carbon_stress_DE_2019-04-22"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-04-22.csv"
@@ -399,7 +399,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2019-04-22.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2022-06-27"
+name = "small_greenfilling_carbon_stress_DE_2022-06-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2022-06-27.csv"
@@ -407,7 +407,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2022-06-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2023-05-15"
+name = "small_greenfilling_carbon_stress_DE_2023-05-15"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2023-05-15.csv"
@@ -415,7 +415,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2023-05-15.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2024-01-01"
+name = "small_greenfilling_carbon_stress_DE_2024-01-01"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-01-01.csv"
@@ -423,7 +423,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2024-01-01.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2024-07-08"
+name = "small_greenfilling_carbon_stress_DE_2024-07-08"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-07-08.csv"
@@ -431,7 +431,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2024-09-16"
+name = "small_greenfilling_carbon_stress_DE_2024-09-16"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-09-16.csv"
@@ -439,7 +439,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2024-09-16.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_DE_2025-11-03"
+name = "small_greenfilling_carbon_stress_DE_2025-11-03"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2025-11-03.csv"
@@ -447,7 +447,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2025-11-03.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2018-02-05"
+name = "small_greenfilling_carbon_stress_FR_2018-02-05"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-02-05.csv"
@@ -455,7 +455,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2018-02-05.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2018-09-17"
+name = "small_greenfilling_carbon_stress_FR_2018-09-17"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-09-17.csv"
@@ -463,7 +463,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2018-09-17.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2021-04-26"
+name = "small_greenfilling_carbon_stress_FR_2021-04-26"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-04-26.csv"
@@ -471,7 +471,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2021-04-26.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2021-09-27"
+name = "small_greenfilling_carbon_stress_FR_2021-09-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-09-27.csv"
@@ -479,7 +479,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2021-09-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2023-03-06"
+name = "small_greenfilling_carbon_stress_FR_2023-03-06"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2023-03-06.csv"
@@ -487,7 +487,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2023-03-06.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2024-07-08"
+name = "small_greenfilling_carbon_stress_FR_2024-07-08"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2024-07-08.csv"
@@ -495,7 +495,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2025-01-27"
+name = "small_greenfilling_carbon_stress_FR_2025-01-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-01-27.csv"
@@ -503,7 +503,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2025-01-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_FR_2025-08-18"
+name = "small_greenfilling_carbon_stress_FR_2025-08-18"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-08-18.csv"
@@ -511,7 +511,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2025-08-18.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2018-02-19"
+name = "small_greenfilling_carbon_stress_PL_2018-02-19"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-02-19.csv"
@@ -519,7 +519,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2018-02-19.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2018-04-30"
+name = "small_greenfilling_carbon_stress_PL_2018-04-30"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-04-30.csv"
@@ -527,7 +527,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2018-04-30.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2018-06-04"
+name = "small_greenfilling_carbon_stress_PL_2018-06-04"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-06-04.csv"
@@ -535,7 +535,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2018-06-04.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2020-07-27"
+name = "small_greenfilling_carbon_stress_PL_2020-07-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2020-07-27.csv"
@@ -543,7 +543,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2020-07-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2022-11-28"
+name = "small_greenfilling_carbon_stress_PL_2022-11-28"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2022-11-28.csv"
@@ -551,7 +551,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2022-11-28.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2023-10-09"
+name = "small_greenfilling_carbon_stress_PL_2023-10-09"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2023-10-09.csv"
@@ -559,7 +559,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2023-10-09.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2025-05-12"
+name = "small_greenfilling_carbon_stress_PL_2025-05-12"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-05-12.csv"
@@ -567,7 +567,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2025-05-12.json"
 
 [[experiment]]
-name = "greenfilling_carbon_stress_PL_2025-12-15"
+name = "small_greenfilling_carbon_stress_PL_2025-12-15"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-12-15.csv"
@@ -575,7 +575,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2025-12-15.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2019-02-04"
+name = "small_greenfilling_carbon_slack_DE_2019-02-04"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-02-04.csv"
@@ -583,7 +583,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2019-02-04.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2019-04-22"
+name = "small_greenfilling_carbon_slack_DE_2019-04-22"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-04-22.csv"
@@ -591,7 +591,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2019-04-22.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2022-06-27"
+name = "small_greenfilling_carbon_slack_DE_2022-06-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2022-06-27.csv"
@@ -599,7 +599,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2022-06-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2023-05-15"
+name = "small_greenfilling_carbon_slack_DE_2023-05-15"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2023-05-15.csv"
@@ -607,7 +607,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2023-05-15.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2024-01-01"
+name = "small_greenfilling_carbon_slack_DE_2024-01-01"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-01-01.csv"
@@ -615,7 +615,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2024-01-01.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2024-07-08"
+name = "small_greenfilling_carbon_slack_DE_2024-07-08"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-07-08.csv"
@@ -623,7 +623,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2024-09-16"
+name = "small_greenfilling_carbon_slack_DE_2024-09-16"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-09-16.csv"
@@ -631,7 +631,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2024-09-16.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_DE_2025-11-03"
+name = "small_greenfilling_carbon_slack_DE_2025-11-03"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2025-11-03.csv"
@@ -639,7 +639,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_DE_2025-11-03.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2018-02-05"
+name = "small_greenfilling_carbon_slack_FR_2018-02-05"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-02-05.csv"
@@ -647,7 +647,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2018-02-05.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2018-09-17"
+name = "small_greenfilling_carbon_slack_FR_2018-09-17"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-09-17.csv"
@@ -655,7 +655,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2018-09-17.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2021-04-26"
+name = "small_greenfilling_carbon_slack_FR_2021-04-26"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-04-26.csv"
@@ -663,7 +663,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2021-04-26.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2021-09-27"
+name = "small_greenfilling_carbon_slack_FR_2021-09-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-09-27.csv"
@@ -671,7 +671,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2021-09-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2023-03-06"
+name = "small_greenfilling_carbon_slack_FR_2023-03-06"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2023-03-06.csv"
@@ -679,7 +679,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2023-03-06.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2024-07-08"
+name = "small_greenfilling_carbon_slack_FR_2024-07-08"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2024-07-08.csv"
@@ -687,7 +687,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2025-01-27"
+name = "small_greenfilling_carbon_slack_FR_2025-01-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-01-27.csv"
@@ -695,7 +695,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2025-01-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_FR_2025-08-18"
+name = "small_greenfilling_carbon_slack_FR_2025-08-18"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-08-18.csv"
@@ -703,7 +703,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_FR_2025-08-18.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2018-02-19"
+name = "small_greenfilling_carbon_slack_PL_2018-02-19"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-02-19.csv"
@@ -711,7 +711,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2018-02-19.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2018-04-30"
+name = "small_greenfilling_carbon_slack_PL_2018-04-30"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-04-30.csv"
@@ -719,7 +719,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2018-04-30.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2018-06-04"
+name = "small_greenfilling_carbon_slack_PL_2018-06-04"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-06-04.csv"
@@ -727,7 +727,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2018-06-04.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2020-07-27"
+name = "small_greenfilling_carbon_slack_PL_2020-07-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2020-07-27.csv"
@@ -735,7 +735,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2020-07-27.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2022-11-28"
+name = "small_greenfilling_carbon_slack_PL_2022-11-28"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2022-11-28.csv"
@@ -743,7 +743,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2022-11-28.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2023-10-09"
+name = "small_greenfilling_carbon_slack_PL_2023-10-09"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2023-10-09.csv"
@@ -751,7 +751,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2023-10-09.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2025-05-12"
+name = "small_greenfilling_carbon_slack_PL_2025-05-12"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-05-12.csv"
@@ -759,7 +759,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2025-05-12.json"
 
 [[experiment]]
-name = "greenfilling_carbon_slack_PL_2025-12-15"
+name = "small_greenfilling_carbon_slack_PL_2025-12-15"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-12-15.csv"
@@ -767,7 +767,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/carbon_PL_2025-12-15.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2019-02-04"
+name = "small_greenfilling_water_stress_DE_2019-02-04"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-02-04.csv"
@@ -775,7 +775,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2019-02-04.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2019-04-22"
+name = "small_greenfilling_water_stress_DE_2019-04-22"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-04-22.csv"
@@ -783,7 +783,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2019-04-22.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2022-06-27"
+name = "small_greenfilling_water_stress_DE_2022-06-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2022-06-27.csv"
@@ -791,7 +791,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2022-06-27.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2023-05-15"
+name = "small_greenfilling_water_stress_DE_2023-05-15"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2023-05-15.csv"
@@ -799,7 +799,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2023-05-15.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2024-01-01"
+name = "small_greenfilling_water_stress_DE_2024-01-01"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-01-01.csv"
@@ -807,7 +807,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2024-01-01.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2024-07-08"
+name = "small_greenfilling_water_stress_DE_2024-07-08"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-07-08.csv"
@@ -815,7 +815,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2024-09-16"
+name = "small_greenfilling_water_stress_DE_2024-09-16"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-09-16.csv"
@@ -823,7 +823,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2024-09-16.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_DE_2025-11-03"
+name = "small_greenfilling_water_stress_DE_2025-11-03"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2025-11-03.csv"
@@ -831,7 +831,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2025-11-03.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2018-02-05"
+name = "small_greenfilling_water_stress_FR_2018-02-05"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-02-05.csv"
@@ -839,7 +839,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2018-02-05.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2018-09-17"
+name = "small_greenfilling_water_stress_FR_2018-09-17"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-09-17.csv"
@@ -847,7 +847,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2018-09-17.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2021-04-26"
+name = "small_greenfilling_water_stress_FR_2021-04-26"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-04-26.csv"
@@ -855,7 +855,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2021-04-26.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2021-09-27"
+name = "small_greenfilling_water_stress_FR_2021-09-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-09-27.csv"
@@ -863,7 +863,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2021-09-27.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2023-03-06"
+name = "small_greenfilling_water_stress_FR_2023-03-06"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2023-03-06.csv"
@@ -871,7 +871,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2023-03-06.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2024-07-08"
+name = "small_greenfilling_water_stress_FR_2024-07-08"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2024-07-08.csv"
@@ -879,7 +879,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2025-01-27"
+name = "small_greenfilling_water_stress_FR_2025-01-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-01-27.csv"
@@ -887,7 +887,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2025-01-27.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_FR_2025-08-18"
+name = "small_greenfilling_water_stress_FR_2025-08-18"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-08-18.csv"
@@ -895,7 +895,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2025-08-18.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2018-02-19"
+name = "small_greenfilling_water_stress_PL_2018-02-19"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-02-19.csv"
@@ -903,7 +903,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2018-02-19.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2018-04-30"
+name = "small_greenfilling_water_stress_PL_2018-04-30"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-04-30.csv"
@@ -911,7 +911,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2018-04-30.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2018-06-04"
+name = "small_greenfilling_water_stress_PL_2018-06-04"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-06-04.csv"
@@ -919,7 +919,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2018-06-04.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2020-07-27"
+name = "small_greenfilling_water_stress_PL_2020-07-27"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2020-07-27.csv"
@@ -927,7 +927,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2020-07-27.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2022-11-28"
+name = "small_greenfilling_water_stress_PL_2022-11-28"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2022-11-28.csv"
@@ -935,7 +935,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2022-11-28.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2023-10-09"
+name = "small_greenfilling_water_stress_PL_2023-10-09"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2023-10-09.csv"
@@ -943,7 +943,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2023-10-09.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2025-05-12"
+name = "small_greenfilling_water_stress_PL_2025-05-12"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-05-12.csv"
@@ -951,7 +951,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2025-05-12.json"
 
 [[experiment]]
-name = "greenfilling_water_stress_PL_2025-12-15"
+name = "small_greenfilling_water_stress_PL_2025-12-15"
 workload = "../workloads and platforms/small/mustang_stress.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-12-15.csv"
@@ -959,7 +959,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2025-12-15.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2019-02-04"
+name = "small_greenfilling_water_slack_DE_2019-02-04"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-02-04.csv"
@@ -967,7 +967,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2019-02-04.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2019-04-22"
+name = "small_greenfilling_water_slack_DE_2019-04-22"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2019-04-22.csv"
@@ -975,7 +975,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2019-04-22.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2022-06-27"
+name = "small_greenfilling_water_slack_DE_2022-06-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2022-06-27.csv"
@@ -983,7 +983,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2022-06-27.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2023-05-15"
+name = "small_greenfilling_water_slack_DE_2023-05-15"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2023-05-15.csv"
@@ -991,7 +991,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2023-05-15.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2024-01-01"
+name = "small_greenfilling_water_slack_DE_2024-01-01"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-01-01.csv"
@@ -999,7 +999,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2024-01-01.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2024-07-08"
+name = "small_greenfilling_water_slack_DE_2024-07-08"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-07-08.csv"
@@ -1007,7 +1007,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2024-09-16"
+name = "small_greenfilling_water_slack_DE_2024-09-16"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2024-09-16.csv"
@@ -1015,7 +1015,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2024-09-16.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_DE_2025-11-03"
+name = "small_greenfilling_water_slack_DE_2025-11-03"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/DE_2025-11-03.csv"
@@ -1023,7 +1023,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_DE_2025-11-03.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2018-02-05"
+name = "small_greenfilling_water_slack_FR_2018-02-05"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-02-05.csv"
@@ -1031,7 +1031,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2018-02-05.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2018-09-17"
+name = "small_greenfilling_water_slack_FR_2018-09-17"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2018-09-17.csv"
@@ -1039,7 +1039,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2018-09-17.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2021-04-26"
+name = "small_greenfilling_water_slack_FR_2021-04-26"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-04-26.csv"
@@ -1047,7 +1047,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2021-04-26.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2021-09-27"
+name = "small_greenfilling_water_slack_FR_2021-09-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2021-09-27.csv"
@@ -1055,7 +1055,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2021-09-27.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2023-03-06"
+name = "small_greenfilling_water_slack_FR_2023-03-06"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2023-03-06.csv"
@@ -1063,7 +1063,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2023-03-06.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2024-07-08"
+name = "small_greenfilling_water_slack_FR_2024-07-08"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2024-07-08.csv"
@@ -1071,7 +1071,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2024-07-08.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2025-01-27"
+name = "small_greenfilling_water_slack_FR_2025-01-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-01-27.csv"
@@ -1079,7 +1079,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2025-01-27.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_FR_2025-08-18"
+name = "small_greenfilling_water_slack_FR_2025-08-18"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/FR_2025-08-18.csv"
@@ -1087,7 +1087,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_FR_2025-08-18.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2018-02-19"
+name = "small_greenfilling_water_slack_PL_2018-02-19"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-02-19.csv"
@@ -1095,7 +1095,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2018-02-19.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2018-04-30"
+name = "small_greenfilling_water_slack_PL_2018-04-30"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-04-30.csv"
@@ -1103,7 +1103,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2018-04-30.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2018-06-04"
+name = "small_greenfilling_water_slack_PL_2018-06-04"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2018-06-04.csv"
@@ -1111,7 +1111,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2018-06-04.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2020-07-27"
+name = "small_greenfilling_water_slack_PL_2020-07-27"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2020-07-27.csv"
@@ -1119,7 +1119,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2020-07-27.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2022-11-28"
+name = "small_greenfilling_water_slack_PL_2022-11-28"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2022-11-28.csv"
@@ -1127,7 +1127,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2022-11-28.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2023-10-09"
+name = "small_greenfilling_water_slack_PL_2023-10-09"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2023-10-09.csv"
@@ -1135,7 +1135,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2023-10-09.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2025-05-12"
+name = "small_greenfilling_water_slack_PL_2025-05-12"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-05-12.csv"
@@ -1143,7 +1143,7 @@ variant_name = "greenfilling"
 variant_options = "options/small/water_PL_2025-05-12.json"
 
 [[experiment]]
-name = "greenfilling_water_slack_PL_2025-12-15"
+name = "small_greenfilling_water_slack_PL_2025-12-15"
 workload = "../workloads and platforms/small/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/small/PL_2025-12-15.csv"
