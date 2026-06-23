@@ -8,7 +8,6 @@ Batsim workloads and SimGrid platforms built from production cluster traces. Eac
 |---|---|---|
 | Mustang | LANL capacity cluster, 1600 homogeneous nodes (24 cores each). 61 months (2011-2016), 2.1M jobs, 565 users. | Done in [mustang.ipynb](mustang.ipynb). Invalid node counts, TIMEOUT jobs overran their walltime, 365-day default walltimes. All handled by hygiene and clipping. |
 | Trinity | LANL capability machine (Cray XC40), 9408 homogeneous nodes (32 cores each). About 3 months (Feb-Apr 2016), 25k jobs. | First implementation in [trinity.ipynb](trinity.ipynb). Same formatted schema as Mustang, but the trace is short and leaves few 4-week candidate windows. Covers the pre-production open-science period, so the job mix is not steady production. Failed jobs have empty `start_time`. |
-| MetaCentrum | Czech national grid, 47 heterogeneous clusters, 34,400 cores, 42 queues (GPU, interactive, backfill). Year 2023, 10.1M jobs. | SWF format, core-level (not node-level) allocations on a heterogeneous grid, which breaks the single homogeneous platform assumption. GPU and memory dimensions have no place in our schema. Focus on cluster 17 (see to-do). |
 
 ## Extract selection
 
@@ -40,4 +39,3 @@ The simulation starts with an empty machine, so warm-up jobs reconstruct the sys
 ## References
 
 - Mustang and Trinity: Amvrosiadis et al., *On the Diversity of Cluster Workloads and its Impact on Research Results*, USENIX ATC 2018. <https://www.usenix.org/conference/atc18/presentation/amvrosiadis>
-- MetaCentrum: Klusáček and Chlumský, MetaCentrum 2023 workload trace, JSSPP Workloads Archive. <https://jsspp.org/workload/index.php?page=meta23>
