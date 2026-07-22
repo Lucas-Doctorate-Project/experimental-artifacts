@@ -33,8 +33,8 @@ REGIMES = ["slack", "stress"]
 SIGNALS = ["carbon", "water"]
 SMOOTHING_FACTOR = 0.5
 
-# 4-week window CSVs are named <CC>_<YYYY-MM-DD>; whole-trace files (DE.csv) and
-# the small/ pilot extracts are excluded by this pattern.
+# 4-week window CSVs are named <CC>_<YYYY-MM-DD>; whole-trace files like DE.csv
+# do not match this pattern and are excluded.
 WINDOW_RE = re.compile(r"^([A-Z]{2})_(\d{4}-\d{2}-\d{2})$")
 
 

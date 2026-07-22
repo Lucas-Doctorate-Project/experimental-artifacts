@@ -1,7 +1,0 @@
-{
-    "intensity_trace": "../intensities/traces/small/DE_2024-01-01.csv",
-    "intensity_zone": "AS0",
-    "signal": "water",
-    "smoothing_factor": 0.5,
-    "greenfilling_debug": true
-}

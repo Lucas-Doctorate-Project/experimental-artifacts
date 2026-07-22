@@ -1,13 +1,7 @@
-"""Shared loading, metrics, and plotting for the greenfilling trade-off notebooks.
+"""Shared loading, metrics, and plotting for the greenfilling trade-off notebook.
 
-Both `greenfilling_tradeoffs.ipynb` (full campaign) and
-`greenfilling_tradeoffs_small.ipynb` (small pilot) import this module. The only
-per-campaign difference is the config cell that picks the campaign TOML, the
-windows manifest, and the experiment-name prefix; everything below is shared.
-
-Experiment directory names carry a campaign prefix (e.g. `small_`) so different
-campaigns never collide in `experiments/out/`. The prefix is stripped before the
-name is parsed, so the parsing itself is campaign-agnostic.
+`greenfilling_tradeoffs.ipynb` imports this module for loading the campaign,
+computing per-window paired deltas versus the EASY baseline, and plotting.
 """
 
 import re
@@ -24,6 +18,7 @@ from matplotlib.lines import Line2D
 # Average bounded slowdown uses this floor on execution time so very short jobs
 # do not dominate the comparison: max(turnaround / max(execution, floor), 1).
 BOUNDED_SLOWDOWN_FLOOR_SECONDS = 10.0
+JOULES_PER_KWH = 3_600_000.0
 
 METADATA_COLUMNS = [
     "name",
@@ -39,6 +34,9 @@ DELTA_COLUMNS = [
     "greenfilling_variant",
     "total_carbon_footprint_delta_pct",
     "total_water_footprint_delta_pct",
+    "consumed_energy_kwh_delta_pct",
+    "energy_weighted_carbon_intensity_delta_pct",
+    "energy_weighted_water_intensity_delta_pct",
     "makespan_delta_pct",
     "replay_median_waiting_time_delta_pct",
     "replay_p95_waiting_time_delta_pct",
@@ -48,15 +46,8 @@ DELTA_COLUMNS = [
 
 # --- Parsing -----------------------------------------------------------------
 
-def parse_experiment_name(name, prefix=""):
-    """Split an experiment name into its variant/objective/workload/zone/date.
-
-    `prefix` is the campaign prefix on the directory name (e.g. "small_"); it is
-    stripped before matching so the regexes stay campaign-agnostic.
-    """
-    if prefix and name.startswith(prefix):
-        name = name[len(prefix):]
-
+def parse_experiment_name(name):
+    """Split an experiment name into its variant/objective/workload/zone/date."""
     baseline = re.fullmatch(r"easy_bf_([^_]+)_([A-Z]{2})_(\d{4}-\d{2}-\d{2})", name)
     if baseline:
         workload, zone, start_date = baseline.groups()
@@ -87,13 +78,13 @@ def parse_experiment_name(name, prefix=""):
 
 # --- Loading -----------------------------------------------------------------
 
-def load_campaign(campaign_path, windows_path, prefix=""):
+def load_campaign(campaign_path, windows_path):
     """Return (campaign, windows). `campaign` has the parsed name parts joined on."""
     with campaign_path.open("rb") as file:
         campaign = pd.DataFrame(tomllib.load(file)["experiment"])
 
     name_parts = pd.DataFrame(
-        [parse_experiment_name(name, prefix) for name in campaign["name"]]
+        [parse_experiment_name(name) for name in campaign["name"]]
     )
     campaign = pd.concat([campaign, name_parts], axis=1)
 
@@ -245,11 +236,30 @@ def build_run_metrics(schedules, job_metrics):
         "swing_carbon",
         "swing_water",
         "total_carbon_footprint",
+        "total_carbon_operational",
         "total_water_footprint",
+        "total_water_offsite",
+        "consumed_joules",
         "makespan",
     ]
 
-    return schedules[schedule_columns].merge(
+    schedule_metrics = schedules[schedule_columns].copy()
+    schedule_metrics["consumed_energy_kwh"] = (
+        schedule_metrics["consumed_joules"] / JOULES_PER_KWH
+    )
+    if schedule_metrics["consumed_energy_kwh"].le(0).any():
+        raise ValueError("Consumed energy must be positive for every experiment")
+
+    schedule_metrics["energy_weighted_carbon_intensity"] = (
+        schedule_metrics["total_carbon_operational"]
+        / schedule_metrics["consumed_energy_kwh"]
+    )
+    schedule_metrics["energy_weighted_water_intensity"] = (
+        schedule_metrics["total_water_offsite"]
+        / schedule_metrics["consumed_energy_kwh"]
+    )
+
+    return schedule_metrics.merge(
         replay_metrics,
         on=["name", "variant", "workload_label", "zone", "start_date"],
         how="left",
@@ -277,6 +287,9 @@ def paired_deltas(metrics, greenfilling_variant, baseline_variant="easy_bf"):
     percent_metrics = [
         "total_carbon_footprint",
         "total_water_footprint",
+        "consumed_energy_kwh",
+        "energy_weighted_carbon_intensity",
+        "energy_weighted_water_intensity",
         "makespan",
         "replay_median_waiting_time",
         "replay_p95_waiting_time",
@@ -432,6 +445,21 @@ def plot_environmental_deltas(data):
         ["Carbon footprint", "Water footprint"],
         [r"$\Delta$ [% vs EASY]"] * 2,
         r"Environmental $\Delta$ by sampled window",
+    )
+
+
+def plot_energy_exposure_deltas(data):
+    """Energy and effective operational intensity deltas versus EASY."""
+    return plot_delta_boxes(
+        data,
+        [
+            "consumed_energy_kwh_delta_pct",
+            "energy_weighted_carbon_intensity_delta_pct",
+            "energy_weighted_water_intensity_delta_pct",
+        ],
+        ["Consumed energy", "Effective carbon intensity", "Effective water intensity"],
+        [r"$\Delta$ [% vs EASY]"] * 3,
+        "Energy and intensity exposure deltas by sampled window",
     )
 
 

@@ -50,14 +50,6 @@ Outputs:
 - `traces/<CC>_<YYYY-MM-DD>.csv`: one extract per sampled window, named by zone and start date. Same long format as the full traces, timestamps rebased to start at 0, 3360 instants (35 days at 15-minute resolution). Each extract covers the 28-day scheduling window plus a 7-day tail so the intensity trace outlasts simulations whose jobs spill past the 4-week mark. Window descriptors are computed on the 28-day portion only. Tracked with Git LFS like the full traces.
 - `windows.csv`: the manifest the experiment runner iterates over, with columns `zone`, `file`, `start_date`, `season`, `year`, `mean_carbon`, `mean_water`, `swing_carbon`, `swing_water`.
 
-### One-week pilot
-
-`window_selection_small.ipynb` is a faster variant for end-to-end pilot runs. It applies the same sampling rule but with 1-week windows plus a 10-day tail (17-day extracts) and `K = 2` windows per season per zone, so 24 windows instead of 36. It writes only to `traces/small/` (`traces/small/<CC>_<YYYY-MM-DD>.csv` and `traces/small/windows.csv`) and never touches the 4-week outputs above. Run it the same way:
-
-```sh
-jupyter nbconvert --to notebook --execute --inplace intensities/window_selection_small.ipynb
-```
-
 ## Intensity factors
 
 Lookup table of intensity factors for water consumption and carbon emissions from energy generation technologies. The water factors are from Macknick et al. 2012[^macknick2012], while carbon factors are from IPCC 2014[^ipcc2014] and UNECE 2020[^unece2020] reports, as compiled by Wikipedia[^wikipedia]. The units are L/kWh (liters per kilowatt-hour) for water and gCO2eq/kWh (grams of CO2 equivalent per kilowatt-hour) for carbon. Water values were converted from gallons/MWh to L/kWh. Entries named "average" are the mean of all listed entries of that fuel type.
