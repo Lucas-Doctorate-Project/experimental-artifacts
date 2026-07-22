@@ -33,6 +33,10 @@ Behavior notes:
 - Rows whose total generation is below 20% of the country median are reporting artifacts, for example FR's all-zero DST fall-back hour in 2018 and a near-zero row on 2023-07-20. They are treated as missing data, bridged by interpolation, and printed when dropped. Genuine totals never fall below ~35% of the median.
 - The notebook aborts if ENTSO-E reports a source that is missing from the intensity dicts. Add the source to both dicts and rerun.
 
+## External carbon-intensity consistency check
+
+The [validation artifact](validation/README.md) compares the model's national carbon-intensity means with public Ember and EEA series. It runs offline from pinned inputs, reports generation-weighted national means separately from the scheduler-facing mean of 15-minute intensities, and writes the compact paper-table data as CSV. The repository retains the fuller factor-sensitivity, decomposition, provenance, and limitations material.
+
 ## Window sampling
 
 `window_selection.ipynb` samples contiguous 4-week windows from the full traces for the scheduling experiments. Per zone, it enumerates every window anchored at a Monday 00:00 local time, then draws 3 windows per meteorological season from distinct years, using a fixed RNG seed. Each window carries descriptors for the later analysis: mean carbon and water intensity, and the swing of each signal.
