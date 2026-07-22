@@ -4,7 +4,7 @@ __pycache__/
 .DS_Store
 .env
 .envrc
-.direnv
+.direnv/
 workloads and platforms/datasets
-experiments/out/
 experiments/experimental-campaigns
+**/out/
