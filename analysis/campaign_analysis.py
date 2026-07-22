@@ -40,8 +40,6 @@ DELTA_COLUMNS = [
     "total_carbon_footprint_delta_pct",
     "total_water_footprint_delta_pct",
     "makespan_delta_pct",
-    "replay_success_rate_delta_pct",
-    "replay_walltime_reached_delta",
     "replay_median_waiting_time_delta_pct",
     "replay_p95_waiting_time_delta_pct",
     "replay_mean_bounded_slowdown_delta_pct",
@@ -175,8 +173,6 @@ def load_results(campaign, result_files, out_dir, windows):
     jobs["job_kind"] = jobs["job_id"].str.startswith("ctx_").map(
         {True: "context", False: "replay"}
     )
-    jobs["walltime_reached"] = jobs["final_state"].eq("COMPLETED_WALLTIME_REACHED")
-    jobs["succeeded"] = jobs["success"].eq(1)
     jobs["bounded_slowdown"] = np.maximum(
         jobs["turnaround_time"]
         / jobs["execution_time"].clip(lower=BOUNDED_SLOWDOWN_FLOOR_SECONDS),
@@ -203,9 +199,6 @@ def build_job_metrics(jobs):
         )
         .agg(
             jobs=("job_id", "size"),
-            succeeded=("succeeded", "sum"),
-            walltime_reached=("walltime_reached", "sum"),
-            success_rate=("succeeded", "mean"),
             median_waiting_time=("waiting_time", "median"),
             p95_waiting_time=("waiting_time", lambda values: values.quantile(0.95)),
             mean_bounded_slowdown=("bounded_slowdown", "mean"),
@@ -221,10 +214,6 @@ def summarize_job_metrics(job_metrics):
         .agg(
             runs=("name", "nunique"),
             jobs_per_run=("jobs", "median"),
-            median_success_rate=("success_rate", "median"),
-            min_success_rate=("success_rate", "min"),
-            max_success_rate=("success_rate", "max"),
-            median_walltime_reached=("walltime_reached", "median"),
             median_bounded_slowdown=("mean_bounded_slowdown", "median"),
         )
         .round(3)
@@ -239,9 +228,6 @@ def build_run_metrics(schedules, job_metrics):
         .rename(
             columns={
                 "jobs": "replay_jobs",
-                "succeeded": "replay_succeeded",
-                "walltime_reached": "replay_walltime_reached",
-                "success_rate": "replay_success_rate",
                 "median_waiting_time": "replay_median_waiting_time",
                 "p95_waiting_time": "replay_p95_waiting_time",
                 "mean_bounded_slowdown": "replay_mean_bounded_slowdown",
@@ -292,7 +278,6 @@ def paired_deltas(metrics, greenfilling_variant, baseline_variant="easy_bf"):
         "total_carbon_footprint",
         "total_water_footprint",
         "makespan",
-        "replay_success_rate",
         "replay_median_waiting_time",
         "replay_p95_waiting_time",
         "replay_mean_bounded_slowdown",
@@ -304,10 +289,6 @@ def paired_deltas(metrics, greenfilling_variant, baseline_variant="easy_bf"):
             * 100
         )
 
-    paired["replay_walltime_reached_delta"] = (
-        paired["replay_walltime_reached_greenfilling"]
-        - paired["replay_walltime_reached_baseline"]
-    )
     return paired
 
 
@@ -459,12 +440,12 @@ def plot_performance_deltas(data):
     return plot_delta_boxes(
         data,
         [
-            "replay_walltime_reached_delta",
             "replay_median_waiting_time_delta_pct",
+            "replay_p95_waiting_time_delta_pct",
             "replay_mean_bounded_slowdown_delta_pct",
         ],
-        ["Walltime hits", "Median waiting time", "Average bounded slowdown"],
-        [r"$\Delta$ [no. jobs vs EASY]"] + [r"$\Delta$ [% vs EASY]"] * 2,
+        ["Median waiting time", "P95 waiting time", "Average bounded slowdown"],
+        [r"$\Delta$ [% vs EASY]"] * 3,
         "Job performance deltas by sampled window",
     )
 
@@ -538,90 +519,6 @@ def plot_tradeoff_scatter(data, environmental_delta_column, x_label, title):
     fig.legend(handles=season_handles, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06), frameon=False)
     fig.legend(handles=objective_handles, loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.04), frameon=False)
     fig.suptitle(title, y=1.12)
-    fig.tight_layout()
-    return fig, axes
-
-
-def plot_benefit_cost_quadrants(data):
-    plot_specs = [
-        ("total_carbon_footprint_delta_pct", "Carbon footprint saving [% vs EASY]", "Carbon footprint"),
-        ("total_water_footprint_delta_pct", "Water footprint saving [% vs EASY]", "Water footprint"),
-    ]
-
-    fig, axes = plt.subplots(
-        len(WORKLOAD_ORDER),
-        len(plot_specs),
-        figsize=(5.25 * len(plot_specs), 4.4 * len(WORKLOAD_ORDER)),
-        sharey=True,
-        squeeze=False,
-    )
-    plot_data = data.copy()
-
-    # Shared y-range so the two workloads are read on the same scale.
-    y_values = plot_data["replay_walltime_reached_delta"]
-    y_padding = max((y_values.max() - y_values.min()) * 0.14, 1.0)
-    y_lower = min(0, y_values.min() - y_padding)
-    y_upper = max(0, y_values.max() + y_padding)
-
-    # Shared per-column x-range across both workloads.
-    column_bounds = []
-    for delta_column, _, _ in plot_specs:
-        saving = -plot_data[delta_column]
-        x_padding = max((saving.max() - saving.min()) * 0.14, 0.25)
-        column_bounds.append((saving.min() - x_padding, saving.max() + x_padding))
-
-    for row, workload in enumerate(WORKLOAD_ORDER):
-        workload_data = plot_data[plot_data["workload_label"].eq(workload)]
-        for column, (ax, (delta_column, x_label, title)) in enumerate(zip(axes[row], plot_specs)):
-            x_lower, x_upper = column_bounds[column]
-
-            ax.fill_between([0, x_upper], y_lower, 0, color="#2f8f6b", alpha=0.08)
-            ax.fill_between([0, x_upper], 0, y_upper, color="#f2a541", alpha=0.08)
-            ax.fill_between([x_lower, 0], 0, y_upper, color="#d95f5f", alpha=0.08)
-
-            for variant in VARIANT_ORDER:
-                variant_data = workload_data[workload_data["greenfilling_variant"].eq(variant)]
-                for season in SEASON_ORDER:
-                    points = variant_data[variant_data["season"].eq(season)]
-                    ax.scatter(
-                        -points[delta_column],
-                        points["replay_walltime_reached_delta"],
-                        marker=OBJECTIVE_MARKERS[variant],
-                        s=58,
-                        color=SEASON_COLORS[season],
-                        edgecolor="black",
-                        linewidth=0.55,
-                        alpha=0.85,
-                    )
-
-            ax.axvline(0, color="black", linewidth=0.9)
-            ax.axhline(0, color="black", linewidth=0.9)
-            ax.set_title(f"{WORKLOAD_LABELS[workload]} - {title}")
-            ax.set_xlabel(x_label)
-            ax.set_xlim(x_lower, x_upper)
-            ax.set_ylim(y_lower, y_upper)
-        axes[row][0].set_ylabel("Walltime violations [no. jobs vs EASY]")
-
-    season_handles = [
-        Line2D([0], [0], marker="o", linestyle="", color=SEASON_COLORS[season], label=season.title(), markersize=7)
-        for season in SEASON_ORDER
-    ]
-    objective_handles = [
-        Line2D(
-            [0],
-            [0],
-            marker=OBJECTIVE_MARKERS[variant],
-            linestyle="",
-            color="black",
-            label=VARIANT_LABELS[variant],
-            markersize=7,
-        )
-        for variant in VARIANT_ORDER
-    ]
-
-    fig.legend(handles=season_handles, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06), frameon=False)
-    fig.legend(handles=objective_handles, loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.04), frameon=False)
-    fig.suptitle("Environmental savings vs walltime violations", y=1.12)
     fig.tight_layout()
     return fig, axes
 
