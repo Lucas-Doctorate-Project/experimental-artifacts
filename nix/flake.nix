@@ -37,6 +37,7 @@
             (python.withPackages (python-pkgs: [
               python-pkgs.pandas
               python-pkgs.matplotlib
+              python-pkgs.seaborn
               python-pkgs.entsoe-py
               python-pkgs.notebook
               python-pkgs.jupyterlab
