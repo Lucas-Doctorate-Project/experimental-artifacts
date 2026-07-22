@@ -343,6 +343,51 @@ def summarize_paired(paired_comparisons):
     )
 
 
+def summarize_swing_correlations(paired_comparisons):
+    """Pearson correlations between signal swing and target-footprint saving."""
+    specs = [
+        (
+            "greenfilling_carbon",
+            "swing_carbon",
+            "total_carbon_footprint_delta_pct",
+        ),
+        (
+            "greenfilling_water",
+            "swing_water",
+            "total_water_footprint_delta_pct",
+        ),
+    ]
+    rows = []
+    for variant, swing_column, delta_column in specs:
+        variant_data = paired_comparisons[
+            paired_comparisons["greenfilling_variant"].eq(variant)
+        ]
+        groups = [("pooled", variant_data)] + [
+            (
+                workload,
+                variant_data[variant_data["workload_label"].eq(workload)],
+            )
+            for workload in WORKLOAD_ORDER
+        ]
+        for workload, group in groups:
+            swing = group[swing_column]
+            saving = -group[delta_column]
+            correlation = (
+                swing.corr(saving)
+                if len(group) > 1 and swing.nunique() > 1 and saving.nunique() > 1
+                else np.nan
+            )
+            rows.append(
+                {
+                    "objective": variant.removeprefix("greenfilling_"),
+                    "workload_label": workload,
+                    "observations": len(group),
+                    "pearson_r": correlation,
+                }
+            )
+    return pd.DataFrame(rows).round({"pearson_r": 3})
+
+
 # --- Plotting style ----------------------------------------------------------
 
 VARIANT_ORDER = ["greenfilling_carbon", "greenfilling_water"]
