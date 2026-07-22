@@ -25,6 +25,8 @@ METADATA_COLUMNS = [
     "variant",
     "objective",
     "workload_label",
+    "dataset",
+    "regime",
     "zone",
     "start_date",
 ]
@@ -47,28 +49,39 @@ DELTA_COLUMNS = [
 # --- Parsing -----------------------------------------------------------------
 
 def parse_experiment_name(name):
-    """Split an experiment name into its variant/objective/workload/zone/date."""
-    baseline = re.fullmatch(r"easy_bf_([^_]+)_([A-Z]{2})_(\d{4}-\d{2}-\d{2})", name)
+    """Split an experiment name into its variant/objective/workload/zone/date.
+
+    The workload is a (dataset, regime) pair, e.g. `mustang_slack`. It is kept
+    combined in `workload_label` so each dataset pairs against its own EASY
+    baseline, and also split into `dataset` and `regime` for slicing.
+    """
+    baseline = re.fullmatch(
+        r"easy_bf_([^_]+)_([^_]+)_([A-Z]{2})_(\d{4}-\d{2}-\d{2})", name
+    )
     if baseline:
-        workload, zone, start_date = baseline.groups()
+        dataset, regime, zone, start_date = baseline.groups()
         return {
             "variant": "easy_bf",
             "objective": "baseline",
-            "workload_label": workload,
+            "workload_label": f"{dataset}_{regime}",
+            "dataset": dataset,
+            "regime": regime,
             "zone": zone,
             "start_date": start_date,
         }
 
     greenfilling = re.fullmatch(
-        r"greenfilling_(carbon|water)_([^_]+)_([A-Z]{2})_(\d{4}-\d{2}-\d{2})",
+        r"greenfilling_(carbon|water)_([^_]+)_([^_]+)_([A-Z]{2})_(\d{4}-\d{2}-\d{2})",
         name,
     )
     if greenfilling:
-        objective, workload, zone, start_date = greenfilling.groups()
+        objective, dataset, regime, zone, start_date = greenfilling.groups()
         return {
             "variant": f"greenfilling_{objective}",
             "objective": objective,
-            "workload_label": workload,
+            "workload_label": f"{dataset}_{regime}",
+            "dataset": dataset,
+            "regime": regime,
             "zone": zone,
             "start_date": start_date,
         }
@@ -338,22 +351,32 @@ VARIANT_COLORS = {
     "greenfilling_water": "#2f8f6b",
 }
 
-WORKLOAD_ORDER = ["stress", "slack"]
+# Workloads are (dataset, regime) pairs. Hue encodes the dataset, shade the
+# regime; marker shape distinguishes all four in pooled scatters.
+WORKLOAD_ORDER = ["mustang_stress", "mustang_slack", "trinity_stress", "trinity_slack"]
 WORKLOAD_LABELS = {
-    "stress": "Stress workload",
-    "slack": "Slack workload",
+    "mustang_stress": "Mustang stress",
+    "mustang_slack": "Mustang slack",
+    "trinity_stress": "Trinity stress",
+    "trinity_slack": "Trinity slack",
 }
 WORKLOAD_COLORS = {
-    "stress": "#3973ac",
-    "slack": "#d1812a",
+    "mustang_stress": "#2f5d8a",
+    "mustang_slack": "#7ba7d0",
+    "trinity_stress": "#c8571f",
+    "trinity_slack": "#e6a05c",
 }
 WORKLOAD_MARKERS = {
-    "stress": "o",
-    "slack": "s",
+    "mustang_stress": "o",
+    "mustang_slack": "s",
+    "trinity_stress": "^",
+    "trinity_slack": "D",
 }
 WORKLOAD_LINESTYLES = {
-    "stress": "--",
-    "slack": ":",
+    "mustang_stress": "--",
+    "mustang_slack": ":",
+    "trinity_stress": "-.",
+    "trinity_slack": (0, (3, 1, 1, 1)),
 }
 
 SEASON_ORDER = ["winter", "spring", "summer", "autumn"]
