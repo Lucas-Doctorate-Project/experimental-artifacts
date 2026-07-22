@@ -40,7 +40,7 @@ DELTA_COLUMNS = [
     "energy_weighted_carbon_intensity_delta_pct",
     "energy_weighted_water_intensity_delta_pct",
     "makespan_delta_pct",
-    "replay_median_waiting_time_delta_pct",
+    "replay_median_waiting_time_delta_seconds",
     "replay_p95_waiting_time_delta_pct",
     "replay_mean_bounded_slowdown_delta_pct",
 ]
@@ -304,7 +304,6 @@ def paired_deltas(metrics, greenfilling_variant, baseline_variant="easy_bf"):
         "energy_weighted_carbon_intensity",
         "energy_weighted_water_intensity",
         "makespan",
-        "replay_median_waiting_time",
         "replay_p95_waiting_time",
         "replay_mean_bounded_slowdown",
     ]
@@ -314,6 +313,11 @@ def paired_deltas(metrics, greenfilling_variant, baseline_variant="easy_bf"):
             / paired[f"{metric}_baseline"]
             * 100
         )
+
+    paired["replay_median_waiting_time_delta_seconds"] = (
+        paired["replay_median_waiting_time_greenfilling"]
+        - paired["replay_median_waiting_time_baseline"]
+    )
 
     return paired
 
@@ -491,12 +495,12 @@ def plot_performance_deltas(data):
     return plot_delta_boxes(
         data,
         [
-            "replay_median_waiting_time_delta_pct",
+            "replay_median_waiting_time_delta_seconds",
             "replay_p95_waiting_time_delta_pct",
             "replay_mean_bounded_slowdown_delta_pct",
         ],
         ["Median waiting time", "P95 waiting time", "Average bounded slowdown"],
-        [r"$\Delta$ [% vs EASY]"] * 3,
+        [r"$\Delta$ [s vs EASY]", r"$\Delta$ [% vs EASY]", r"$\Delta$ [% vs EASY]"],
         "Job performance deltas by sampled window",
     )
 
@@ -601,7 +605,7 @@ def plot_swing_relationship(data):
                     marker=WORKLOAD_MARKERS[workload],
                 )
 
-        # Fit and correlation over all points, both workloads pooled.
+        # Fit and correlation over all workload scenarios pooled.
         swing = variant_data[swing_column].to_numpy()
         saving = -variant_data[delta_column].to_numpy()  # positive = footprint reduction vs EASY
         if len(swing) > 1:
