@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "name": "Ember Yearly Electricity Data",
+      "url": "https://files.ember-energy.org/public-downloads/yearly_full_release_long_format.csv",
+      "retrieved": "2026-07-22",
+      "original_file": "yearly_full_release_long_format.csv",
+      "sha256": "259e1095ee8ffeaf0aff37ad557916ae1823a2da13312da50ba4cec6b4574c3b",
+      "snapshot": "ember_2026_de_fr_pl.csv",
+      "snapshot_sha256": "25328eb2de6ac4e0759aa4accda92fc729ea6720bf9a5f601aa98c9d061ac665",
+      "methodology_version": "1.5",
+      "methodology_url": "https://files.ember-energy.org/public-downloads/ember_electricity_data_methodology.pdf",
+      "license": "CC BY 4.0",
+      "license_url": "https://api.ember-energy.org/v1/docs",
+      "scope": "Annual electricity generation and production-based full-lifecycle greenhouse-gas emissions. Ember reports nine fuel groups and national carbon intensity; its EU yearly generation is gross generation and its net-generation emissions factors are adjusted accordingly.",
+      "coverage": {
+        "countries": [
+          "DE",
+          "FR",
+          "PL"
+        ],
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ]
+      },
+      "transformations": [
+        "Filtered Area to Germany, France, and Poland and Year to 2018-2025.",
+        "Mapped country names to ISO 3166-1 alpha-2 codes.",
+        "Merged Total Generation (TWh), Total emissions (mtCO2), and source-reported CO2 intensity (gCO2/kWh) into one total row per country-year.",
+        "Merged generation (TWh) and emissions (mtCO2) for Ember's nine Fuel rows.",
+        "Derived fuel-row intensity as 1000 * emissions_mtco2e / generation_twh from the source's rounded values; left it blank where both generation and emissions are zero.",
+        "Assigned finalized to 2018-2024 and provisional to 2025 as artifact qualifications; these status values are not fields copied from the Ember download."
+      ],
+      "qualification": "The primary paper comparison uses only 2018-2024. The 2025 rows are supplementary because latest-year annual estimates can be assembled from monthly sources, including ENTSO-E for France and Poland, and are therefore not treated as fully independent evidence."
+    },
+    {
+      "name": "EEA ENER038: Greenhouse gas emission intensity of electricity generation",
+      "url": "https://www.eea.europa.eu/en/analysis/indicators/greenhouse-gas-emission-intensity-of-1/greenhouse-gas-emission-intensity-of-electricity-generation",
+      "retrieved": "2026-07-22",
+      "original_file": "eea-carbon-intensity.csv",
+      "sha256": "8b33f632253590a91047ca7841f0938566e4e2eb3c61d49b4012a0219a9cba63",
+      "snapshot": "eea_ener038_de_fr_pl.csv",
+      "snapshot_sha256": "cc2edf674e70e2cc5b1bd94c61bfeb223786a6bedde3dd3a6192cd70bcd18408",
+      "methodology_version": "ENER038, published 2026-07-10",
+      "methodology_url": "https://www.eea.europa.eu/en/analysis/indicators/greenhouse-gas-emission-intensity-of-1/",
+      "license": "CC BY 4.0 (EEA materials unless otherwise indicated)",
+      "license_url": "https://www.eea.europa.eu/en/legal-notice",
+      "scope": "Annual greenhouse-gas emission intensity of gross electricity generation from main-activity producers and autoproducers. The series covers combustion-related CO2e, applies zero factors to nuclear and renewables, and does not include lifecycle upstream or construction emissions.",
+      "coverage": {
+        "countries": [
+          "DE",
+          "FR",
+          "PL"
+        ],
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ]
+      },
+      "transformations": [
+        "Parsed the source's semicolon-delimited wide table and selected Germany, France, and Poland.",
+        "Unpivoted calendar years 2018-2024 and mapped country names to ISO 3166-1 alpha-2 codes.",
+        "Removed thousands separators when parsing numeric values; no unit conversion or interpolation was applied.",
+        "Assigned finalized to 2018-2023 and early_estimate to 2024, following the EEA qualification of 2024 as an early estimate."
+      ],
+      "qualification": "EEA ENER038 is an orthogonal trend check rather than an interchangeable lifecycle benchmark because its accounting boundary differs from the study model and Ember."
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+country,country_name,year,record_type,fuel,generation_twh,emissions_mtco2e,intensity_gco2e_per_kwh,status
+DE,Germany,2018,total,Total,632.28,287.4,454.55,finalized
+DE,Germany,2018,fuel,Bioenergy,50.79,10.98,216.184288,finalized
+DE,Germany,2018,fuel,Coal,228.16,221.42,970.459327,finalized
+DE,Germany,2018,fuel,Gas,81.56,35.17,431.216282,finalized
+DE,Germany,2018,fuel,Hydro,17.69,0.42,23.742227,finalized
+DE,Germany,2018,fuel,Nuclear,76.0,0.37,4.868421,finalized
+DE,Germany,2018,fuel,Other Fossil,23.63,15.55,658.061786,finalized
+DE,Germany,2018,fuel,Other Renewables,0.18,0.01,55.555556,finalized
+DE,Germany,2018,fuel,Solar,44.32,2.11,47.608303,finalized
+DE,Germany,2018,fuel,Wind,109.95,1.37,12.460209,finalized
+DE,Germany,2019,total,Total,600.09,235.54,392.51,finalized
+DE,Germany,2019,fuel,Bioenergy,50.13,10.84,216.237782,finalized
+DE,Germany,2019,fuel,Coal,171.45,166.59,971.653543,finalized
+DE,Germany,2019,fuel,Gas,90.0,38.81,431.222222,finalized
+DE,Germany,2019,fuel,Hydro,19.73,0.47,23.821591,finalized
+DE,Germany,2019,fuel,Nuclear,75.07,0.36,4.795524,finalized
+DE,Germany,2019,fuel,Other Fossil,22.4,14.74,658.035714,finalized
+DE,Germany,2019,fuel,Other Renewables,0.2,0.01,50.000000,finalized
+DE,Germany,2019,fuel,Solar,45.22,2.15,47.545334,finalized
+DE,Germany,2019,fuel,Wind,125.89,1.57,12.471205,finalized
+DE,Germany,2020,total,Total,566.75,201.54,355.61,finalized
+DE,Germany,2020,fuel,Bioenergy,50.93,11.01,216.179069,finalized
+DE,Germany,2020,fuel,Coal,134.6,130.81,971.842496,finalized
+DE,Germany,2020,fuel,Gas,95.0,40.96,431.157895,finalized
+DE,Germany,2020,fuel,Hydro,18.72,0.44,23.504274,finalized
+DE,Germany,2020,fuel,Nuclear,64.38,0.31,4.815160,finalized
+DE,Germany,2020,fuel,Other Fossil,21.28,14.0,657.894737,finalized
+DE,Germany,2020,fuel,Other Renewables,0.23,0.01,43.478261,finalized
+DE,Germany,2020,fuel,Solar,49.5,2.35,47.474747,finalized
+DE,Germany,2020,fuel,Wind,132.11,1.65,12.489592,finalized
+DE,Germany,2021,total,Total,578.83,228.43,394.64,finalized
+DE,Germany,2021,fuel,Bioenergy,49.1,10.62,216.293279,finalized
+DE,Germany,2021,fuel,Coal,164.65,159.67,969.754024,finalized
+DE,Germany,2021,fuel,Gas,90.31,38.94,431.181486,finalized
+DE,Germany,2021,fuel,Hydro,19.66,0.47,23.906409,finalized
+DE,Germany,2021,fuel,Nuclear,69.13,0.33,4.773615,finalized
+DE,Germany,2021,fuel,Other Fossil,22.24,14.63,657.823741,finalized
+DE,Germany,2021,fuel,Other Renewables,0.24,0.01,41.666667,finalized
+DE,Germany,2021,fuel,Solar,49.34,2.34,47.426024,finalized
+DE,Germany,2021,fuel,Wind,114.16,1.42,12.438683,finalized
+DE,Germany,2022,total,Total,566.88,237.94,419.74,finalized
+DE,Germany,2022,fuel,Bioenergy,48.6,10.51,216.255144,finalized
+DE,Germany,2022,fuel,Coal,179.93,174.07,967.431779,finalized
+DE,Germany,2022,fuel,Gas,79.05,34.09,431.246047,finalized
+DE,Germany,2022,fuel,Hydro,17.62,0.42,23.836549,finalized
+DE,Germany,2022,fuel,Nuclear,34.71,0.17,4.897724,finalized
+DE,Germany,2022,fuel,Other Fossil,21.65,14.25,658.198614,finalized
+DE,Germany,2022,fuel,Other Renewables,0.21,0.01,47.619048,finalized
+DE,Germany,2022,fuel,Solar,60.3,2.87,47.595357,finalized
+DE,Germany,2022,fuel,Wind,124.81,1.55,12.418877,finalized
+DE,Germany,2023,total,Total,506.72,184.24,363.59,finalized
+DE,Germany,2023,fuel,Bioenergy,51.26,11.08,216.152946,finalized
+DE,Germany,2023,fuel,Coal,124.78,120.98,969.546402,finalized
+DE,Germany,2023,fuel,Gas,76.66,33.06,431.254892,finalized
+DE,Germany,2023,fuel,Hydro,21.24,0.5,23.540490,finalized
+DE,Germany,2023,fuel,Nuclear,7.22,0.03,4.155125,finalized
+DE,Germany,2023,fuel,Other Fossil,20.96,13.79,657.919847,finalized
+DE,Germany,2023,fuel,Other Renewables,0.19,0.01,52.631579,finalized
+DE,Germany,2023,fuel,Solar,63.87,3.04,47.596681,finalized
+DE,Germany,2023,fuel,Wind,140.54,1.75,12.451971,finalized
+DE,Germany,2024,total,Total,495.99,167.21,337.12,finalized
+DE,Germany,2024,fuel,Bioenergy,51.08,11.04,216.131558,finalized
+DE,Germany,2024,fuel,Coal,106.33,103.08,969.434779,finalized
+DE,Germany,2024,fuel,Gas,78.41,33.81,431.195001,finalized
+DE,Germany,2024,fuel,Hydro,23.83,0.57,23.919429,finalized
+DE,Germany,2024,fuel,Nuclear,0.0,0.0,,finalized
+DE,Germany,2024,fuel,Other Fossil,20.39,13.42,658.165768,finalized
+DE,Germany,2024,fuel,Other Renewables,0.22,0.01,45.454545,finalized
+DE,Germany,2024,fuel,Solar,74.13,3.52,47.484149,finalized
+DE,Germany,2024,fuel,Wind,141.6,1.76,12.429379,finalized
+DE,Germany,2025,total,Total,500.47,164.98,329.65,provisional
+DE,Germany,2025,fuel,Bioenergy,50.53,10.92,216.109242,provisional
+DE,Germany,2025,fuel,Coal,103.15,99.56,965.196316,provisional
+DE,Germany,2025,fuel,Gas,82.67,35.65,431.232612,provisional
+DE,Germany,2025,fuel,Hydro,19.56,0.46,23.517382,provisional
+DE,Germany,2025,fuel,Nuclear,0.0,0.0,,provisional
+DE,Germany,2025,fuel,Other Fossil,18.91,12.44,657.852988,provisional
+DE,Germany,2025,fuel,Other Renewables,0.0,0.0,,provisional
+DE,Germany,2025,fuel,Solar,89.62,4.26,47.534033,provisional
+DE,Germany,2025,fuel,Wind,136.03,1.69,12.423730,provisional
+FR,France,2018,total,Total,576.24,34.53,59.92,finalized
+FR,France,2018,fuel,Bioenergy,8.38,1.81,215.990453,finalized
+FR,France,2018,fuel,Coal,8.31,8.02,965.102286,finalized
+FR,France,2018,fuel,Gas,30.55,13.29,435.024550,finalized
+FR,France,2018,fuel,Hydro,65.11,1.55,23.805867,finalized
+FR,France,2018,fuel,Nuclear,412.94,1.99,4.819102,finalized
+FR,France,2018,fuel,Other Fossil,10.59,6.97,658.168083,finalized
+FR,France,2018,fuel,Other Renewables,0.61,0.02,32.786885,finalized
+FR,France,2018,fuel,Solar,11.15,0.53,47.533632,finalized
+FR,France,2018,fuel,Wind,28.6,0.35,12.237762,finalized
+FR,France,2019,total,Total,565.52,33.81,59.79,finalized
+FR,France,2019,fuel,Bioenergy,8.64,1.87,216.435185,finalized
+FR,France,2019,fuel,Coal,3.64,3.51,964.285714,finalized
+FR,France,2019,fuel,Gas,39.24,17.07,435.015291,finalized
+FR,France,2019,fuel,Hydro,56.91,1.35,23.721666,finalized
+FR,France,2019,fuel,Nuclear,399.01,1.93,4.836972,finalized
+FR,France,2019,fuel,Other Fossil,10.73,7.06,657.968313,finalized
+FR,France,2019,fuel,Other Renewables,0.61,0.02,32.786885,finalized
+FR,France,2019,fuel,Solar,12.02,0.57,47.420965,finalized
+FR,France,2019,fuel,Wind,34.72,0.43,12.384793,finalized
+FR,France,2020,total,Total,527.25,31.15,59.08,finalized
+FR,France,2020,fuel,Bioenergy,8.76,1.89,215.753425,finalized
+FR,France,2020,fuel,Coal,3.09,2.98,964.401294,finalized
+FR,France,2020,fuel,Gas,35.25,15.34,435.177305,finalized
+FR,France,2020,fuel,Hydro,62.52,1.49,23.832374,finalized
+FR,France,2020,fuel,Nuclear,353.83,1.71,4.832829,finalized
+FR,France,2020,fuel,Other Fossil,10.05,6.61,657.711443,finalized
+FR,France,2020,fuel,Other Renewables,0.61,0.02,32.786885,finalized
+FR,France,2020,fuel,Solar,13.09,0.62,47.364400,finalized
+FR,France,2020,fuel,Wind,40.05,0.49,12.234707,finalized
+FR,France,2021,total,Total,550.31,32.91,59.8,finalized
+FR,France,2021,fuel,Bioenergy,9.58,2.07,216.075157,finalized
+FR,France,2021,fuel,Coal,5.44,5.25,965.073529,finalized
+FR,France,2021,fuel,Gas,33.31,14.49,435.004503,finalized
+FR,France,2021,fuel,Hydro,59.54,1.41,23.681559,finalized
+FR,France,2021,fuel,Nuclear,379.36,1.83,4.823914,finalized
+FR,France,2021,fuel,Other Fossil,10.1,6.65,658.415842,finalized
+FR,France,2021,fuel,Other Renewables,0.58,0.02,34.482759,finalized
+FR,France,2021,fuel,Solar,15.28,0.73,47.774869,finalized
+FR,France,2021,fuel,Wind,37.12,0.46,12.392241,finalized
+FR,France,2022,total,Total,468.37,36.79,78.55,finalized
+FR,France,2022,fuel,Bioenergy,9.67,2.09,216.132368,finalized
+FR,France,2022,fuel,Coal,4.16,4.01,963.942308,finalized
+FR,France,2022,fuel,Gas,45.74,19.9,435.067774,finalized
+FR,France,2022,fuel,Hydro,45.48,1.08,23.746702,finalized
+FR,France,2022,fuel,Nuclear,294.73,1.42,4.817969,finalized
+FR,France,2022,fuel,Other Fossil,10.45,6.88,658.373206,finalized
+FR,France,2022,fuel,Other Renewables,0.6,0.02,33.333333,finalized
+FR,France,2022,fuel,Solar,19.34,0.92,47.569804,finalized
+FR,France,2022,fuel,Wind,38.2,0.47,12.303665,finalized
+FR,France,2023,total,Total,518.75,27.63,53.26,finalized
+FR,France,2023,fuel,Bioenergy,9.94,2.15,216.297787,finalized
+FR,France,2023,fuel,Coal,1.61,1.55,962.732919,finalized
+FR,France,2023,fuel,Gas,30.02,13.06,435.043304,finalized
+FR,France,2023,fuel,Hydro,55.9,1.33,23.792487,finalized
+FR,France,2023,fuel,Nuclear,338.2,1.63,4.819633,finalized
+FR,France,2023,fuel,Other Fossil,9.43,6.2,657.476140,finalized
+FR,France,2023,fuel,Other Renewables,0.58,0.02,34.482759,finalized
+FR,France,2023,fuel,Solar,22.59,1.07,47.366091,finalized
+FR,France,2023,fuel,Wind,50.48,0.62,12.282092,finalized
+FR,France,2024,total,Total,561.94,22.75,40.49,finalized
+FR,France,2024,fuel,Bioenergy,10.68,2.31,216.292135,finalized
+FR,France,2024,fuel,Coal,1.02,0.98,960.784314,finalized
+FR,France,2024,fuel,Gas,18.1,7.88,435.359116,finalized
+FR,France,2024,fuel,Hydro,71.12,1.69,23.762655,finalized
+FR,France,2024,fuel,Nuclear,380.45,1.84,4.836378,finalized
+FR,France,2024,fuel,Other Fossil,9.54,6.28,658.280922,finalized
+FR,France,2024,fuel,Other Renewables,0.57,0.02,35.087719,finalized
+FR,France,2024,fuel,Solar,25.06,1.19,47.486034,finalized
+FR,France,2024,fuel,Wind,45.4,0.56,12.334802,finalized
+FR,France,2025,total,Total,570.14,23.63,41.45,provisional
+FR,France,2025,fuel,Bioenergy,10.27,2.22,216.163583,provisional
+FR,France,2025,fuel,Coal,1.74,1.67,959.770115,provisional
+FR,France,2025,fuel,Gas,17.25,7.51,435.362319,provisional
+FR,France,2025,fuel,Hydro,59.41,1.41,23.733378,provisional
+FR,France,2025,fuel,Nuclear,392.07,1.89,4.820568,provisional
+FR,France,2025,fuel,Other Fossil,10.36,6.82,658.301158,provisional
+FR,France,2025,fuel,Other Renewables,0.57,0.02,35.087719,provisional
+FR,France,2025,fuel,Solar,32.01,1.52,47.485161,provisional
+FR,France,2025,fuel,Wind,46.46,0.57,12.268618,provisional
+PL,Poland,2018,total,Total,169.43,137.07,809.01,finalized
+PL,Poland,2018,fuel,Bioenergy,6.55,1.42,216.793893,finalized
+PL,Poland,2018,fuel,Coal,130.56,127.24,974.571078,finalized
+PL,Poland,2018,fuel,Gas,12.63,5.15,407.759303,finalized
+PL,Poland,2018,fuel,Hydro,1.97,0.05,25.380711,finalized
+PL,Poland,2018,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2018,fuel,Other Fossil,4.62,3.04,658.008658,finalized
+PL,Poland,2018,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2018,fuel,Solar,0.3,0.01,33.333333,finalized
+PL,Poland,2018,fuel,Wind,12.8,0.16,12.500000,finalized
+PL,Poland,2019,total,Total,163.22,125.95,771.66,finalized
+PL,Poland,2019,fuel,Bioenergy,7.68,1.66,216.145833,finalized
+PL,Poland,2019,fuel,Coal,118.14,114.81,971.813103,finalized
+PL,Poland,2019,fuel,Gas,14.8,6.04,408.108108,finalized
+PL,Poland,2019,fuel,Hydro,1.96,0.05,25.510204,finalized
+PL,Poland,2019,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2019,fuel,Other Fossil,4.82,3.17,657.676349,finalized
+PL,Poland,2019,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2019,fuel,Solar,0.71,0.03,42.253521,finalized
+PL,Poland,2019,fuel,Wind,15.11,0.19,12.574454,finalized
+PL,Poland,2020,total,Total,157.15,116.02,738.28,finalized
+PL,Poland,2020,fuel,Bioenergy,8.35,1.81,216.766467,finalized
+PL,Poland,2020,fuel,Coal,107.4,104.04,968.715084,finalized
+PL,Poland,2020,fuel,Gas,17.29,7.06,408.328514,finalized
+PL,Poland,2020,fuel,Hydro,2.12,0.05,23.584906,finalized
+PL,Poland,2020,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2020,fuel,Other Fossil,4.23,2.78,657.210402,finalized
+PL,Poland,2020,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2020,fuel,Solar,1.96,0.09,45.918367,finalized
+PL,Poland,2020,fuel,Wind,15.8,0.19,12.025316,finalized
+PL,Poland,2021,total,Total,178.79,135.23,756.36,finalized
+PL,Poland,2021,fuel,Bioenergy,8.06,1.74,215.880893,finalized
+PL,Poland,2021,fuel,Coal,127.57,123.4,967.312064,finalized
+PL,Poland,2021,fuel,Gas,15.82,6.46,408.343869,finalized
+PL,Poland,2021,fuel,Hydro,2.34,0.06,25.641026,finalized
+PL,Poland,2021,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2021,fuel,Other Fossil,4.84,3.18,657.024793,finalized
+PL,Poland,2021,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2021,fuel,Solar,3.93,0.19,48.346056,finalized
+PL,Poland,2021,fuel,Wind,16.23,0.2,12.322859,finalized
+PL,Poland,2022,total,Total,178.6,130.83,732.53,finalized
+PL,Poland,2022,fuel,Bioenergy,7.63,1.65,216.251638,finalized
+PL,Poland,2022,fuel,Coal,124.73,120.69,967.610038,finalized
+PL,Poland,2022,fuel,Gas,11.36,4.64,408.450704,finalized
+PL,Poland,2022,fuel,Hydro,1.97,0.05,25.380711,finalized
+PL,Poland,2022,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2022,fuel,Other Fossil,4.82,3.17,657.676349,finalized
+PL,Poland,2022,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2022,fuel,Solar,8.31,0.39,46.931408,finalized
+PL,Poland,2022,fuel,Wind,19.78,0.24,12.133468,finalized
+PL,Poland,2023,total,Total,165.52,107.73,650.86,finalized
+PL,Poland,2023,fuel,Bioenergy,8.16,1.76,215.686275,finalized
+PL,Poland,2023,fuel,Coal,98.85,95.51,966.211431,finalized
+PL,Poland,2023,fuel,Gas,16.49,6.73,408.126137,finalized
+PL,Poland,2023,fuel,Hydro,2.41,0.06,24.896266,finalized
+PL,Poland,2023,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2023,fuel,Other Fossil,4.32,2.84,657.407407,finalized
+PL,Poland,2023,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2023,fuel,Solar,11.11,0.53,47.704770,finalized
+PL,Poland,2023,fuel,Wind,24.18,0.3,12.406948,finalized
+PL,Poland,2024,total,Total,172.12,104.71,608.36,finalized
+PL,Poland,2024,fuel,Bioenergy,7.95,1.72,216.352201,finalized
+PL,Poland,2024,fuel,Coal,93.5,90.44,967.272727,finalized
+PL,Poland,2024,fuel,Gas,20.46,8.35,408.113392,finalized
+PL,Poland,2024,fuel,Hydro,2.11,0.05,23.696682,finalized
+PL,Poland,2024,fuel,Nuclear,0.0,0.0,,finalized
+PL,Poland,2024,fuel,Other Fossil,4.55,2.99,657.142857,finalized
+PL,Poland,2024,fuel,Other Renewables,0.0,0.0,,finalized
+PL,Poland,2024,fuel,Solar,17.66,0.84,47.565119,finalized
+PL,Poland,2024,fuel,Wind,25.89,0.32,12.359985,finalized
+PL,Poland,2025,total,Total,172.58,101.96,590.8,provisional
+PL,Poland,2025,fuel,Bioenergy,8.48,1.83,215.801887,provisional
+PL,Poland,2025,fuel,Coal,87.4,84.51,966.933638,provisional
+PL,Poland,2025,fuel,Gas,24.81,10.12,407.900040,provisional
+PL,Poland,2025,fuel,Hydro,1.7,0.04,23.529412,provisional
+PL,Poland,2025,fuel,Nuclear,0.0,0.0,,provisional
+PL,Poland,2025,fuel,Other Fossil,6.43,4.23,657.853810,provisional
+PL,Poland,2025,fuel,Other Renewables,0.23,0.01,43.478261,provisional
+PL,Poland,2025,fuel,Solar,19.55,0.93,47.570332,provisional
+PL,Poland,2025,fuel,Wind,23.98,0.29,12.093411,provisional
