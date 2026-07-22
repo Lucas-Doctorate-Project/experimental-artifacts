@@ -58,18 +58,20 @@ The file referenced by `variant_options` is JSON handed to Batsched untouched. F
 
 See the Batsched documentation for the keys accepted by each variant.
 
-## Generate the one-week pilot campaign
+## Generate the campaign
 
-`gen_campaign.py` writes the one-week pilot campaign instead of hand-authoring it. It reads the small manifest `../intensities/traces/small/windows.csv` and emits, all repointed at the `small/` artifacts:
+`gen_campaign.py` writes the full campaign instead of hand-authoring it. It scans the 4-week intensity windows under `../intensities/traces/` (files named `<CC>_<date>.csv`) and emits, over both datasets (Mustang and Trinity):
 
-- `experiments_small.toml`: EASY and greenfilling (carbon and water) over the 24 one-week windows and both small Mustang workloads, so 3 x 2 x 24 = 144 experiments.
-- `options/small/{carbon,water}_<CC>_<date>.json`: the greenfilling variant options per window and signal (48 files).
+- `experiments.toml`: EASY and greenfilling (carbon and water) over every window, both datasets, and both regimes (slack and stress), so 3 x 2 x 2 x 36 = 432 experiments.
+- `options/{carbon,water}_<CC>_<date>.json`: the greenfilling variant options per window and signal (72 files). These are shared across datasets, since the signal depends only on the intensity window, not the workload.
+
+Experiment names carry the dataset and regime (`<variant>[_<signal>]_<dataset>_<regime>_<CC>_<date>`), so Mustang and Trinity never share an output directory.
 
 Run it from this directory, then run the generated campaign:
 
 ```sh
 python3 gen_campaign.py
-go run . --campaign experiments_small.toml
+go run . --campaign experiments.toml
 ```
 
 ## Run a campaign

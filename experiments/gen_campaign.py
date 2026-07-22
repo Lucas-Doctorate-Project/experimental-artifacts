@@ -1,42 +1,52 @@
 #!/usr/bin/env python3
-"""Generate the one-week pilot campaign.
+"""Generate the full 4-week campaign.
 
-Reads the one-week intensity manifest at intensities/traces/small/windows.csv and
-emits, repointed at the small/ artifacts:
+Covers every 4-week intensity window under intensities/traces/ and both datasets
+(Mustang and Trinity). Emits:
 
-  - experiments_small.toml: 3 schedulers x 2 workloads x 24 traces = 144 experiments
-  - options/small/{carbon,water}_<CC>_<date>.json: greenfilling variant options
+  - experiments.toml: 3 schedulers x 2 datasets x 2 regimes x N windows
+  - options/{carbon,water}_<CC>_<date>.json: greenfilling variant options per
+    window and signal. Shared across datasets, since the signal depends only on
+    the intensity window, not the workload.
 
-Experiment names carry the campaign prefix (e.g. small_easy_bf_stress_DE_...) so
-they match the per-campaign output directories and never collide with another
-campaign's runs.
+Experiment names carry the dataset and regime, so no two experiments share an
+output directory: <variant>[_<signal>]_<dataset>_<regime>_<CC>_<date>.
 
-Run from the experiments/ directory (where the campaign runner is launched), so the
-relative paths it writes resolve correctly:
+Run from the experiments/ directory (where the campaign runner is launched), so
+the relative paths it writes resolve correctly:
 
     python3 gen_campaign.py
 """
 
-import csv
+import glob
 import json
 import os
+import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-WINDOWS = os.path.join(HERE, "..", "intensities", "traces", "small", "windows.csv")
-OPTIONS_DIR = os.path.join(HERE, "options", "small")
-TOML_OUT = os.path.join(HERE, "experiments_small.toml")
+TRACES_DIR = os.path.join(HERE, "..", "intensities", "traces")
+OPTIONS_DIR = os.path.join(HERE, "options")
+TOML_OUT = os.path.join(HERE, "experiments.toml")
 
-CAMPAIGN = "small"
-PREFIX = f"{CAMPAIGN}_"
-WORKLOADS = ["stress", "slack"]
+DATASETS = ["mustang", "trinity"]
+REGIMES = ["slack", "stress"]
 SIGNALS = ["carbon", "water"]
 SMOOTHING_FACTOR = 0.5
 
+# 4-week window CSVs are named <CC>_<YYYY-MM-DD>; whole-trace files (DE.csv) and
+# the small/ pilot extracts are excluded by this pattern.
+WINDOW_RE = re.compile(r"^([A-Z]{2})_(\d{4}-\d{2}-\d{2})$")
+
 
 def load_traces():
-    """Return [(zone, start_date)] from the manifest, in file order."""
-    with open(WINDOWS, newline="") as f:
-        return [(row["zone"], row["start_date"]) for row in csv.DictReader(f)]
+    """Return [(zone, start_date)] for every 4-week window CSV, in name order."""
+    traces = []
+    for path in sorted(glob.glob(os.path.join(TRACES_DIR, "*.csv"))):
+        stem = os.path.splitext(os.path.basename(path))[0]
+        match = WINDOW_RE.match(stem)
+        if match:
+            traces.append((match.group(1), match.group(2)))
+    return traces
 
 
 def write_options(traces):
@@ -44,7 +54,7 @@ def write_options(traces):
     for cc, date in traces:
         for signal in SIGNALS:
             opts = {
-                "intensity_trace": f"../intensities/traces/small/{cc}_{date}.csv",
+                "intensity_trace": f"../intensities/traces/{cc}_{date}.csv",
                 "intensity_zone": "AS0",
                 "signal": signal,
                 "smoothing_factor": SMOOTHING_FACTOR,
@@ -54,16 +64,16 @@ def write_options(traces):
             with open(path, "w") as f:
                 json.dump(opts, f, indent=4)
                 f.write("\n")
-    return 2 * len(traces)
+    return len(traces) * len(SIGNALS)
 
 
-def experiment(name, workload, trace, variant, options):
+def experiment(name, dataset, regime, trace, variant, options):
     return (
         "[[experiment]]\n"
         f'name = "{name}"\n'
-        f'workload = "../workloads and platforms/small/mustang_{workload}.json"\n'
-        f'platform = "../workloads and platforms/mustang.xml"\n'
-        f'environmental_trace = "../intensities/traces/small/{trace}.csv"\n'
+        f'workload = "../workloads and platforms/{dataset}_{regime}.json"\n'
+        f'platform = "../workloads and platforms/{dataset}.xml"\n'
+        f'environmental_trace = "../intensities/traces/{trace}.csv"\n'
         f'variant_name = "{variant}"\n'
         f'variant_options = "{options}"\n'
     )
@@ -71,22 +81,25 @@ def experiment(name, workload, trace, variant, options):
 
 def write_toml(traces):
     blocks = []
-    # Baseline: schedule is independent of the trace, but kept per-trace for the
-    # pilot (the offline-scorer dedup is deferred to the 4-week campaign).
-    for wl in WORKLOADS:
-        for cc, date in traces:
-            blocks.append(experiment(
-                f"{PREFIX}easy_bf_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
-                "easy_bf", "",
-            ))
-    # Greenfilling: one variant per intensity signal.
-    for signal in SIGNALS:
-        for wl in WORKLOADS:
+    # Baseline EASY backfilling: schedule is independent of the intensity trace,
+    # but kept per-trace so every experiment has a matching environmental trace.
+    for dataset in DATASETS:
+        for regime in REGIMES:
             for cc, date in traces:
                 blocks.append(experiment(
-                    f"{PREFIX}greenfilling_{signal}_{wl}_{cc}_{date}", wl, f"{cc}_{date}",
-                    "greenfilling", f"options/small/{signal}_{cc}_{date}.json",
+                    f"easy_bf_{dataset}_{regime}_{cc}_{date}",
+                    dataset, regime, f"{cc}_{date}", "easy_bf", "",
                 ))
+    # Greenfilling: one variant per intensity signal, options shared across datasets.
+    for signal in SIGNALS:
+        for dataset in DATASETS:
+            for regime in REGIMES:
+                for cc, date in traces:
+                    blocks.append(experiment(
+                        f"greenfilling_{signal}_{dataset}_{regime}_{cc}_{date}",
+                        dataset, regime, f"{cc}_{date}",
+                        "greenfilling", f"options/{signal}_{cc}_{date}.json",
+                    ))
     with open(TOML_OUT, "w") as f:
         f.write("\n".join(blocks))
     return len(blocks)
@@ -96,8 +109,8 @@ def main():
     traces = load_traces()
     n_opts = write_options(traces)
     n_exp = write_toml(traces)
-    print(f"{len(traces)} traces -> {n_opts} option files in options/small/, "
-          f"{n_exp} experiments in experiments_small.toml")
+    print(f"{len(traces)} windows x {len(DATASETS)} datasets -> "
+          f"{n_opts} option files in options/, {n_exp} experiments in experiments.toml")
 
 
 if __name__ == "__main__":
