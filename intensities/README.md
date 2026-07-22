@@ -2,6 +2,8 @@
 
 `generate_traces.ipynb` builds the carbon and water intensity traces from the ENTSO-E transparency platform. For each country (PL, FR, DE), it takes the actual generation per production type from 2018 through 2025, computes the generation-weighted intensity of each instant, and writes a 15-minute resolution trace. The notebook also plots the full series, a zoomed sample week showing the diurnal pattern, and the generation mix of each country.
 
+Energy storage and pumped-storage hydro are excluded from the weighted mix because the data do not identify their charging mix, temporal attribution, or round-trip losses. All other production types are treated consistently across countries.
+
 ## Usage
 
 Run from the Nix dev shell at the repo root:
@@ -67,14 +69,12 @@ The trace generator uses UNECE 2020 values where available, else IPCC 2014:
 | ENTSO-E source | Carbon | Water | Basis |
 | --- | --- | --- | --- |
 | Biomass | 230 | 1.147 | Biopower default (IPCC 2014), biopower water average |
-| Energy storage | 21 | 0.004 | Solar photovoltaic average (UNECE 2020) [^storage] |
 | Fossil Brown coal/Lignite | 1000 | 1.802 | Coal, pulverized (UNECE 2020), coal water average [^lignite] |
 | Fossil Coal-derived gas | 630 | 1.802 | Coal average (UNECE 2020) [^coalgas] |
 | Fossil Gas | 280 | 1.086 | Gas average (UNECE 2020) |
 | Fossil Hard coal | 630 | 1.802 | Coal average (UNECE 2020) |
 | Fossil Oil | 280 | 1.086 | Gas average (UNECE 2020) [^oil] |
 | Geothermal | 38 | 0.95 | Geothermal default (IPCC 2014), geothermal water average |
-| Hydro Pumped Storage | 81 | 17.0 | Hydropower average (UNECE 2020) |
 | Hydro Run-of-river and poundage | 81 | 17.0 | Hydropower average (UNECE 2020) |
 | Hydro Water Reservoir | 81 | 17.0 | Hydropower average (UNECE 2020) |
 | Nuclear | 5.1 | 1.957 | Nuclear default (UNECE 2020), nuclear water average |
@@ -85,7 +85,6 @@ The trace generator uses UNECE 2020 values where available, else IPCC 2014:
 | Wind Offshore | 13 | 0 | Wind average (UNECE 2020) |
 | Wind Onshore | 12 | 0 | Wind, onshore (UNECE 2020) |
 
-[^storage]: Assumed to be battery storage charged largely by renewables, so it reuses the solar photovoltaic values.
 [^lignite]: No lignite entry was collected. Pulverized coal (UNECE 2020), the highest collected coal value, is used because lignite emits more than hard coal.
 [^coalgas]: Blast furnace and coke oven gas. Treated as coal rather than natural gas because it is a coal byproduct with near-coal emission factors.
 [^oil]: No oil entry was collected. The gas values are reused as the closest fossil proxy.
