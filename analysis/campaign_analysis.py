@@ -4,6 +4,7 @@
 computing per-window paired deltas versus the EASY baseline, and plotting.
 """
 
+from pathlib import Path
 import re
 
 import numpy as np
@@ -13,12 +14,22 @@ import tomllib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
+from matplotlib.markers import MarkerStyle
 
 
 # Average bounded slowdown uses this floor on execution time so very short jobs
 # do not dominate the comparison: max(turnaround / max(execution, floor), 1).
 BOUNDED_SLOWDOWN_FLOOR_SECONDS = 10.0
 JOULES_PER_KWH = 3_600_000.0
+IEEE_DOUBLE_COLUMN_WIDTH_INCHES = 7.16
+IEEE_MAX_FIGURE_HEIGHT_INCHES = 8.8
+IEEE_LINE_ART_DPI = 600
+BOX_FIGURE_SIZE = (IEEE_DOUBLE_COLUMN_WIDTH_INCHES, 2.75)
+TRADEOFF_FIGURE_SIZE = (IEEE_DOUBLE_COLUMN_WIDTH_INCHES, 8.6)
+SWING_FIGURE_SIZE = (IEEE_DOUBLE_COLUMN_WIDTH_INCHES, 3.35)
+DATA_MARKER_SIZE = 4.0
+LEGEND_MARKER_SIZE = 4.5
+BOX_POINT_AREA = 7.0
 
 METADATA_COLUMNS = [
     "name",
@@ -395,13 +406,8 @@ VARIANT_LABELS = {
     "greenfilling_carbon": "Carbon objective",
     "greenfilling_water": "Water objective",
 }
-VARIANT_COLORS = {
-    "greenfilling_carbon": "#3973ac",
-    "greenfilling_water": "#2f8f6b",
-}
-
-# Workloads are (dataset, regime) pairs. Hue encodes the dataset, shade the
-# regime; marker shape distinguishes all four in pooled scatters.
+# Workloads are (dataset, regime) pairs. Hatches and marker shapes keep all four
+# distinguishable using only black and white.
 WORKLOAD_ORDER = ["mustang_stress", "mustang_slack", "trinity_stress", "trinity_slack"]
 WORKLOAD_LABELS = {
     "mustang_stress": "Mustang stress",
@@ -409,11 +415,11 @@ WORKLOAD_LABELS = {
     "trinity_stress": "Trinity stress",
     "trinity_slack": "Trinity slack",
 }
-WORKLOAD_COLORS = {
-    "mustang_stress": "#2f5d8a",
-    "mustang_slack": "#7ba7d0",
-    "trinity_stress": "#c8571f",
-    "trinity_slack": "#e6a05c",
+WORKLOAD_HATCHES = {
+    "mustang_stress": "///",
+    "mustang_slack": "\\\\\\",
+    "trinity_stress": "xx",
+    "trinity_slack": "..",
 }
 WORKLOAD_MARKERS = {
     "mustang_stress": "o",
@@ -421,19 +427,12 @@ WORKLOAD_MARKERS = {
     "trinity_stress": "^",
     "trinity_slack": "D",
 }
-WORKLOAD_LINESTYLES = {
-    "mustang_stress": "--",
-    "mustang_slack": ":",
-    "trinity_stress": "-.",
-    "trinity_slack": (0, (3, 1, 1, 1)),
-}
-
 SEASON_ORDER = ["winter", "spring", "summer", "autumn"]
-SEASON_COLORS = {
-    "winter": "#4c78a8",
-    "spring": "#54a24b",
-    "summer": "#f2a541",
-    "autumn": "#b279a2",
+SEASON_FILLSTYLES = {
+    "winter": "full",
+    "spring": "none",
+    "summer": "left",
+    "autumn": "right",
 }
 OBJECTIVE_MARKERS = {
     "greenfilling_carbon": "o",
@@ -443,14 +442,30 @@ OBJECTIVE_MARKERS = {
 
 # --- Plotting ----------------------------------------------------------------
 
+def monochrome_marker(marker, fillstyle):
+    """Return a black-and-white marker with the requested fill style."""
+    return MarkerStyle(marker, fillstyle=fillstyle)
+
+
+def export_figure(fig, output_dir, stem):
+    """Export an IEEE-sized figure as vector PDF and 600 dpi PNG."""
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = output_dir / f"{stem}.pdf"
+    png_path = output_dir / f"{stem}.png"
+    fig.savefig(pdf_path, format="pdf", dpi=IEEE_LINE_ART_DPI)
+    fig.savefig(png_path, format="png", dpi=IEEE_LINE_ART_DPI)
+    return pdf_path, png_path
+
+
 def plot_delta_boxes(data, metrics, titles, ylabels, figure_title):
     fig, axes = plt.subplots(
-        1, len(metrics), figsize=(4.6 * len(metrics), 4.4), squeeze=False
+        1, len(metrics), figsize=BOX_FIGURE_SIZE, squeeze=False
     )
     axes = axes[0]
 
     # One box per (objective, workload). Workloads sit side by side within each objective group.
-    group_centers = {variant: 1.0 + index * 1.7 for index, variant in enumerate(VARIANT_ORDER)}
+    group_centers = {variant: 1.0 + index * 2.3 for index, variant in enumerate(VARIANT_ORDER)}
     within_offsets = {
         workload: (position - (len(WORKLOAD_ORDER) - 1) / 2) * 0.42
         for position, workload in enumerate(WORKLOAD_ORDER)
@@ -475,18 +490,22 @@ def plot_delta_boxes(data, metrics, titles, ylabels, figure_title):
                 medianprops={"color": "black", "linewidth": 1.4},
             )
             for patch in box["boxes"]:
-                patch.set_facecolor(WORKLOAD_COLORS[workload])
-                patch.set_alpha(0.35)
+                patch.set_facecolor("white")
+                patch.set_edgecolor("black")
+                patch.set_hatch(WORKLOAD_HATCHES[workload])
 
             for position, values in zip(positions, series):
                 offsets = np.linspace(-0.08, 0.08, len(values)) if len(values) else []
                 ax.scatter(
                     position + offsets,
                     values,
-                    s=16,
-                    alpha=0.65,
-                    color=WORKLOAD_COLORS[workload],
-                    edgecolor="none",
+                    s=BOX_POINT_AREA,
+                    alpha=0.75,
+                    marker="o",
+                    facecolor="white",
+                    edgecolor="black",
+                    linewidth=0.3,
+                    zorder=3,
                 )
 
         ax.axhline(0, color="black", linewidth=0.9)
@@ -500,23 +519,27 @@ def plot_delta_boxes(data, metrics, titles, ylabels, figure_title):
         )
 
     workload_handles = [
-        Patch(facecolor=WORKLOAD_COLORS[workload], alpha=0.35, edgecolor="black", label=WORKLOAD_LABELS[workload])
+        Patch(facecolor="white", edgecolor="black", hatch=WORKLOAD_HATCHES[workload], label=WORKLOAD_LABELS[workload])
         for workload in WORKLOAD_ORDER
     ]
-    fig.legend(handles=workload_handles, loc="upper center", ncol=len(WORKLOAD_ORDER), bbox_to_anchor=(0.5, 1.02), frameon=False)
-    fig.suptitle(figure_title, y=1.09)
-    fig.tight_layout()
+    fig.legend(handles=workload_handles, loc="upper center", ncol=len(WORKLOAD_ORDER), bbox_to_anchor=(0.5, 0.89), frameon=False)
+    fig.suptitle(figure_title, y=0.98)
+    fig.tight_layout(rect=(0, 0, 1, 0.82), pad=0.3, w_pad=0.5)
     return fig, axes
 
 
-def plot_environmental_deltas(data):
-    """Footprint deltas (carbon, water) versus EASY, per sampled window."""
+def plot_deltas_vs_easy(data):
+    """Footprint and bounded-slowdown deltas versus EASY, per sampled window."""
     return plot_delta_boxes(
         data,
-        ["total_carbon_footprint_delta_pct", "total_water_footprint_delta_pct"],
-        ["Carbon footprint", "Water footprint"],
-        [r"$\Delta$ [% vs EASY]"] * 2,
-        r"Environmental $\Delta$ by sampled window",
+        [
+            "total_carbon_footprint_delta_pct",
+            "total_water_footprint_delta_pct",
+            "replay_mean_bounded_slowdown_delta_pct",
+        ],
+        ["Carbon footprint", "Water footprint", "Average bounded slowdown"],
+        [r"$\Delta$ [% vs EASY]"] * 3,
+        r"Footprint and performance $\Delta$ by sampled window",
     )
 
 
@@ -535,21 +558,6 @@ def plot_energy_exposure_deltas(data):
     )
 
 
-def plot_performance_deltas(data):
-    """Replay-job performance deltas versus EASY, per sampled window."""
-    return plot_delta_boxes(
-        data,
-        [
-            "replay_median_waiting_time_delta_seconds",
-            "replay_p95_waiting_time_delta_pct",
-            "replay_mean_bounded_slowdown_delta_pct",
-        ],
-        ["Median waiting time", "P95 waiting time", "Average bounded slowdown"],
-        [r"$\Delta$ [s vs EASY]", r"$\Delta$ [% vs EASY]", r"$\Delta$ [% vs EASY]"],
-        "Job performance deltas by sampled window",
-    )
-
-
 def plot_tradeoff_scatter(data, environmental_delta_column, x_label, title):
     plot_data = data.copy()
     plot_data["environmental_saving_pct"] = -plot_data[environmental_delta_column]
@@ -561,7 +569,7 @@ def plot_tradeoff_scatter(data, environmental_delta_column, x_label, title):
     fig, axes = plt.subplots(
         len(WORKLOAD_ORDER),
         len(zones),
-        figsize=(4.4 * len(zones), 4.0 * len(WORKLOAD_ORDER)),
+        figsize=TRADEOFF_FIGURE_SIZE,
         sharex=True,
         sharey=True,
         squeeze=False,
@@ -580,27 +588,28 @@ def plot_tradeoff_scatter(data, environmental_delta_column, x_label, title):
                 variant_data = zone_data[zone_data["greenfilling_variant"].eq(variant)]
                 for season in SEASON_ORDER:
                     points = variant_data[variant_data["season"].eq(season)]
-                    ax.scatter(
+                    ax.plot(
                         points["environmental_saving_pct"],
                         points["bounded_slowdown_penalty_pct"],
-                        marker=OBJECTIVE_MARKERS[variant],
-                        s=58,
-                        color=SEASON_COLORS[season],
-                        edgecolor="black",
-                        linewidth=0.55,
+                        linestyle="",
+                        marker=monochrome_marker(OBJECTIVE_MARKERS[variant], SEASON_FILLSTYLES[season]),
+                        color="black",
+                        markerfacecolor="black",
+                        markerfacecoloralt="white",
+                        markeredgecolor="black",
+                        markeredgewidth=0.7,
+                        markersize=DATA_MARKER_SIZE,
                         alpha=0.85,
                     )
 
             ax.axvline(0, color="black", linewidth=0.9)
             ax.axhline(0, color="black", linewidth=0.9)
             ax.set_title(f"{WORKLOAD_LABELS[workload]} - {zone}")
-            ax.set_xlabel(x_label)
             ax.set_xlim(x_values.min() - x_padding, x_values.max() + x_padding)
             ax.set_ylim(min(0, y_values.min() - y_padding), y_values.max() + y_padding)
-        axes[row][0].set_ylabel("Average bounded slowdown penalty [% vs EASY]")
 
     season_handles = [
-        Line2D([0], [0], marker="o", linestyle="", color=SEASON_COLORS[season], label=season.title(), markersize=7)
+        Line2D([0], [0], marker=monochrome_marker("o", SEASON_FILLSTYLES[season]), linestyle="", markerfacecolor="black", markerfacecoloralt="white", markeredgecolor="black", color="black", label=season.title(), markersize=LEGEND_MARKER_SIZE)
         for season in SEASON_ORDER
     ]
     objective_handles = [
@@ -611,15 +620,17 @@ def plot_tradeoff_scatter(data, environmental_delta_column, x_label, title):
             linestyle="",
             color="black",
             label=VARIANT_LABELS[variant],
-            markersize=7,
+            markersize=LEGEND_MARKER_SIZE,
         )
         for variant in VARIANT_ORDER
     ]
 
-    fig.legend(handles=season_handles, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06), frameon=False)
-    fig.legend(handles=objective_handles, loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.04), frameon=False)
-    fig.suptitle(title, y=1.12)
-    fig.tight_layout()
+    fig.legend(handles=season_handles, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 0.965), frameon=False)
+    fig.legend(handles=objective_handles, loc="upper center", ncol=2, bbox_to_anchor=(0.5, 0.935), frameon=False)
+    fig.suptitle(title, y=0.995)
+    fig.supxlabel(x_label, y=0.01)
+    fig.supylabel("Average bounded slowdown penalty [% vs EASY]", x=0.005)
+    fig.tight_layout(rect=(0.04, 0.04, 1, 0.905), pad=0.3, w_pad=0.4, h_pad=0.5)
     return fig, axes
 
 
@@ -629,7 +640,7 @@ def plot_swing_relationship(data):
         ("greenfilling_water", "swing_water", "total_water_footprint_delta_pct", "Water objective", "Water swing"),
     ]
 
-    fig, axes = plt.subplots(1, len(specs), figsize=(5.6 * len(specs), 4.6), squeeze=False)
+    fig, axes = plt.subplots(1, len(specs), figsize=SWING_FIGURE_SIZE, squeeze=False)
     axes = axes[0]
 
     for ax, (variant, swing_column, delta_column, title, x_label) in zip(axes, specs):
@@ -639,15 +650,18 @@ def plot_swing_relationship(data):
             subset = variant_data[variant_data["workload_label"].eq(workload)]
             for season in SEASON_ORDER:
                 points = subset[subset["season"].eq(season)]
-                ax.scatter(
+                ax.plot(
                     points[swing_column],
                     -points[delta_column],
-                    color=SEASON_COLORS[season],
-                    edgecolor="black",
-                    linewidth=0.55,
-                    s=58,
+                    linestyle="",
+                    color="black",
+                    marker=monochrome_marker(WORKLOAD_MARKERS[workload], SEASON_FILLSTYLES[season]),
+                    markerfacecolor="black",
+                    markerfacecoloralt="white",
+                    markeredgecolor="black",
+                    markeredgewidth=0.7,
+                    markersize=DATA_MARKER_SIZE,
                     alpha=0.85,
-                    marker=WORKLOAD_MARKERS[workload],
                 )
 
         # Fit and correlation over all workload scenarios pooled.
@@ -656,7 +670,7 @@ def plot_swing_relationship(data):
         if len(swing) > 1:
             slope, intercept = np.polyfit(swing, saving, 1)
             grid = np.linspace(swing.min(), swing.max(), 50)
-            ax.plot(grid, slope * grid + intercept, color="black", linestyle="--", linewidth=1.1)
+            ax.plot(grid, slope * grid + intercept, color="black", linestyle="-", marker="", linewidth=1.1)
             r = np.corrcoef(swing, saving)[0, 1]
             ax.set_title(f"{title}  (r = {r:.2f})")
         else:
@@ -667,15 +681,15 @@ def plot_swing_relationship(data):
         ax.set_ylabel("Footprint saving [% vs EASY]")
 
     season_handles = [
-        Line2D([0], [0], marker="o", linestyle="", color=SEASON_COLORS[season], label=season.title(), markersize=7)
+        Line2D([0], [0], marker=monochrome_marker("o", SEASON_FILLSTYLES[season]), linestyle="", markerfacecolor="black", markerfacecoloralt="white", markeredgecolor="black", color="black", label=season.title(), markersize=LEGEND_MARKER_SIZE)
         for season in SEASON_ORDER
     ]
     workload_handles = [
-        Line2D([0], [0], marker=WORKLOAD_MARKERS[workload], linestyle="", color="black", label=WORKLOAD_LABELS[workload], markersize=7)
+        Line2D([0], [0], marker=WORKLOAD_MARKERS[workload], linestyle="", color="black", label=WORKLOAD_LABELS[workload], markersize=LEGEND_MARKER_SIZE)
         for workload in WORKLOAD_ORDER
     ]
-    fig.legend(handles=season_handles, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.06), frameon=False)
-    fig.legend(handles=workload_handles, loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.04), frameon=False)
-    fig.suptitle("Intra-day swing versus greenfilling footprint saving", y=1.14)
-    fig.tight_layout()
+    fig.legend(handles=season_handles, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 0.91), frameon=False)
+    fig.legend(handles=workload_handles, loc="lower center", ncol=2, bbox_to_anchor=(0.5, 0.01), frameon=False)
+    fig.suptitle("Intra-day swing versus greenfilling footprint saving", y=0.98)
+    fig.tight_layout(rect=(0, 0.12, 1, 0.85), pad=0.3, w_pad=0.5)
     return fig, axes
