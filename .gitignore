@@ -8,3 +8,4 @@ __pycache__/
 workloads and platforms/datasets
 experiments/experimental-campaigns
 **/out/
+analysis/paper_results/

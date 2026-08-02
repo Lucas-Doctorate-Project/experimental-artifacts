@@ -9,6 +9,8 @@ authors:
     family-names: "Schwarz"
   - given-names: "Bruno"
     family-names: "Lima"
+  - given-names: "Victor"
+    family-names: "Lima"
 abstract: "Artifacts and runner for reproducible Batsim scheduling experiments evaluating environmental-aware heuristics."
 repository-code: "https://github.com/Lucas-Doctorate-Project/experimental-artifacts"
 license: "Apache-2.0"

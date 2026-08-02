@@ -12,6 +12,7 @@ import pandas as pd
 import tomllib
 
 import matplotlib.pyplot as plt
+from cycler import cycler
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 from matplotlib.markers import MarkerStyle
@@ -438,6 +439,50 @@ OBJECTIVE_MARKERS = {
     "greenfilling_carbon": "o",
     "greenfilling_water": "^",
 }
+
+
+def apply_paper_style():
+    """Set the Matplotlib defaults used for the figures in the paper.
+
+    Both `greenfilling_tradeoffs.ipynb` and `reproduce_paper.py` call this, so a
+    figure exported from either route is styled identically: monochrome, serif,
+    IEEE body-text sizes, and Type 42 fonts for vector output.
+    """
+    monochrome = (
+        cycler("color", ["black"])
+        * cycler("linestyle", ["-", "--", ":", "-."])
+        * cycler("marker", ["o", "^", "s", "D"])
+    )
+    plt.rcParams.update({
+        "text.usetex": False,
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "STIXGeneral", "DejaVu Serif"],
+        "font.size": 9,
+        "mathtext.fontset": "stix",
+        "axes.labelsize": 9,
+        "axes.titlesize": 9,
+        "legend.fontsize": 8,
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
+        "figure.titlesize": 10,
+        "figure.dpi": 120,
+        "axes.grid": True,
+        "axes.axisbelow": True,
+        "axes.prop_cycle": monochrome,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "axes.spines.bottom": False,
+        "axes.spines.left": False,
+        "grid.alpha": 0.25,
+        "lines.linewidth": 1.1,
+        "lines.markersize": 4.5,
+        "hatch.linewidth": 0.6,
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+        "savefig.dpi": IEEE_LINE_ART_DPI,
+        "savefig.facecolor": "white",
+        "savefig.transparent": False,
+    })
 
 
 # --- Plotting ----------------------------------------------------------------
