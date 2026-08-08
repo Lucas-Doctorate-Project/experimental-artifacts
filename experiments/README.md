@@ -25,7 +25,7 @@ name = "example"
 workload = "../workloads and platforms/mustang_slack.json"
 platform = "../workloads and platforms/mustang.xml"
 environmental_trace = "../intensities/traces/FR_2020-01-06.csv"
-variant_name = "greenfilling"
+variant_name = "green_window_filling"
 variant_options = "options.json"
 ```
 
@@ -42,19 +42,24 @@ Paths are resolved by the OS. Use paths relative to the directory you run the bi
 
 ## Declare variant options
 
-The file referenced by `variant_options` is JSON handed to Batsched untouched. For the `greenfilling` variant:
+The file referenced by `variant_options` is JSON handed to Batsched untouched. For the `green_window_filling` variant:
 
 ```json
 {
     "intensity_trace": "../intensities/traces/FR_2020-01-06.csv",
     "intensity_zone": "AS0",
     "signal": "carbon",
-    "smoothing_factor": 0.3,
-    "greenfilling_debug": true
+    "planning_horizon_seconds": 43200,
+    "computing_watts": 320,
+    "idle_watts": 10,
+    "green_window_filling_debug": true
 }
 ```
 
-`signal` selects the intensity signal to optimize for (`carbon` or `water`, defaults to `carbon`).
+- `signal` selects the intensity signal to optimize for (`carbon` or `water`, required).
+- `planning_horizon_seconds` bounds how far ahead the algorithm may displace a job into a greener window (required).
+- `computing_watts`/`idle_watts` should match the simulated platform's real wattage (see each `<dataset>.xml`'s `wattage_per_state` property) so the impact scoring is accurate; they default to 320/10 (Mustang's values) if omitted.
+- `window_step_seconds` is optional; it defaults to the intensity trace's own sampling period.
 
 See the Batsched documentation for the keys accepted by each variant.
 
@@ -62,10 +67,10 @@ See the Batsched documentation for the keys accepted by each variant.
 
 `gen_campaign.py` writes the full campaign instead of hand-authoring it. It scans the 4-week intensity windows under `../intensities/traces/` (files named `<CC>_<date>.csv`) and emits, over both datasets (Mustang and Trinity):
 
-- `experiments.toml`: EASY and greenfilling (carbon and water) over every window, both datasets, and both regimes (slack and stress), so 3 x 2 x 2 x 36 = 432 experiments.
-- `options/{carbon,water}_<CC>_<date>.json`: the greenfilling variant options per window and signal (72 files). These are shared across datasets, since the signal depends only on the intensity window, not the workload.
+- `experiments.toml`: EASY and green_window_filling (carbon and water, at planning horizons of 6h/12h/24h) over every window, both datasets, and both regimes (slack and stress), so (1 + 2 x 3) x 2 x 2 x 36 = 1008 experiments.
+- `options/{carbon,water}_<horizon_seconds>_<dataset>_<CC>_<date>.json`: the green_window_filling variant options per window, signal, horizon, and dataset (432 files). Dataset-specific because `computing_watts`/`idle_watts` must match each platform's real wattage.
 
-Experiment names carry the dataset and regime (`<variant>[_<signal>]_<dataset>_<regime>_<CC>_<date>`), so Mustang and Trinity never share an output directory.
+Experiment names carry every axis (`<variant>[_<signal>_<horizon_seconds>]_<dataset>_<regime>_<CC>_<date>`), so Mustang and Trinity never share an output directory.
 
 Run it from this directory, then run the generated campaign:
 
