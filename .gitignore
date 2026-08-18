@@ -7,4 +7,5 @@ __pycache__/
 .direnv/
 workloads and platforms/datasets
 experiments/experimental-campaigns
+analysis/shift_ceiling_results.csv*
 **/out/
