@@ -5,10 +5,10 @@ Covers every 4-week intensity window under intensities/traces/ and both datasets
 (Mustang and Trinity). Emits:
 
   - experiments.toml: schedulers x datasets x regimes x N windows, where the
-    green_window_filling schedulers are further split by signal and planning
+    green_window_scheduling schedulers are further split by signal and planning
     horizon.
   - options/{carbon,water}_<horizon>_<dataset>_<CC>_<date>.json:
-    green_window_filling variant options per window, signal, horizon, and
+    green_window_scheduling variant options per window, signal, horizon, and
     dataset. Dataset-specific because computing_watts/idle_watts must match
     each platform's real wattage.
 
@@ -35,9 +35,9 @@ DATASETS = ["mustang", "trinity"]
 REGIMES = ["slack", "stress"]
 SIGNALS = ["carbon", "water"]
 
-# How far ahead green_window_filling may look for a greener window to displace
-# a job into: 6h, 12h, and 24h, swept as an experimental axis.
-PLANNING_HORIZONS_SECONDS = [21600, 43200, 86400]
+# How far ahead green_window_scheduling may look for a greener window to displace
+# a job: the campaign uses a 24-hour planning horizon.
+PLANNING_HORIZONS_SECONDS = [86400]
 
 # Real per-node wattage from each platform's XML ("wattage_per_state" on
 # compute_node hosts, idle:computing:computing). Must match the simulated
@@ -80,7 +80,7 @@ def write_options(traces):
                         "planning_horizon_seconds": horizon,
                         "computing_watts": wattage["computing_watts"],
                         "idle_watts": wattage["idle_watts"],
-                        "green_window_filling_debug": True,
+                        "green_window_scheduling_debug": False,
                     }
                     path = os.path.join(
                         OPTIONS_DIR, f"{signal}_{horizon}_{dataset}_{cc}_{date}.json"
@@ -115,7 +115,7 @@ def write_toml(traces):
                     f"easy_bf_{dataset}_{regime}_{cc}_{date}",
                     dataset, regime, f"{cc}_{date}", "easy_bf", "",
                 ))
-    # green_window_filling: one variant per intensity signal and planning
+    # green_window_scheduling: one variant per intensity signal and planning
     # horizon; options are dataset-specific (wattage differs per platform).
     for signal in SIGNALS:
         for horizon in PLANNING_HORIZONS_SECONDS:
@@ -123,9 +123,9 @@ def write_toml(traces):
                 for regime in REGIMES:
                     for cc, date in traces:
                         blocks.append(experiment(
-                            f"green_window_filling_{signal}_{horizon}_{dataset}_{regime}_{cc}_{date}",
+                            f"green_window_scheduling_{signal}_{horizon}_{dataset}_{regime}_{cc}_{date}",
                             dataset, regime, f"{cc}_{date}",
-                            "green_window_filling",
+                            "green_window_scheduling",
                             f"options/{signal}_{horizon}_{dataset}_{cc}_{date}.json",
                         ))
     with open(TOML_OUT, "w") as f:
