@@ -6,6 +6,8 @@ __pycache__/
 .envrc
 .direnv/
 workloads and platforms/datasets
+analysis/mustang_user_resampling_artifacts/
+workloads and platforms/generated/mustang_user_resampling/
 experiments/experimental-campaigns
 analysis/shift_ceiling_results.csv*
 **/out/

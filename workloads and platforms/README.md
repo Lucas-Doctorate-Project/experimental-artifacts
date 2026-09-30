@@ -32,6 +32,20 @@ Each job gets its own `parallel_homogeneous` profile with `cpu = runtime * node_
 
 The simulation starts with an empty machine, so warm-up jobs reconstruct the system state at the extract start `T0`. Jobs running at `T0` are submitted at `t = 0` with their remaining runtime and walltime, ordered by original start time. Jobs queued at `T0` are submitted at `t = 0` with their full runtime, ordered by original submit time. The steady state begins when the first replay job (submitted inside the 4-week window) arrives. Evaluation metrics should be computed on the steady state only.
 
+### User-resampled Mustang traces
+
+[`analysis/mustang_user_resampling.ipynb`](../analysis/mustang_user_resampling.ipynb) generates Mustang variants with a larger representation of long and/or large jobs for Greenfilling experiments. It classifies source users from the fixed Slack and Stress windows, then samples complete user subtraces with replacement. Submission times and job attributes remain unchanged; only each source user's selection probability changes. The canonical warm-up context is reused exactly.
+
+Run the notebook from the repository root:
+
+```console
+nix develop ./nix -c jupyter nbconvert --to notebook --execute --inplace analysis/mustang_user_resampling.ipynb
+```
+
+The default configuration produces two identity baselines and five seeded replicas for each of four scenarios (`random`, `heavy_2x`, `heavy_4x`, and `heavy_8x`). CSV/JSON pairs, collection manifests, and validation metadata are written to the ignored `analysis/mustang_user_resampling_artifacts/` directory. Calibration figures are written to `analysis/figures/`; generated-trace comparisons are interactive Plotly dashboards embedded in the executed notebook.
+
+The notebook compares every generated trace with its original Mustang regime using aligned hourly submission counts. After inspection, exactly one Slack ID and one Stress ID can be exported to separate `generated/mustang_user_resampling/<workload ID>/` directories. Each directory contains the unchanged CSV and Batsim JSON, selection and user-provenance manifests, and `comparison.png`, which summarizes that workload against its original regime. Export is disabled by default and never edits or launches an experimental campaign.
+
 ## Platform generation
 
 `mustang.xml` is a homogeneous SimGrid platform modelled after Mustang. Hosts are full nodes (no `core` attribute) computing at full-node speed. Power states use the SimGrid `wattage_per_state` format `idle:epsilon:all_cores`.
