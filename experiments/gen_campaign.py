@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Generate the full 4-week campaign.
+"""Generate the Greenfilling campaign on the user-resampled Mustang workloads.
 
-Covers every 4-week intensity window under intensities/traces/ and both datasets
-(Mustang and Trinity). Emits:
+Covers every 4-week intensity window under intensities/traces/ and the two
+resampled Mustang workloads (one per regime) exported by
+analysis/mustang_user_resampling.ipynb. Emits:
 
-  - experiments.toml: schedulers x datasets x regimes x N windows, where the
-    green_window_scheduling schedulers are further split by signal and planning
-    horizon.
-  - options/{carbon,water}_<horizon>_<dataset>_<CC>_<date>.json:
-    green_window_scheduling variant options per window, signal, horizon, and
-    dataset. Dataset-specific because computing_watts/idle_watts must match
-    each platform's real wattage.
+  - experiments.toml: (EASY + greenfilling x signals) x regimes x N windows.
+  - options/greenfilling_{carbon,water}_<CC>_<date>.json: greenfilling variant
+    options per window and signal. Greenfilling reads no platform wattage, so
+    the options are not dataset-specific.
 
 Experiment names carry every axis, so no two experiments share an output
-directory: <variant>[_<signal>_<horizon>]_<dataset>_<regime>_<CC>_<date>.
+directory: <variant>[_<signal>]_mustang_<regime>_<CC>_<date>. The dataset token
+stays `mustang` (the platform) so analysis/campaign_analysis.py parses the
+names; the resampled workload behind each regime is recorded in
+RESAMPLED_WORKLOADS below.
 
 Run from the experiments/ directory (where the campaign runner is launched), so
 the relative paths it writes resolve correctly:
@@ -25,27 +26,28 @@ import glob
 import json
 import os
 import re
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TRACES_DIR = os.path.join(HERE, "..", "intensities", "traces")
 OPTIONS_DIR = os.path.join(HERE, "options")
 TOML_OUT = os.path.join(HERE, "experiments.toml")
 
-DATASETS = ["mustang", "trinity"]
-REGIMES = ["slack", "stress"]
+DATASET = "mustang"
 SIGNALS = ["carbon", "water"]
 
-# How far ahead green_window_scheduling may look for a greener window to displace
-# a job into: 6h, 12h, and 24h, swept as an experimental axis.
-PLANNING_HORIZONS_SECONDS = [21600, 43200, 86400]
-
-# Real per-node wattage from each platform's XML ("wattage_per_state" on
-# compute_node hosts, idle:computing:computing). Must match the simulated
-# platform so the algorithm's environmental-impact scoring is accurate.
-DATASET_WATTAGE = {
-    "mustang": {"idle_watts": 10, "computing_watts": 320},
-    "trinity": {"idle_watts": 10, "computing_watts": 270},
+# One resampled workload per regime: the IDs selected and exported by the last
+# cell of analysis/mustang_user_resampling.ipynb.
+RESAMPLED_DIR = "../workloads and platforms/generated/mustang_user_resampling"
+RESAMPLED_WORKLOADS = {
+    "slack": "mustang_slack_heavy_4x_seed20260930",
+    "stress": "mustang_stress_heavy_8x_seed20260930",
 }
+
+# Greenfilling's alpha: the smoothing coefficient of the exponential moving
+# average of the intensity signal. Backfilling is allowed only while the
+# current intensity is at or below that average.
+SMOOTHING_FACTOR = 0.5
 
 # 4-week window CSVs are named <CC>_<YYYY-MM-DD>; whole-trace files like DE.csv
 # do not match this pattern and are excluded.
@@ -63,6 +65,17 @@ def load_traces():
     return traces
 
 
+def workload_path(regime):
+    workload_id = RESAMPLED_WORKLOADS[regime]
+    return f"{RESAMPLED_DIR}/{workload_id}/{workload_id}.json"
+
+
+def missing_workloads():
+    """Return the resampled workload paths that are not on disk yet."""
+    paths = [workload_path(regime) for regime in RESAMPLED_WORKLOADS]
+    return [p for p in paths if not os.path.isfile(os.path.join(HERE, p))]
+
+
 def write_options(traces):
     os.makedirs(OPTIONS_DIR, exist_ok=True)
     for stale in glob.glob(os.path.join(OPTIONS_DIR, "*.json")):
@@ -70,34 +83,27 @@ def write_options(traces):
     count = 0
     for cc, date in traces:
         for signal in SIGNALS:
-            for horizon in PLANNING_HORIZONS_SECONDS:
-                for dataset in DATASETS:
-                    wattage = DATASET_WATTAGE[dataset]
-                    opts = {
-                        "intensity_trace": f"../intensities/traces/{cc}_{date}.csv",
-                        "intensity_zone": "AS0",
-                        "signal": signal,
-                        "planning_horizon_seconds": horizon,
-                        "computing_watts": wattage["computing_watts"],
-                        "idle_watts": wattage["idle_watts"],
-                        "green_window_scheduling_debug": True,
-                    }
-                    path = os.path.join(
-                        OPTIONS_DIR, f"{signal}_{horizon}_{dataset}_{cc}_{date}.json"
-                    )
-                    with open(path, "w") as f:
-                        json.dump(opts, f, indent=4)
-                        f.write("\n")
-                    count += 1
+            opts = {
+                "intensity_trace": f"../intensities/traces/{cc}_{date}.csv",
+                "intensity_zone": "AS0",
+                "signal": signal,
+                "smoothing_factor": SMOOTHING_FACTOR,
+                "greenfilling_debug": False,
+            }
+            path = os.path.join(OPTIONS_DIR, f"greenfilling_{signal}_{cc}_{date}.json")
+            with open(path, "w") as f:
+                json.dump(opts, f, indent=4)
+                f.write("\n")
+            count += 1
     return count
 
 
-def experiment(name, dataset, regime, trace, variant, options):
+def experiment(name, regime, trace, variant, options):
     return (
         "[[experiment]]\n"
         f'name = "{name}"\n'
-        f'workload = "../workloads and platforms/{dataset}_{regime}.json"\n'
-        f'platform = "../workloads and platforms/{dataset}.xml"\n'
+        f'workload = "{workload_path(regime)}"\n'
+        f'platform = "../workloads and platforms/{DATASET}.xml"\n'
         f'environmental_trace = "../intensities/traces/{trace}.csv"\n'
         f'variant_name = "{variant}"\n'
         f'variant_options = "{options}"\n'
@@ -108,26 +114,21 @@ def write_toml(traces):
     blocks = []
     # Baseline EASY backfilling: schedule is independent of the intensity trace,
     # but kept per-trace so every experiment has a matching environmental trace.
-    for dataset in DATASETS:
-        for regime in REGIMES:
+    for regime in RESAMPLED_WORKLOADS:
+        for cc, date in traces:
+            blocks.append(experiment(
+                f"easy_bf_{DATASET}_{regime}_{cc}_{date}",
+                regime, f"{cc}_{date}", "easy_bf", "",
+            ))
+    # greenfilling: one variant per intensity signal.
+    for signal in SIGNALS:
+        for regime in RESAMPLED_WORKLOADS:
             for cc, date in traces:
                 blocks.append(experiment(
-                    f"easy_bf_{dataset}_{regime}_{cc}_{date}",
-                    dataset, regime, f"{cc}_{date}", "easy_bf", "",
+                    f"greenfilling_{signal}_{DATASET}_{regime}_{cc}_{date}",
+                    regime, f"{cc}_{date}", "greenfilling",
+                    f"options/greenfilling_{signal}_{cc}_{date}.json",
                 ))
-    # green_window_scheduling: one variant per intensity signal and planning
-    # horizon; options are dataset-specific (wattage differs per platform).
-    for signal in SIGNALS:
-        for horizon in PLANNING_HORIZONS_SECONDS:
-            for dataset in DATASETS:
-                for regime in REGIMES:
-                    for cc, date in traces:
-                        blocks.append(experiment(
-                            f"green_window_scheduling_{signal}_{horizon}_{dataset}_{regime}_{cc}_{date}",
-                            dataset, regime, f"{cc}_{date}",
-                            "green_window_scheduling",
-                            f"options/{signal}_{horizon}_{dataset}_{cc}_{date}.json",
-                        ))
     with open(TOML_OUT, "w") as f:
         f.write("\n".join(blocks))
     return len(blocks)
@@ -137,8 +138,11 @@ def main():
     traces = load_traces()
     n_opts = write_options(traces)
     n_exp = write_toml(traces)
-    print(f"{len(traces)} windows x {len(DATASETS)} datasets -> "
+    print(f"{len(traces)} windows x {len(RESAMPLED_WORKLOADS)} resampled workloads -> "
           f"{n_opts} option files in options/, {n_exp} experiments in experiments.toml")
+    for path in missing_workloads():
+        print(f"warning: workload not found, run analysis/mustang_user_resampling.ipynb: {path}",
+              file=sys.stderr)
 
 
 if __name__ == "__main__":

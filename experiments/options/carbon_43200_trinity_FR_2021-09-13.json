@@ -1,9 +1,0 @@
-{
-    "intensity_trace": "../intensities/traces/FR_2021-09-13.csv",
-    "intensity_zone": "AS0",
-    "signal": "carbon",
-    "planning_horizon_seconds": 43200,
-    "computing_watts": 270,
-    "idle_watts": 10,
-    "green_window_scheduling_debug": true
-}
