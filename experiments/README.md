@@ -65,12 +65,12 @@ See the Batsched documentation for the keys accepted by each variant.
 
 ## Generate the campaign
 
-`gen_campaign.py` writes the full campaign instead of hand-authoring it. It scans the 4-week intensity windows under `../intensities/traces/` (files named `<CC>_<date>.csv`) and emits, over both datasets (Mustang and Trinity):
+`gen_campaign.py` writes the full campaign instead of hand-authoring it. It scans the 4-week intensity windows under `../intensities/traces/` (files named `<CC>_<date>.csv`) and emits, over the Mustang dataset (Trinity is no longer used):
 
-- `experiments.toml`: EASY and green_window_scheduling (carbon and water, at planning horizons of 6h/12h/24h) over every window, both datasets, and both regimes (slack and stress), so (1 + 2 x 3) x 2 x 2 x 36 = 1008 experiments.
-- `options/{carbon,water}_<horizon_seconds>_<dataset>_<CC>_<date>.json`: the green_window_scheduling variant options per window, signal, horizon, and dataset (432 files). Dataset-specific because `computing_watts`/`idle_watts` must match each platform's real wattage.
+- `experiments.toml`: EASY and green_window_scheduling (carbon and water, at planning horizons of 6h/12h/24h) over every window and both regimes (slack and stress), so (1 + 2 x 3) x 2 x 36 = 504 experiments.
+- `options/{carbon,water}_<horizon_seconds>_<dataset>_<CC>_<date>.json`: the green_window_scheduling variant options per window, signal, horizon, and dataset (216 files). Dataset-specific because `computing_watts`/`idle_watts` must match each platform's real wattage.
 
-Experiment names carry every axis (`<variant>[_<signal>_<horizon_seconds>]_<dataset>_<regime>_<CC>_<date>`), so Mustang and Trinity never share an output directory.
+Experiment names carry every axis (`<variant>[_<signal>_<horizon_seconds>]_<dataset>_<regime>_<CC>_<date>`), so datasets never share an output directory.
 
 Run it from this directory, then run the generated campaign:
 

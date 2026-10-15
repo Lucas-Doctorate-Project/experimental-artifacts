@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate the full 4-week campaign.
 
-Covers every 4-week intensity window under intensities/traces/ and both datasets
-(Mustang and Trinity). Emits:
+Covers every 4-week intensity window under intensities/traces/ and the Mustang
+dataset (Trinity is no longer used). Emits:
 
   - experiments.toml: schedulers x datasets x regimes x N windows, where the
     green_window_scheduling schedulers are further split by signal and planning
@@ -31,7 +31,7 @@ TRACES_DIR = os.path.join(HERE, "..", "intensities", "traces")
 OPTIONS_DIR = os.path.join(HERE, "options")
 TOML_OUT = os.path.join(HERE, "experiments.toml")
 
-DATASETS = ["mustang", "trinity"]
+DATASETS = ["mustang"]
 REGIMES = ["slack", "stress"]
 SIGNALS = ["carbon", "water"]
 
@@ -44,7 +44,6 @@ PLANNING_HORIZONS_SECONDS = [21600, 43200, 86400]
 # platform so the algorithm's environmental-impact scoring is accurate.
 DATASET_WATTAGE = {
     "mustang": {"idle_watts": 10, "computing_watts": 320},
-    "trinity": {"idle_watts": 10, "computing_watts": 270},
 }
 
 # 4-week window CSVs are named <CC>_<YYYY-MM-DD>; whole-trace files like DE.csv

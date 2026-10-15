@@ -839,26 +839,20 @@ SIGNAL_MARKERS = {"carbon": "o", "water": "^"}
 # this as the display order for the ones the campaign actually swept.
 HORIZON_LABELS = {6.0: "6 h", 12.0: "12 h", 24.0: "24 h"}
 
-# Workloads are (dataset, regime) pairs. Hatches and marker shapes keep all four
+# Workloads are (dataset, regime) pairs. Hatches and marker shapes keep them
 # distinguishable using only black and white.
-WORKLOAD_ORDER = ["mustang_stress", "mustang_slack", "trinity_stress", "trinity_slack"]
+WORKLOAD_ORDER = ["mustang_stress", "mustang_slack"]
 WORKLOAD_LABELS = {
     "mustang_stress": "Mustang stress",
     "mustang_slack": "Mustang slack",
-    "trinity_stress": "Trinity stress",
-    "trinity_slack": "Trinity slack",
 }
 WORKLOAD_HATCHES = {
     "mustang_stress": "///",
     "mustang_slack": "\\\\\\",
-    "trinity_stress": "xx",
-    "trinity_slack": "..",
 }
 WORKLOAD_MARKERS = {
     "mustang_stress": "o",
     "mustang_slack": "s",
-    "trinity_stress": "^",
-    "trinity_slack": "D",
 }
 SEASON_ORDER = ["winter", "spring", "summer", "autumn"]
 SEASON_FILLSTYLES = {
