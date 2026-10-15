@@ -273,7 +273,87 @@ def load_results(campaign, result_files, out_dir, windows):
         how="left",
         validate="many_to_one",
     )
-    return schedules, jobs
+    return add_accounting_horizon(schedules, jobs), jobs
+
+
+# --- Accounting horizon ------------------------------------------------------
+
+def add_accounting_horizon(schedules, jobs):
+    """Per run: the footprint's accounting horizon, and energy over that horizon.
+
+    Batsim's footprint totals run to the last trace timestamp, because the trace
+    updates keep the simulation alive, while `consumed_joules` stops at the last
+    job completion. With always-on nodes, PUE 1 and no embodied impact, a run
+    accounted to the end of the current trace satisfies
+
+        total = compute * (1 - P_idle / P_compute) + P_idle * nodes * integral of I
+
+    over the whole trace, for carbon and water. Adds `trace_end_seconds`,
+    `accounted_to_trace_end` (whether that identity holds, checked by
+    `assert_common_horizon`) and `consumed_joules_to_trace_end`.
+    """
+    import shift_ceiling_results as scr
+
+    compute = jobs.groupby("name")[["consumed_carbon", "consumed_water"]].sum()
+    platforms, windows = {}, {}
+    trace_ends, accounted, energies = [], [], []
+    for run in schedules.itertuples(index=False):
+        if run.dataset not in platforms:
+            platforms[run.dataset] = scr.load_platform(run.dataset)
+        platform = platforms[run.dataset]
+        key = (run.zone, run.start_date)
+        if key not in windows:
+            trace = scr.load_trace(run)
+            end = (len(trace.carbon) - 1) * scr.DELTA_SECONDS
+            windows[key] = end, {
+                signal: scr.integral_at(
+                    np.array([end], dtype=float), values, scr.prefix_integral(values)
+                )[0]
+                for signal, values in [("carbon", trace.carbon), ("water", trace.water)]
+            }
+        end, whole_trace = windows[key]
+
+        idle_ratio = platform.idle_power_w / platform.compute_power_w
+        # W x (intensity x h) / 1000 gives g for carbon and L for water.
+        accounted.append(all(
+            np.isclose(
+                total,
+                compute.loc[run.name, f"consumed_{signal}"] * (1 - idle_ratio)
+                + platform.idle_power_w * run.nb_computing_machines * whole_trace[signal] / 1000,
+                rtol=1e-6,
+            )
+            for signal, total in [
+                ("carbon", run.total_carbon_operational),
+                ("water", run.total_water_offsite),
+            ]
+        ))
+        trace_ends.append(end)
+        energies.append(
+            run.consumed_joules
+            + platform.idle_power_w * run.nb_computing_machines * (end - run.makespan)
+        )
+
+    return schedules.assign(
+        trace_end_seconds=trace_ends,
+        accounted_to_trace_end=accounted,
+        consumed_joules_to_trace_end=energies,
+    )
+
+
+def assert_common_horizon(schedules):
+    """Raise unless every run was accounted to the end of its current trace.
+
+    A run that fails was accounted against another trace, for instance an output
+    kept from before the traces were extended, so its footprint cannot be paired
+    with the other runs of its window. Rerun it, do not rescale the results.
+    """
+    stale = sorted(schedules.loc[~schedules["accounted_to_trace_end"], "name"])
+    if stale:
+        raise ValueError(
+            f"{len(stale)} of {len(schedules)} runs were not accounted to the end of "
+            f"their current trace, so they cannot be paired with the others. Rerun "
+            f"them: {', '.join(stale[:10])}{' ...' if len(stale) > 10 else ''}"
+        )
 
 
 # --- Trace coverage ----------------------------------------------------------
@@ -451,7 +531,8 @@ def build_run_metrics(schedules, job_metrics, jobs=None):
         "total_carbon_operational",
         "total_water_footprint",
         "total_water_offsite",
-        "consumed_joules",
+        "consumed_joules_to_trace_end",
+        "trace_end_seconds",
         "makespan",
         "time_computing",
         "time_idle",
@@ -460,8 +541,9 @@ def build_run_metrics(schedules, job_metrics, jobs=None):
     ]
 
     schedule_metrics = schedules[schedule_columns].copy()
+    # Same horizon as the footprint totals, so intensities and pairs are consistent.
     schedule_metrics["consumed_energy_kwh"] = (
-        schedule_metrics["consumed_joules"] / JOULES_PER_KWH
+        schedule_metrics["consumed_joules_to_trace_end"] / JOULES_PER_KWH
     )
     if schedule_metrics["consumed_energy_kwh"].le(0).any():
         raise ValueError("Consumed energy must be positive for every experiment")
@@ -523,11 +605,12 @@ def summarize_phase_exposure(run_metrics):
     Amounts are per-run means; shares are ratios of sums across windows.
     Machine times are node-seconds, not elapsed schedule durations.
     Assumes always-on nodes: exported idle counters omit final idle intervals,
-    so idle time is capacity-time minus computing time through the makespan.
+    so idle time is capacity-time minus computing time through the end of the
+    trace, the horizon of the footprint totals.
     """
     run_metrics = run_metrics.copy()
     run_metrics["time_idle"] = (
-        run_metrics["makespan"] * run_metrics["nb_computing_machines"]
+        run_metrics["trace_end_seconds"] * run_metrics["nb_computing_machines"]
         - run_metrics["time_computing"]
     )
     keys = ["workload_label", "variant"]
@@ -1010,7 +1093,7 @@ def plot_cost_vs_easy(data):
 def plot_phase_exposure(run_metrics):
     """Distributions of per-run compute/idle shares by workload and variant."""
     data = run_metrics.copy()
-    capacity_time = data["makespan"] * data["nb_computing_machines"]
+    capacity_time = data["trace_end_seconds"] * data["nb_computing_machines"]
     data["compute_time_share_pct"] = 100 * data["time_computing"] / capacity_time
     data["idle_time_share_pct"] = 100 - data["compute_time_share_pct"]
     data["compute_energy_share_pct"] = 100 * data["compute_energy_share"]
