@@ -10,22 +10,29 @@
 # volume from the image's own /nix on first run, keeping the nix binary intact.
 #
 # The campaign runs detached so it survives an SSH disconnect. The container is
-# named after the campaign file and is not auto-removed, so its logs remain
+# named after the configuration filename and is not auto-removed, so its logs remain
 # readable after it exits; the next run for the same campaign reuses the name.
 #
-# Usage: ./run.sh <campaign.toml>
+# Usage: ./run.sh <campaign.toml> [runner flags]
 #
-# The campaign path is relative to the repo root, e.g. experiments/experiments.toml.
+# The campaign path is relative to the repo root, for example:
+# experiments/resampled.toml.
+# Extra flags can set --out-dir, or --concurrency.
 
 set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-  echo "usage: $0 <campaign.toml>" >&2
+if [[ $# -lt 1 ]]; then
+  echo "usage: $0 <campaign.toml> [runner flags]" >&2
   exit 2
 fi
 
-campaign="$1"
+campaign="${1#./}"
+shift
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ "$campaign" = /* || ! -f "$repo/$campaign" ]]; then
+  echo "campaign must name an existing file relative to the repository root" >&2
+  exit 2
+fi
 container="campaign-$(basename "$campaign" .toml)"
 
 podman volume inspect nix-volume >/dev/null 2>&1 || podman volume create nix-volume
@@ -46,7 +53,8 @@ podman run -d --name "$container" \
   -v gocache-volume:/gocache \
   -v "$repo:/work" -w /work/experiments \
   nixos/nix \
-  nix develop ../nix --command bash -lc "go run . --campaign '/work/$campaign' --concurrency 16"
+  nix develop ../nix --command bash -c 'exec go run . --campaign "$1" --concurrency 16 "${@:2}"' \
+  bash "/work/$campaign" "$@"
 
 echo "campaign running detached as container '$container'"
 echo "follow logs: podman logs -f $container"

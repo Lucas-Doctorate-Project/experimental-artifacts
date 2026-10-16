@@ -5,9 +5,11 @@ __pycache__/
 .env
 .envrc
 .direnv/
-workloads and platforms/datasets
-analysis/mustang_user_resampling_artifacts/
-workloads and platforms/generated/mustang_user_resampling/
+workloads/sources
+workloads/resampled/
 experiments/experimental-campaigns
-analysis/shift_ceiling_results.csv*
 **/out/
+analysis/outputs/
+workloads/resampling/artifacts/
+.ruff_cache/
+.ipynb_checkpoints/

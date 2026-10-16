@@ -1,10 +1,7 @@
-// Package main runs a campaign of Batsim and Batsched simulations defined
-// in a TOML file. Each experiment runs batsim and batsched as co-running
-// processes and writes artifacts into its own directory.
+// Run Batsim and Batsched pairs from a TOML file.
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	"log"
@@ -12,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -19,54 +17,12 @@ import (
 )
 
 const (
-	// outputRootDir is the parent directory holding per-experiment output.
-	outputRootDir = "out"
-
-	// outputDirMode and logFileMode are the permissions used for created
-	// experiment directories and their append-only log files.
-	outputDirMode = 0o755
-	logFileMode   = 0o644
-
-	// killGracePeriod is the delay killGroup waits between SIGTERM and
-	// SIGKILL when terminating a process group.
-	killGracePeriod = 500 * time.Millisecond
-
-	// coRunningProcesses is the number of processes (batsched and batsim)
-	// launched together for each experiment.
+	batschedProcess    = "batsched"
+	batsimProcess      = "batsim"
 	coRunningProcesses = 2
-
-	// defaultMaxConcurrentExperiments bounds how many experiments run at once
-	// when --concurrency is unset. Each experiment is a batsim+batsched pair, so
-	// the live process count is twice this.
-	defaultMaxConcurrentExperiments = 4
-
-	// Default grace periods applied when the corresponding flag is unset.
-	defaultFailureTimeout = 30 * time.Second
-	defaultSuccessTimeout = 30 * time.Second
+	killGracePeriod    = 500 * time.Millisecond
 )
 
-// batschedProcess and batsimProcess name the two co-running executables.
-// They double as the result tags carried on processResult.
-const (
-	batschedProcess = "batsched"
-	batsimProcess   = "batsim"
-)
-
-// runOptions carries the execution policy shared by all experiments.
-// failureTimeout and successTimeout are the grace periods granted to the
-// surviving process after the other exits with a non-zero or zero status.
-// There is no cap on overall experiment runtime: simulations run to
-// completion however long they take.
-type runOptions struct {
-	failureTimeout time.Duration
-	successTimeout time.Duration
-}
-
-// Experiment describes one run decoded from the campaign TOML.
-// Name is the output directory. Workload, Platform and EnvironmentalTrace
-// are input paths resolved relative to the working directory. VariantName
-// selects the Batsched variant. VariantOptions is the JSON file passed
-// as --variant_options_filepath.
 type Experiment struct {
 	Name               string `toml:"name"`
 	Workload           string `toml:"workload"`
@@ -76,33 +32,17 @@ type Experiment struct {
 	VariantOptions     string `toml:"variant_options"`
 }
 
-// Campaign is the top-level TOML structure, an ordered list of
-// experiments.
 type Campaign struct {
+	OutputDir   string       `toml:"output_dir"`
 	Experiments []Experiment `toml:"experiment"`
 }
 
-// openAppendFile opens path for appending, creating it with logFileMode
-// if absent. The caller closes the file.
-func openAppendFile(path string) (*os.File, error) {
-	return os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, logFileMode)
+type runOptions struct {
+	outputDir      string
+	failureTimeout time.Duration
+	successTimeout time.Duration
 }
 
-// openProcessLog opens the combined stdout and stderr destination (.log)
-// for the named process inside dir. Both streams share one file so their
-// output is interleaved in submission order. The caller closes the file.
-func openProcessLog(dir, name string) (*os.File, error) {
-	logFile, err := openAppendFile(filepath.Join(dir, name+".log"))
-	if err != nil {
-		return nil, fmt.Errorf("opening %s.log: %w", name, err)
-	}
-	return logFile, nil
-}
-
-// killGroup terminates the process group led by cmd and any children
-// it spawned. It is a no-op when cmd is nil or unstarted. It sends
-// SIGTERM, waits 500 ms, then sends SIGKILL. cmd must have been started
-// with SysProcAttr.Setpgid set.
 func killGroup(cmd *exec.Cmd) {
 	if cmd == nil || cmd.Process == nil {
 		return
@@ -118,23 +58,15 @@ type processResult struct {
 	err  error
 }
 
-// experimentResult holds the exit error of each co-running process. A
-// nil field means that process exited cleanly.
 type experimentResult struct {
 	batschedErr error
 	batsimErr   error
 }
 
-// waitForResults waits for both process results emitted by the wait
-// goroutines. Once the first process exits, a grace timer bounds the wait for
-// the second; kill is called if it overruns. The returned error is non-nil
-// only for that grace-period overrun, not for a process exit error.
 func waitForResults(results <-chan processResult, opts runOptions, kill func()) (experimentResult, error) {
 	var result experimentResult
 	remaining := coRunningProcesses
 
-	// graceTimer arms once a single process is left, bounding how long we
-	// wait for it before killing both groups.
 	var graceTimer *time.Timer
 	var graceTimerC <-chan time.Time
 
@@ -174,7 +106,6 @@ func waitForResults(results <-chan processResult, opts runOptions, kill func()) 
 		case r := <-results:
 			recordResult(r)
 		case <-graceTimerC:
-			// A buffered final result can race the grace timer; prefer it.
 			select {
 			case r := <-results:
 				recordResult(r)
@@ -192,11 +123,6 @@ func waitForResults(results <-chan processResult, opts runOptions, kill func()) 
 	return result, nil
 }
 
-// waitWithTimeouts waits for both processes to exit under the policy in
-// opts. When the first process exits, a timer arms for successTimeout or
-// failureTimeout depending on its exit status. That timer firing kills both
-// groups and drains the pending Wait calls. The function returns nil only
-// when both processes exit cleanly.
 func waitWithTimeouts(batsched, batsim *exec.Cmd, opts runOptions) error {
 	results := make(chan processResult, coRunningProcesses)
 	go func() { results <- processResult{name: batschedProcess, err: batsched.Wait()} }()
@@ -215,9 +141,6 @@ func waitWithTimeouts(batsched, batsim *exec.Cmd, opts runOptions) error {
 	return nil
 }
 
-// createSocketEndpoint allocates a unique IPC endpoint for one
-// experiment run and returns a cleanup function for the temporary
-// directory that contains it.
 func createSocketEndpoint() (string, func(), error) {
 	socketDir, err := os.MkdirTemp("", "experimental-campaigns-")
 	if err != nil {
@@ -233,13 +156,15 @@ func createSocketEndpoint() (string, func(), error) {
 	return "ipc://" + socketPath, cleanup, nil
 }
 
-// validateCampaign rejects duplicate experiment names because the
-// runner uses them as output directory names.
 func validateCampaign(campaign Campaign) error {
 	names := make(map[string]struct{}, len(campaign.Experiments))
 	for i, exp := range campaign.Experiments {
 		if exp.Name == "" {
 			return fmt.Errorf("experiment %d has an empty name", i+1)
+		}
+
+		if filepath.Base(exp.Name) != exp.Name || exp.Name == "." || exp.Name == ".." {
+			return fmt.Errorf("experiment name %q must be a directory name", exp.Name)
 		}
 
 		if _, exists := names[exp.Name]; exists {
@@ -252,38 +177,19 @@ func validateCampaign(campaign Campaign) error {
 	return nil
 }
 
-// experimentComplete reports whether the experiment's output already holds a
-// finished schedule summary. Batsim writes out/<name>/out_schedule.csv (a
-// header plus a value row) only at a clean end of simulation, so its presence
-// marks a run that need not be repeated. Delete the output directory to force
-// a re-run.
-func experimentComplete(name string) bool {
-	path := filepath.Join(outputRootDir, name, "out_schedule.csv")
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return false
-	}
-	return bytes.Count(data, []byte("\n")) >= 2
-}
-
-// runExperiment executes one experiment under opts. It creates
-// out/<name>, opens the two combined log files, allocates a unique IPC
-// endpoint, then starts batsched and batsim in their own process
-// groups and delegates to waitWithTimeouts. Returns nil only when both
-// processes exit cleanly.
 func runExperiment(exp Experiment, opts runOptions) error {
-	outputDir := filepath.Join(outputRootDir, exp.Name)
-	if err := os.MkdirAll(outputDir, outputDirMode); err != nil {
+	outputDir := opts.outputDir
+	if err := os.Mkdir(outputDir, 0o755); err != nil {
 		return fmt.Errorf("creating output dir: %w", err)
 	}
 
-	batschedLog, err := openProcessLog(outputDir, batschedProcess)
+	batschedLog, err := os.Create(filepath.Join(outputDir, "batsched.log"))
 	if err != nil {
 		return err
 	}
 	defer batschedLog.Close()
 
-	batsimLog, err := openProcessLog(outputDir, batsimProcess)
+	batsimLog, err := os.Create(filepath.Join(outputDir, "batsim.log"))
 	if err != nil {
 		return err
 	}
@@ -331,136 +237,58 @@ func runExperiment(exp Experiment, opts runOptions) error {
 	return waitWithTimeouts(batschedCmd, batsimCmd, opts)
 }
 
-// progress accumulates campaign-wide tallies as experiments reach a terminal
-// state. Its methods print one atomic, attributable line per experiment and
-// are safe to call from the experiment goroutines. done is the count of
-// experiments in any terminal state and drives the [k/N] progress counter.
-type progress struct {
-	mu          sync.Mutex
-	total       int
-	done        int
-	succeeded   int
-	skipped     int
-	failedNames []string
-}
-
-// skip records and reports an experiment skipped because it was already
-// complete.
-func (p *progress) skip(name string) {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	p.done++
-	p.skipped++
-	fmt.Println(formatSkip(p.done, p.total, name))
-}
-
-// succeed records and reports an experiment that finished cleanly.
-func (p *progress) succeed(name string, dur time.Duration) {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	p.done++
-	p.succeeded++
-	fmt.Println(formatOK(p.done, p.total, name, dur))
-}
-
-// fail records and reports a failed experiment. The line goes to stderr to
-// keep the existing failure-on-stderr convention.
-func (p *progress) fail(name string, dur time.Duration, err error) {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	p.done++
-	p.failedNames = append(p.failedNames, name)
-	fmt.Fprintln(os.Stderr, formatFail(p.done, p.total, name, dur, err))
-}
-
-// The four formatters below render single self-contained lines. Each is one
-// atomic write carrying its experiment name, so lines stay attributable when
-// the 4 concurrent experiments interleave their output. The status tag is
-// padded to a fixed width so the columns line up. Durations are rounded to the
-// second since experiments run for minutes.
-func formatOK(k, total int, name string, dur time.Duration) string {
-	return fmt.Sprintf("[%d/%d] %-4s %s  (%s)", k, total, "OK", name, dur.Round(time.Second))
-}
-
-func formatSkip(k, total int, name string) string {
-	return fmt.Sprintf("[%d/%d] %-4s %s  (already complete)", k, total, "SKIP", name)
-}
-
-func formatFail(k, total int, name string, dur time.Duration, err error) string {
-	return fmt.Sprintf("[%d/%d] %-4s %s  (%s): %v", k, total, "FAIL", name, dur.Round(time.Second), err)
-}
-
-// formatSummary renders the end-of-run tally line.
-func formatSummary(total, succeeded, skipped, failed int, elapsed time.Duration) string {
-	return fmt.Sprintf("Summary: %d total, %d succeeded, %d skipped, %d failed, elapsed %s",
-		total, succeeded, skipped, failed, elapsed.Round(time.Second))
-}
-
-// main parses flags, decodes the campaign TOML, validates experiment
-// names, and runs the experiments with bounded parallelism. A failed
-// experiment does not abort the campaign. Exits 0 only when every
-// experiment succeeds, 1 otherwise.
 func main() {
-	campaignPath := flag.String("campaign", "experiments.toml", "Path to the campaign TOML file")
-	concurrency := flag.Int("concurrency", defaultMaxConcurrentExperiments, "Maximum number of experiments to run at once")
-	failureTimeout := flag.Duration("failure-timeout", defaultFailureTimeout, "Grace period for the surviving process after the other fails")
-	successTimeout := flag.Duration("success-timeout", defaultSuccessTimeout, "Grace period for the surviving process after the other succeeds")
+	configPath := flag.String("campaign", "original.toml", "Experiment TOML file")
+	outDir := flag.String("out-dir", "", "New output directory (overrides TOML output_dir)")
+	concurrency := flag.Int("concurrency", 4, "Simultaneous simulation pairs")
+	timeout := flag.Duration("timeout", 30*time.Second, "Grace period after one process exits")
 	flag.Parse()
 	if *concurrency < 1 {
-		log.Fatal("--concurrency must be at least 1")
+		log.Fatal("--concurrency must be positive")
 	}
-
-	opts := runOptions{
-		failureTimeout: *failureTimeout,
-		successTimeout: *successTimeout,
-	}
-
-	var campaign Campaign
-	if _, err := toml.DecodeFile(*campaignPath, &campaign); err != nil {
+	var config Campaign
+	if _, err := toml.DecodeFile(*configPath, &config); err != nil {
 		log.Fatal(err)
 	}
-	if err := validateCampaign(campaign); err != nil {
+	if err := validateCampaign(config); err != nil {
 		log.Fatal(err)
 	}
-
-	prog := &progress{total: len(campaign.Experiments)}
-	start := time.Now()
-
+	output := config.OutputDir
+	if *outDir != "" {
+		output = *outDir
+	}
+	if output == "" {
+		log.Fatal("set --out-dir or output_dir in the TOML")
+	}
+	// Require a new directory so saved results can never be overwritten.
+	if err := os.MkdirAll(filepath.Dir(output), 0o755); err != nil {
+		log.Fatal(err)
+	}
+	if err := os.Mkdir(output, 0o755); err != nil {
+		log.Fatalf("choose a new output directory: %v", err)
+	}
 	sem := make(chan struct{}, *concurrency)
 	var wg sync.WaitGroup
-
-	for _, exp := range campaign.Experiments {
-		if experimentComplete(exp.Name) {
-			prog.skip(exp.Name)
-			continue
-		}
-
-		wg.Add(1)
+	var failed atomic.Int32
+	for _, exp := range config.Experiments {
 		sem <- struct{}{}
-
-		go func(e Experiment) {
+		wg.Add(1)
+		go func(exp Experiment) {
 			defer wg.Done()
 			defer func() { <-sem }()
-
-			fmt.Printf("RUN   %s\n", e.Name)
-			expStart := time.Now()
-			if err := runExperiment(e, opts); err != nil {
-				prog.fail(e.Name, time.Since(expStart), err)
-				return
+			fmt.Println("RUN", exp.Name)
+			opts := runOptions{filepath.Join(output, exp.Name), *timeout, *timeout}
+			if err := runExperiment(exp, opts); err != nil {
+				fmt.Fprintln(os.Stderr, "FAIL", exp.Name, err)
+				failed.Add(1)
+			} else {
+				fmt.Println("OK", exp.Name)
 			}
-			prog.succeed(e.Name, time.Since(expStart))
 		}(exp)
 	}
-
 	wg.Wait()
-
-	// All goroutines have joined, so prog's fields are safe to read directly.
-	fmt.Println(formatSummary(prog.total, prog.succeeded, prog.skipped, len(prog.failedNames), time.Since(start)))
-	if len(prog.failedNames) > 0 {
-		fmt.Println("Failed:")
-		for _, name := range prog.failedNames {
-			fmt.Printf("  - %s\n", name)
-		}
+	fmt.Printf("%d experiments, %d failed\n", len(config.Experiments), failed.Load())
+	if failed.Load() > 0 {
 		os.Exit(1)
 	}
 }
