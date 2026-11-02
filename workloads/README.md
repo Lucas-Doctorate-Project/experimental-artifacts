@@ -13,7 +13,7 @@ Batsim workloads and SimGrid platforms built from production cluster traces. Eac
 | `notebooks/` | Mustang and Trinity conversion notebooks |
 | `resampling/` | Resampling notebook, helper, saved collection, and calibration figures |
 
-The JSON, XML, CSV, and selected export files were moved without changing their contents. Generation notebooks find these paths from the repository root. Running a conversion notebook can regenerate inputs; the analysis notebooks only read them.
+The JSON, XML, CSV, and selected export files were moved without changing their contents. Generation notebooks find these paths from the repository root. Running a conversion notebook can regenerate inputs; the analysis scripts only read them.
 
 ## Datasets
 

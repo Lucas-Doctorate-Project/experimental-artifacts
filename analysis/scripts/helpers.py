@@ -1,4 +1,4 @@
-"""Small numerical helpers for the analysis notebooks."""
+"""Small numerical helpers for the analysis scripts."""
 
 from pathlib import Path
 import json
@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 J_PER_KWH = 3_600_000.0
 
 
@@ -33,6 +33,7 @@ def experiments(group):
                 "zone": zone,
                 "objective": options.get("signal", "none"),
                 "alpha": options.get("smoothing_factor", np.nan),
+                "planning_horizon_seconds": options.get("planning_horizon_seconds", np.nan),
             }
         )
     return pd.DataFrame(rows)
@@ -122,8 +123,21 @@ def physical_totals(jobs, platform, signals, horizon):
     """Fixed platform idle power plus each running job's increment above idle.
 
     Footprints include context jobs and idle nodes. All jobs must finish within
-    the horizon. Exported totals are never substituted for these integrals.
+    the horizon, and every signal must cover it. Exported totals are never
+    substituted for these integrals.
     """
+    last_finish = float(jobs.finish_time.max())
+    if last_finish > horizon:
+        raise ValueError(
+            f"a job finishes at {last_finish / 86400:.2f} days, after the {horizon / 86400:g}-day horizon"
+        )
+    for objective, signal in signals.items():
+        coverage = signal["times"][-1] + signal["times"][1] - signal["times"][0]
+        if horizon > coverage:
+            raise ValueError(
+                f"{objective} signal covers {coverage / 86400:.2f} days, shorter than the"
+                f" {horizon / 86400:g}-day horizon"
+            )
     nodes = jobs.requested_number_of_resources.to_numpy()
     node_seconds = float(np.dot(nodes, jobs.execution_time))
     busy_energy = platform["busy_w"] * node_seconds / J_PER_KWH
@@ -188,52 +202,6 @@ def class_contributions(easy, green, platform):
     return pd.DataFrame(rows)
 
 
-def region_work(jobs, edges):
-    """Executed node-hours within each interval, including partial jobs."""
-    starts = jobs.starting_time.to_numpy()
-    ends = jobs.finish_time.to_numpy()
-    nodes = jobs.requested_number_of_resources.to_numpy()
-    return np.array(
-        [
-            np.dot(nodes, np.maximum(0, np.minimum(ends, stop) - np.maximum(starts, start))) / 3600
-            for (start, stop) in zip(edges[:-1], edges[1:])
-        ]
-    )
-
-
-def regional_comparison(easy, green, signal):
-    """Compare common 6-hour regions after context drain and before submissions end."""
-    context_end = max(
-        (
-            float(j.loc[j.is_context, "finish_time"].max()) if j.is_context.any() else 0
-            for j in (easy, green)
-        )
-    )
-    end = float(easy.loc[~easy.is_context, "submission_time"].max())
-    edges = np.unique(
-        np.r_[context_end, np.arange(np.ceil(context_end / 21600) * 21600, end, 21600), end]
-    )
-    mean_intensity = integral(signal, edges[:-1], edges[1:]) / np.diff(edges)
-    result = pd.DataFrame(
-        {
-            "start_seconds": edges[:-1],
-            "end_seconds": edges[1:],
-            "hours": np.diff(edges) / 3600,
-            "intensity": mean_intensity,
-            "easy_node_hours": region_work(easy, edges),
-            "green_node_hours": region_work(green, edges),
-        }
-    )
-    result["intensity_quartile"] = (
-        pd.qcut(result.intensity.rank(method="first"), 4, labels=False) + 1
-    )
-    for name, jobs in [("easy", easy), ("green", green)]:
-        finish = jobs.loc[~jobs.is_context, "finish_time"]
-        finish = finish.loc[(finish >= context_end) & (finish < end)]
-        result[f"{name}_completions"] = np.histogram(finish, bins=edges)[0]
-    return result
-
-
 def divide(numerator, denominator):
     """Leave a ratio undefined when its denominator is zero."""
     (numerator, denominator) = np.broadcast_arrays(
@@ -263,116 +231,23 @@ def reconstruct_gate(jobs, signal, end, smoothing_factor):
     return (events, opened)
 
 
-def pool_regions(regions):
-    """Pool counts and durations; partial regions keep their actual duration."""
-    regions = regions.copy()
-    regions["intensity_hours"] = regions.intensity * regions.hours
-    mean_intensity = regions.intensity_hours.sum() / regions.hours.sum()
-    grouped = (
-        regions.groupby("intensity_quartile")
-        .agg(
-            hours=("hours", "sum"),
-            intensity_hours=("intensity_hours", "sum"),
-            easy_node_hours=("easy_node_hours", "sum"),
-            green_node_hours=("green_node_hours", "sum"),
-            easy_completions=("easy_completions", "sum"),
-            green_completions=("green_completions", "sum"),
-        )
-        .reset_index()
-    )
-    grouped["intensity"] = grouped.pop("intensity_hours") / grouped.hours
-    grouped["relative_intensity"] = divide(grouped.intensity, mean_intensity)
-    for name in ("easy", "green"):
-        grouped[f"{name}_throughput"] = grouped[f"{name}_completions"] / grouped.hours
-    grouped["throughput_ratio"] = divide(grouped.green_throughput, grouped.easy_throughput)
-    for metric in ("node_hours", "completions"):
-        grouped[f"{metric}_share_delta_pp"] = 100 * (
-            divide(grouped[f"green_{metric}"], grouped[f"green_{metric}"].sum())
-            - divide(grouped[f"easy_{metric}"], grouped[f"easy_{metric}"].sum())
-        )
-    return grouped
-
-
-def regional_analysis(easy, green, signal, smoothing_factor):
-    """Return interval rows, quartile rows, gate rows, and a pair summary."""
-    regions = regional_comparison(easy, green, signal)
-    (start, end) = (regions.start_seconds.iloc[0], regions.end_seconds.iloc[-1])
-    mean_intensity = float(integral(signal, start, end) / (end - start))
-    regions["relative_intensity"] = divide(regions.intensity, mean_intensity)
-    for name in ("easy", "green"):
-        regions[f"{name}_throughput"] = regions[f"{name}_completions"] / regions.hours
-        regions[f"{name}_throughput_per_relative_intensity"] = divide(
-            regions[f"{name}_throughput"], regions.relative_intensity
-        )
-    levels = pool_regions(regions)
-    (events, opened) = reconstruct_gate(green, signal, end, smoothing_factor)
-
-    def state_at(dates):
-        return opened[np.searchsorted(events, dates, side="right") - 1]
-
-    breaks = np.unique(
-        np.r_[
-            start,
-            events[(events > start) & (events < end)],
-            signal["times"][(signal["times"] > start) & (signal["times"] < end)],
-            end,
-        ]
-    )
-    durations = np.diff(breaks)
-    segment_open = state_at(breaks[:-1])
-    segment_intensity = sample(signal, breaks[:-1])
-    finishes = {}
-    summary = {
-        "start_seconds": start,
-        "end_seconds": end,
-        "hours": (end - start) / 3600,
-        "mean_intensity": mean_intensity,
-        "smoothing_factor": smoothing_factor,
-    }
-    for name, jobs in (("easy", easy), ("green", green)):
-        replay = jobs.loc[~jobs.is_context]
-        finish = replay.finish_time.to_numpy()
-        finishes[name] = finish[(finish >= start) & (finish < end)]
-        count = len(finishes[name])
-        summary[f"{name}_replay_jobs"] = len(replay)
-        summary[f"{name}_completions"] = count
-        summary[f"{name}_completed_pct"] = 100 * divide(count, len(replay))
-        summary[f"{name}_completion_intensity"] = (
-            float(sample(signal, finishes[name]).mean()) if count else np.nan
-        )
-    summary["completion_intensity_change_pct"] = 100 * (
-        divide(summary["green_completion_intensity"], summary["easy_completion_intensity"]) - 1
-    )
-    gate_rows = []
-    for state, is_open in (("open", True), ("closed", False)):
-        selected = segment_open == is_open
-        seconds = durations[selected].sum()
-        row = {
-            "gate_state": state,
-            "hours": seconds / 3600,
-            "time_share_pct": 100 * seconds / (end - start),
-            "relative_intensity": divide(
-                np.dot(segment_intensity[selected], durations[selected]), seconds * mean_intensity
-            ),
-        }
-        for name, finish in finishes.items():
-            count = int(np.count_nonzero(state_at(finish) == is_open))
-            row[f"{name}_completions"] = count
-            row[f"{name}_throughput"] = divide(count, row["hours"])
-        row["throughput_ratio"] = divide(row["green_throughput"], row["easy_throughput"])
-        gate_rows.append(row)
-    gate = pd.DataFrame(gate_rows)
-    return (regions, levels, gate, summary)
-
-
 def relaxed_opportunity(
-    jobs, signal, platform, horizon, objective, delay_hours=(0, 1, 3, 6, 12, 24)
+    jobs,
+    signal,
+    platform,
+    horizon,
+    objective,
+    delay_hours=(0, 1, 3, 6, 12, 24),
+    allow_advance=True,
 ):
     """Exact savings bound: independent job placement, fixed context and idle power.
 
     A replay job may start from submission through its EASY start plus the delay.
-    Candidate starts are interval endpoints and intensity boundaries at either
-    end of the job. Between candidates its integrated footprint is linear.
+    Without advance, the earliest start is the EASY start, which bounds policies
+    that can only defer. Candidate starts are interval endpoints and intensity
+    boundaries at either end of the job. Between candidates its integrated
+    footprint is linear. The chosen start is the earliest minimum, so
+    mean_shift_hours does not grow on flat intensity.
     """
     delays = np.asarray(delay_hours, dtype=float)
     release = jobs.submission_time.to_numpy()
@@ -387,11 +262,12 @@ def relaxed_opportunity(
     baseline_active = baseline_jobs.sum()
     baseline_total = fixed_idle + baseline_active
     optimum_active = np.zeros(len(delays))
+    shift_seconds = np.zeros(len(delays))
     for i in range(len(jobs)):
         if context[i]:
             optimum_active += baseline_jobs[i]
             continue
-        lower = release[i]
+        lower = release[i] if allow_advance else starts[i]
         endpoints = starts[i] + delays * 3600
         upper = endpoints[-1]
         boundaries = times[
@@ -409,7 +285,12 @@ def relaxed_opportunity(
         candidates = candidates[(candidates >= lower) & (candidates <= upper)]
         costs = nodes[i] * multiplier * integral(signal, candidates, candidates + duration[i])
         minimum = np.minimum.accumulate(costs)
-        optimum_active += minimum[np.searchsorted(candidates, endpoints, side="right") - 1]
+        last = np.searchsorted(candidates, endpoints, side="right") - 1
+        optimum_active += minimum[last]
+        # a later candidate replaces the earliest minimum only beyond rounding noise
+        improves = np.r_[True, costs[1:] < minimum[:-1] - 1e-9 * np.abs(minimum[:-1])]
+        earliest = np.maximum.accumulate(np.where(improves, np.arange(len(costs)), 0))
+        shift_seconds += candidates[earliest[last]] - starts[i]
     # Clip floating-point accumulation noise at the included EASY baseline.
     optimum_active = np.minimum(optimum_active, baseline_active)
     totals = fixed_idle + optimum_active
@@ -426,6 +307,7 @@ def relaxed_opportunity(
             "relaxed_active_increment": optimum_active,
             "savings_absolute": savings,
             "savings_pct": 100 * savings / baseline_total,
+            "mean_shift_hours": divide(shift_seconds / 3600, int((~context).sum())),
             "job_count": len(jobs),
             "shiftable_job_count": int((~context).sum()),
             "context_job_count": int(context.sum()),

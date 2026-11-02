@@ -5,15 +5,23 @@ Batsim experiments comparing Greenfilling with EASY backfilling.
 ```text
 analysis/
   outputs/
-    original/             # 432 simulation runs
-    resampled/            # 216 simulation runs
-    alpha-sensitivity/    # 168 simulation runs
-  figures/                # all analysis figures
+    original/                         # 432 simulation runs
+    resampled/                        # 216 simulation runs
+    alpha-sensitivity/                # 168 simulation runs
+    green-window-scheduling/          # 608 of the 864 oracle runs
+    green-window-scheduling-resume/   # the remaining 256 oracle runs
+  figures/
+    pdf/                  # PDF figures
+    png/                  # PNG figures
   fonts/                  # existing results-figure font
-  01_results.ipynb
-  02_mechanism.ipynb
-  03_opportunity.ipynb
-  helpers.py              # shared numerical calculations
+  scripts/
+    results.py            # footprint, service metrics and alpha sensitivity
+    results_metrics.py    # paired comparisons
+    results_plots.py      # results figures
+    opportunity.py        # available saving versus Greenfilling
+    backfill_allowed.py   # when Greenfilling allows backfilling
+    oracle.py             # Greenfilling compared with the green-window oracle
+    helpers.py            # shared numerical calculations
 experiments/
   main.go                 # simulation runner
   original.toml
@@ -29,11 +37,7 @@ nix/                      # simulation and notebook environment
 
 ## Analyze results
 
-Enter `nix develop ./nix` and open the notebooks in `analysis/`. Each notebook runs independently, reads the simulation CSV files directly, and saves PNG/PDF figures into `analysis/figures/`. Original and resampled figures use filename prefixes, keeping their existing layouts. Saved notebook outputs can be read without executing them. Simulation outputs are local and excluded from Git.
-
-The results notebook compares footprint and service metrics, including alpha sensitivity. The mechanism notebook examines job classes, regional throughput and an estimated backfilling gate. The opportunity notebook computes a savings bound that ignores capacity conflicts.
-
-Corrected energy and footprint include idle nodes and context jobs over a common interval: 35 days for original and alpha results, 70 days for resampled results. Service metrics exclude context jobs. The resamples change composition and offered load together, with one selected seed per source window. Notebook text explains these calculations and their limits.
+See the [analysis README](analysis/README.md) for results and figures.
 
 ## Run simulations
 
