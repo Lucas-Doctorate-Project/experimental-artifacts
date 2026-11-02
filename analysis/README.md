@@ -61,6 +61,34 @@ the mean over their EASY slot. The class figure splits the increase in mean
 bounded slowdown and in work-weighted response time by job class, summed over
 all pairs, for Greenfilling and the oracle with a 6-hour horizon.
 
+The offline shifting script saves `results.csv` to a new directory, by default
+`analysis/outputs/offline-shifting`:
+
+```sh
+python analysis/scripts/offline_shifting.py
+```
+
+It measures how much of the delay-only saving fits on the machine. Starting from
+each EASY run in the original and resampled campaigns, it moves replay jobs to
+cleaner start times without simulating them again, which is valid because every
+job profile has `com = 0`, so a start time changes neither duration nor energy.
+Each job may start up to 3, 6, 12, or 24 hours after its EASY start, never
+earlier. Jobs with the largest remaining gain move first, and a move needs enough
+free nodes on a one-minute grid that counts every touched minute as occupied.
+Passes repeat until no job moves. Context jobs stay fixed, and the script stops
+if the exact peak allocation exceeds the machine. The schedules assume perfect
+knowledge of runtimes and intensity and ignore queue order, and the heuristic can
+miss feasible savings, so `saving_pct` shows what is reachable offline, not a
+maximum and not what an online policy could do. `bound_saving_pct` is the
+delay-only bound for the same run and budget.
+
+To save `offline_shifting`, which compares savings and added wait with Greenfilling
+and the oracle in the original campaign, render it from that `results.csv`:
+
+```sh
+python analysis/scripts/offline_shifting.py --figure-dir analysis/figures
+```
+
 Simulation outputs are local and excluded from Git.
 
 The results script compares footprint and service metrics, including alpha sensitivity.

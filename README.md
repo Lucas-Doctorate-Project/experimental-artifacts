@@ -10,6 +10,7 @@ analysis/
     alpha-sensitivity/                # 168 simulation runs
     green-window-scheduling/          # 608 of the 864 oracle runs
     green-window-scheduling-resume/   # the remaining 256 oracle runs
+    offline-shifting/                 # results of analysis/scripts/offline_shifting.py
   figures/
     pdf/                  # PDF figures
     png/                  # PNG figures
@@ -21,6 +22,7 @@ analysis/
     opportunity.py        # available saving versus Greenfilling
     backfill_allowed.py   # when Greenfilling allows backfilling
     oracle.py             # Greenfilling compared with the green-window oracle
+    offline_shifting.py   # EASY jobs moved into cleaner free capacity
     helpers.py            # shared numerical calculations
 experiments/
   main.go                 # simulation runner
