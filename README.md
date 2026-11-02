@@ -19,6 +19,8 @@ experiments/
   original.toml
   resampled.toml
   alpha-sensitivity.toml
+  green-window-scheduling.toml
+  green-window-scheduling-resume.toml
   options/
 workloads/                # workload inputs, platforms and preparation
 intensities/              # intensity inputs and preparation
