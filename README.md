@@ -24,6 +24,8 @@ analysis/
     backfill_allowed.py   # when Greenfilling allows backfilling
     oracle.py             # Greenfilling compared with the green-window oracle
     offline_shifting.py   # EASY jobs moved into cleaner free capacity
+    queue_gain_loss.py    # oracle saving split into jobs run cleaner and dirtier
+    held_jobs.py          # oracle saving split into held jobs and the rest
     helpers.py            # shared numerical calculations
 experiments/
   main.go                 # simulation runner

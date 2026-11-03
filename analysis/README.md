@@ -89,6 +89,37 @@ and the oracle in the original campaign, render it from that `results.csv`:
 python analysis/scripts/offline_shifting.py --figure-dir analysis/figures
 ```
 
+The queue script saves `queue_gain_loss` to the same folders as the other figures:
+
+```sh
+python analysis/scripts/queue_gain_loss.py
+```
+
+For each oracle run with a 24-hour horizon, it compares every job with the
+paired EASY run. Jobs that ran in cleaner hours add to the gain and jobs that
+ran in dirtier hours add to the loss. Gain minus loss is the pair's saving. Each
+schedule is also scored on the next window of the same zone, which its moves
+were not chosen for, to show the gain and loss that moving jobs produces by
+chance. The outputs do not record which jobs the oracle held on purpose, so the
+split is by outcome, not by cause.
+
+The held-jobs script saves `held_jobs` to the same folders:
+
+```sh
+python analysis/scripts/held_jobs.py
+```
+
+It reads the decision logs of the oracle rerun in
+`analysis/outputs/green-window-scheduling-debug`, which ran the 288 runs with a
+24-hour horizon again with `green_window_scheduling_debug` enabled. Each run
+holds `out_jobs.csv` and `decisions.txt`, made from `batsched.log` by keeping
+`now <date>` for each event the scheduler received and the JSON of each
+`green_window_selected` line. A job counts as held when its last chosen start is
+later than the date of that decision. The script stops if a rerun schedule
+differs from the analyzed one. It splits each pair's saving into held jobs and
+all other jobs, scored on the run's own window and on the unrelated window used
+by `queue_gain_loss.py`.
+
 Simulation outputs are local and excluded from Git.
 
 The results script compares footprint and service metrics, including alpha sensitivity.
