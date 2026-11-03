@@ -10,6 +10,7 @@ analysis/
     alpha-sensitivity/                # 168 simulation runs
     green-window-scheduling/          # 608 of the 864 oracle runs
     green-window-scheduling-resume/   # the remaining 256 oracle runs
+    green-window-scheduling-debug/    # 288 oracle runs at 24 h with decision logs
     offline-shifting/                 # results of analysis/scripts/offline_shifting.py
   figures/
     pdf/                  # PDF figures
@@ -31,6 +32,7 @@ experiments/
   alpha-sensitivity.toml
   green-window-scheduling.toml
   green-window-scheduling-resume.toml
+  green-window-scheduling-debug.toml  # the 24 h oracle runs again, with decision logs
   options/
 workloads/                # workload inputs, platforms and preparation
 intensities/              # intensity inputs and preparation
