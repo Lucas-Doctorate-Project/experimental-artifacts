@@ -137,6 +137,22 @@ hours, ignoring capacity, so it is optimistic. Idle power during the wait is
 left out. The figure groups jobs by runtime as a share of walltime and weights
 each job by nodes times runtime.
 
+The swing script saves `swing_savings` to the same folders:
+
+```sh
+python analysis/scripts/swing.py
+```
+
+It relates each method's saving against EASY in the original campaign to the
+daily swing of the window's targeted signal: the delay-only bound and offline
+shifting with a 24-hour budget, read from the offline shifting `results.csv`
+(select another with `--offline-results PATH`), the oracle with a 24-hour
+horizon, and Greenfilling. Swing comes from `intensities/windows.csv`: the mean
+daily peak-to-trough range over the 28-day window divided by the window mean.
+Each panel shows one point per pair, colored by country, with a least-squares
+line per country. Each panel title gives the Spearman rank correlation over all
+pairs. The script also prints the correlation per country.
+
 Simulation outputs are local and excluded from Git.
 
 The results script compares footprint and service metrics, including alpha sensitivity.
