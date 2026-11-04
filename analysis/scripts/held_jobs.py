@@ -21,8 +21,8 @@ DECISIONS = helpers.ROOT / "analysis/outputs/green-window-scheduling-debug"
 WORKERS = 8
 
 
-def held_jobs(name: str) -> set[str]:
-    """Jobs whose last window choice starts later than the decision date. Example: held_jobs(run_name).
+def last_choices(name: str) -> dict[str, tuple[float, float]]:
+    """Date and chosen begin of each job's last window choice. Example: last_choices(run_name).
 
     decisions.txt holds `now <date>` for each Batsim event received and the JSON
     of each `green_window_selected` log line, in log order, so a decision's date
@@ -36,7 +36,12 @@ def held_jobs(name: str) -> set[str]:
                 continue
             choice = json.loads(line)
             last[choice["job"].split("!", 1)[1]] = (date, choice["begin"])
-    return {job for job, (decided, begin) in last.items() if begin > decided + 1e-6}
+    return last
+
+
+def held_jobs(name: str) -> set[str]:
+    """Jobs whose last window choice starts later than the decision date. Example: held_jobs(run_name)."""
+    return {job for job, (decided, begin) in last_choices(name).items() if begin > decided + 1e-6}
 
 
 def split_pair(task: dict) -> list[dict]:

@@ -120,6 +120,23 @@ differs from the analyzed one. It splits each pair's saving into held jobs and
 all other jobs, scored on the run's own window and on the unrelated window used
 by `queue_gain_loss.py`.
 
+The held-walltime script saves `held_walltime` to the same folders:
+
+```sh
+python analysis/scripts/held_walltime.py
+```
+
+It uses the same decision logs to ask whether held jobs gain little because the
+oracle scores the requested walltime while jobs run shorter. Each held replay
+job is compared with itself started at the decision date, which is when it
+would have started without the hold. The target drop is the relative drop in
+mean intensity over the requested walltime, which the oracle compares, and the
+got drop is the same over the real runtime. The best drop takes the cleanest
+start for the real runtime on the oracle's 15-minute candidate grid within 24
+hours, ignoring capacity, so it is optimistic. Idle power during the wait is
+left out. The figure groups jobs by runtime as a share of walltime and weights
+each job by nodes times runtime.
+
 Simulation outputs are local and excluded from Git.
 
 The results script compares footprint and service metrics, including alpha sensitivity.
