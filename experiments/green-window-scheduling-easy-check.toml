@@ -1,0 +1,33 @@
+output_dir = "../analysis/outputs/green-window-scheduling-easy-check"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_DE_2019-02-04"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/DE_2019-02-04.csv"
+variant_name = "easy_bf"
+variant_options = ""
+
+[[experiment]]
+name = "easy_bf_mustang_stress_DE_2019-02-04"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/DE_2019-02-04.csv"
+variant_name = "easy_bf"
+variant_options = ""
+
+[[experiment]]
+name = "easy_bf_trinity_slack_DE_2019-02-04"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/DE_2019-02-04.csv"
+variant_name = "easy_bf"
+variant_options = ""
+
+[[experiment]]
+name = "easy_bf_trinity_stress_DE_2019-02-04"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/DE_2019-02-04.csv"
+variant_name = "easy_bf"
+variant_options = ""

@@ -1,0 +1,1345 @@
+output_dir = "../analysis/outputs/alpha-sensitivity"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_DE_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_DE_2021-06-07"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_FR_2021-01-18"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_FR_2022-08-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_PL_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_slack_PL_2019-07-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_slack.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_stress_DE_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_stress_DE_2021-06-07"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-06-07.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_stress_FR_2021-01-18"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2021-01-18.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_stress_FR_2022-08-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2022-08-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_stress_PL_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2021-12-13.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_mustang_stress_PL_2019-07-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_mustang_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_mustang_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_mustang_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_mustang_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_mustang_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_mustang_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2019-07-01.json"
+workload = "../workloads/original/mustang_stress.json"
+platform = "../workloads/platforms/mustang.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_slack_DE_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_slack_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_slack_DE_2021-06-07"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_slack_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_slack_FR_2021-01-18"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_slack_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_slack_FR_2022-08-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_slack_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_slack_PL_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_slack_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_slack_PL_2019-07-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_slack_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_slack.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_stress_DE_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_stress_DE_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_stress_DE_2021-06-07"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_stress_DE_2021-06-07"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_DE_2021-06-07.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/DE_2021-06-07.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_stress_FR_2021-01-18"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_stress_FR_2021-01-18"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2021-01-18.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2021-01-18.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_stress_FR_2022-08-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_stress_FR_2022-08-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_FR_2022-08-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/FR_2022-08-01.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_stress_PL_2021-12-13"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_stress_PL_2021-12-13"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2021-12-13.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv"
+
+[[experiment]]
+name = "easy_bf_trinity_stress_PL_2019-07-01"
+variant_name = "easy_bf"
+variant_options = ""
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a030_trinity_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a030_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a050_trinity_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a050_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_carbon_a080_trinity_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_carbon_a080_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a030_trinity_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a030_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a050_trinity_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a050_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"
+
+[[experiment]]
+name = "greenfilling_water_a080_trinity_stress_PL_2019-07-01"
+variant_name = "greenfilling"
+variant_options = "options/alpha-sensitivity/greenfilling_water_a080_PL_2019-07-01.json"
+workload = "../workloads/original/trinity_stress.json"
+platform = "../workloads/platforms/trinity.xml"
+environmental_trace = "../intensities/traces/alpha-sensitivity/PL_2019-07-01.csv"

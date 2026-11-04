@@ -1,0 +1,7 @@
+{
+  "intensity_trace": "../intensities/traces/alpha-sensitivity/PL_2021-12-13.csv",
+  "intensity_zone": "AS0",
+  "signal": "water",
+  "smoothing_factor": 0.8,
+  "greenfilling_debug": false
+}

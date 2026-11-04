@@ -1,37 +1,72 @@
-# Experimental Artifacts
+# Experimental artifacts
 
-Artifacts and runner for reproducible Batsim scheduling experiments evaluating environmental-aware heuristics. The repository is organized in three parts:
+Batsim experiments comparing Greenfilling with EASY backfilling.
 
-- [intensities/](intensities/): carbon and water intensity traces derived from ENTSO-E generation data (PL, FR, DE). The `window_selection` notebook samples 4-week windows for the experiments, and the [offline validation artifact](intensities/validation/README.md) checks national carbon intensities against pinned Ember and EEA snapshots.
-- [workloads and platforms/](workloads%20and%20platforms/): Batsim workloads and SimGrid platforms built from production cluster traces (Mustang, Trinity).
-- [experiments/](experiments/): Go-based campaign runner that combines the intensity traces with the workloads and platforms to run batches of Batsim/Batsched simulations.
+```text
+analysis/
+  outputs/
+    original/                         # 432 simulation runs
+    resampled/                        # 216 simulation runs
+    alpha-sensitivity/                # 168 simulation runs
+    green-window-scheduling/          # 608 of the 864 oracle runs
+    green-window-scheduling-resume/   # the remaining 256 oracle runs
+    green-window-scheduling-debug/    # 288 oracle runs at 24 h with decision logs
+    offline-shifting/                 # results of analysis/scripts/offline_shifting.py
+  figures/
+    pdf/                  # PDF figures
+    png/                  # PNG figures
+  fonts/                  # existing results-figure font
+  scripts/
+    results.py            # footprint, service metrics and alpha sensitivity
+    results_metrics.py    # paired comparisons
+    results_plots.py      # results figures
+    opportunity.py        # available saving versus Greenfilling
+    backfill_allowed.py   # when Greenfilling allows backfilling
+    oracle.py             # Greenfilling compared with the green-window oracle
+    offline_shifting.py   # EASY jobs moved into cleaner free capacity
+    queue_gain_loss.py    # oracle saving split into jobs run cleaner and dirtier
+    held_jobs.py          # oracle saving split into held jobs and the rest
+    helpers.py            # shared numerical calculations
+experiments/
+  main.go                 # simulation runner
+  original.toml
+  resampled.toml
+  alpha-sensitivity.toml
+  green-window-scheduling.toml
+  green-window-scheduling-resume.toml
+  green-window-scheduling-debug.toml  # the 24 h oracle runs again, with decision logs
+  options/
+workloads/                # workload inputs, platforms and preparation
+intensities/              # intensity inputs and preparation
+nix/                      # simulation and notebook environment
+```
 
-## Quick start
+## Analyze results
+
+See the [analysis README](analysis/README.md) for results and figures.
+
+## Run simulations
+
+From the repository root:
 
 ```sh
 nix develop ./nix
 cd experiments
-go run . --campaign experiments.toml
+go run . --campaign original.toml --out-dir ../analysis/outputs/original-rerun
 ```
 
-The flake lives in [nix/](nix/) so that nix only ever copies the toolchain files into its store, not the multi-gigabyte data traces at the repo root.
+Choose `resampled.toml` or `alpha-sensitivity.toml` for the other inputs. Paths inside TOML and scheduler option files are relative to `experiments/`. Use `--concurrency 4` to control simultaneous runs and `--timeout 30s` for the grace period after one simulator process exits. The runner requires a new output directory, writes one directory per run, and exits unsuccessfully if a simulation fails.
 
-### Running without Nix
-
-On a host that has podman but no Nix, use [run.sh](run.sh). It runs the campaign inside the `nixos/nix` image, so the container provides the toolchain and the host needs only podman.
+On a host with Podman, run from the repository root:
 
 ```sh
-./run.sh experiments/experiments.toml
+./run.sh experiments/original.toml --out-dir ../analysis/outputs/original-rerun
 ```
 
-The campaign path is relative to the repo root. The run is detached so it survives an SSH disconnect, and the container is named after the campaign file (`campaign-<name>`) so its logs stay readable after it exits. The script prints the commands to follow the logs (`podman logs -f <container>`) and to stop the run. Re-running the same campaign reuses the container name, and the script refuses to start if that container is still running.
+The container runs detached; the script prints commands to follow logs or stop it. To copy results from another host, use ordinary `rsync` or `scp`; analysis only needs each run's `out_jobs.csv` and the input traces and platform files.
 
-See each directory's README for details.
+Workload preparation is documented in [workloads](workloads/README.md); intensity preparation is documented in [intensities](intensities/README.md).
 
-## Citation
+## Citation and license
 
-If you use this repository, cite it using the metadata in [CITATION.cff](CITATION.cff).
-
-## License
-
-This repository is licensed under the [Apache License 2.0](LICENSE), except where otherwise noted. Third-party datasets and artifacts derived from them remain subject to their original source terms.
+Use [CITATION.cff](CITATION.cff) to cite this repository. Code uses the [Apache License 2.0](LICENSE); third-party data retain their source terms.
