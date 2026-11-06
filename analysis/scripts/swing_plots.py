@@ -5,20 +5,24 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.figure import Figure
 from matplotlib.colors import to_rgb
-from matplotlib.patches import Patch
-
+from matplotlib.figure import Figure
+from matplotlib.lines import Line2D
 from results_plots import RESULT_STYLE, _results_typography
 
 METHODS = {
-    "bound": "Delay-only bound, 24h budget",
-    "offline": "Offline shifting, 24h budget",
-    "oracle": "Oracle, 24h horizon",
+    "bound": "Delay-only bound, 24 h",
+    "offline": "Offline shifting, 24 h",
+    "oracle": "Head-job shifting, 24 h",
     "greenfilling": "Greenfilling",
 }
-# colors not used for policies, workloads, or objectives in the other figures
-ZONES = {"DE": ("#3d8b5a", "Germany"), "FR": ("#8a5ea8", "France"), "PL": ("#c9a227", "Poland")}
+ZONES = {
+    "DE": ("#3d8b5a", "Germany"),
+    "FR": ("#8a5ea8", "France"),
+    "PL": ("#c9a227", "Poland"),
+}
+ZONE_MARKERS = {"DE": "o", "FR": "s", "PL": "^"}
+ZONE_LINES = {"DE": "-", "FR": "--", "PL": ":"}
 
 
 def _faded(color: str) -> tuple[float, float, float]:
@@ -31,26 +35,69 @@ def _spearman(rows: pd.DataFrame) -> float:
 
 
 def _swing_figure(savings: pd.DataFrame) -> Figure:
-    fig, axes = plt.subplots(2, 2, figsize=(9.5, 7.4), sharex=True, layout="constrained")
+    fig, axes = plt.subplots(
+        2, 2, figsize=(9.5, 7.4), sharex=True, layout="constrained"
+    )
     for ax, (method, title) in zip(axes.flat, METHODS.items()):
         rows = savings.loc[savings.method == method]
         for zone, (color, _) in ZONES.items():
             part = rows.loc[rows.zone == zone]
-            ax.scatter(part.swing, part.saving_pct, s=12, color=_faded(color), alpha=0.7, linewidths=0, zorder=1)
+            ax.scatter(
+                part.swing,
+                part.saving_pct,
+                s=16,
+                marker=ZONE_MARKERS[zone],
+                color=_faded(color),
+                alpha=0.7,
+                linewidths=0,
+                zorder=1,
+            )
         for zone, (color, _) in ZONES.items():
             part = rows.loc[rows.zone == zone]
             slope, intercept = np.polyfit(part.swing, part.saving_pct, 1)
             span = np.array([part.swing.min(), part.swing.max()])
-            ax.plot(span, intercept + slope * span, color=color, linewidth=2.5, zorder=3)
-        ax.axhline(0, color=".3", linewidth=0.8)
-        ax.set_title(f"{title}\nSpearman, all pairs {_spearman(rows):.2f}")
+            ax.plot(
+                span,
+                intercept + slope * span,
+                color=color,
+                linestyle=ZONE_LINES[zone],
+                linewidth=2,
+                zorder=3,
+            )
+        ax.axhline(0, color=".5", linewidth=0.8, zorder=0)
+        ax.set_title(title, pad=25)
+        ax.text(
+            0,
+            1.025,
+            f"Spearman correlation: {_spearman(rows):.2f}",
+            transform=ax.transAxes,
+            fontsize=10,
+            color=".35",
+        )
     for ax in axes[1]:
         ax.set_xlabel("Daily swing (mean daily range / window mean)")
     for ax in axes[:, 0]:
         ax.set_ylabel("Saving against EASY (%)")
-    handles = [Patch(color=color, label=country) for color, country in ZONES.values()]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.0), ncol=len(handles), frameon=False)
-    fig.suptitle("Saving against daily swing, one point per pair, line fitted per country")
+    handles = [
+        Line2D(
+            [],
+            [],
+            color=color,
+            marker=ZONE_MARKERS[zone],
+            linestyle=ZONE_LINES[zone],
+            label=country,
+        )
+        for zone, (color, country) in ZONES.items()
+    ]
+    fig.legend(
+        handles=handles,
+        loc="lower center",
+        bbox_to_anchor=(0.5, 0.0),
+        ncol=len(handles),
+        frameon=False,
+    )
+    fig.set_layout_engine("constrained", rect=(0, 0.065, 1, 0.935))
+    fig.suptitle("Daily variation offers more room for shifting")
     _results_typography(fig)
     return fig
 
@@ -62,5 +109,7 @@ def save_swing_figure(savings: pd.DataFrame, destination: Path) -> None:
     with plt.rc_context(RESULT_STYLE):
         figure = _swing_figure(savings)
         for suffix in ("pdf", "png"):
-            figure.savefig(destination / suffix / f"swing_savings.{suffix}", bbox_inches="tight")
+            figure.savefig(
+                destination / suffix / f"swing_savings.{suffix}", bbox_inches="tight"
+            )
         plt.close(figure)

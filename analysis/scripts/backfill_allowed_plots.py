@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-
 from results_plots import (
     ALPHA_COLORS,
     RESULT_STYLE,
@@ -45,10 +44,14 @@ def _allowed_panel(
             & (shares.workload == f"{machine}_{load}")
         ]
         values = [
-            subset.loc[subset.category == category, "open_share_pct"].dropna().to_numpy()
+            subset.loc[subset.category == category, "open_share_pct"]
+            .dropna()
+            .to_numpy()
             for category in categories
         ]
-        _draw_boxes(ax, values, positions + offset, ALPHA_COLORS[label], 0.15, "vertical", 0.55)
+        _draw_boxes(
+            ax, values, positions + offset, ALPHA_COLORS[label], 0.15, "vertical", 0.55
+        )
     ax.set_xlim(-0.55, len(categories) - 0.45)
     ax.set_ylim(-5, 105)
 
@@ -78,7 +81,7 @@ def _allowed_figure(shares: pd.DataFrame) -> Figure:
     shared_ylabel = fig.supylabel("Backfilling allowed (% of time)")
     fig.suptitle("When Greenfilling allows backfilling")
     _results_typography(fig)
-    shared_ylabel.set_fontsize(14)
+    shared_ylabel.set_fontsize(12)
     return fig
 
 
@@ -89,5 +92,7 @@ def save_backfill_allowed_figure(shares: pd.DataFrame, destination: Path) -> Non
     with plt.rc_context(RESULT_STYLE):
         figure = _allowed_figure(shares)
         for suffix in ("pdf", "png"):
-            figure.savefig(destination / suffix / f"backfill_allowed.{suffix}", bbox_inches="tight")
+            figure.savefig(
+                destination / suffix / f"backfill_allowed.{suffix}", bbox_inches="tight"
+            )
         plt.close(figure)

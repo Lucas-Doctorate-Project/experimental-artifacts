@@ -11,9 +11,6 @@ import numpy as np
 import pandas as pd
 
 import helpers
-from offline_shifting_plots import save_offline_shifting_figure
-from opportunity import BASELINE_GROUP, realized_points
-from oracle import ORACLE_GROUP, OracleSource
 from results_metrics import HORIZONS
 
 GROUPS = ("original", "resampled")
@@ -179,17 +176,9 @@ def main() -> None:
     )
     arguments = parser.parse_args()
     if arguments.figure_dir:
-        source = OracleSource()
-        points = pd.concat(
-            [
-                realized_points(BASELINE_GROUP, BASELINE_GROUP, source),
-                realized_points(ORACLE_GROUP, BASELINE_GROUP, source),
-            ],
-            ignore_index=True,
-        )
-        results = pd.read_csv(arguments.output_dir / "results.csv")
-        save_offline_shifting_figure(results, points, arguments.figure_dir)
-        print(f"Offline shifting figure saved to {arguments.figure_dir.resolve()}")
+        from policy_comparison import generate_figures
+
+        generate_figures(arguments.figure_dir, arguments.output_dir / "results.csv")
         return
     arguments.output_dir.mkdir(parents=True)
     tasks = campaign_tasks()
