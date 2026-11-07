@@ -1,0 +1,4 @@
+zone,site,latitude,longitude,timezone,pue,wue,wue_evap,evap_share
+DE,Jülich,50.905,6.413,Europe/Berlin,1.39,0.65,1.4694,0.4424
+FR,Bruyères-le-Châtel,48.597,2.193,Europe/Paris,1.55,0.25,1.4694,0.1701
+PL,Kraków,50.067,19.912,Europe/Warsaw,1.55,0.21,1.4694,0.1429
