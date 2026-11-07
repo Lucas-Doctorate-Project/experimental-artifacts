@@ -14,7 +14,7 @@ With the weather caches present (`raw/<CC>.csv`, Git LFS) the script runs offlin
 
 Outputs:
 
-- `traces/<CC>_<YYYY-MM-DD>.csv`: one extract per window of `../windows.csv`, same long format and same timestamps as the intensity extract of the same name. Two properties per instant, `pue` (constant) and `wue` (L/kWh of IT energy, economizer scenario). Batsim reads both, so a rerun only needs this file concatenated with the intensity extract. Tracked with Git LFS.
+- `traces/<CC>_<YYYY-MM-DD>.csv`: one extract per window of `../windows.csv`, same long format and same timestamps as the intensity extract of the same name. Two properties per instant, `pue` (constant) and `wue` (L/kWh of IT energy, economizer scenario). Batsim reads both, so a rerun only needs this file concatenated with the intensity extract. The offline analysis applies the three scenarios with `load_trace(row, facility=...)` in `../../analysis/shift_ceiling_results.py`. Tracked with Git LFS.
 - `facility.csv`: one row per country with the site, its coordinates and timezone, the reported `pue` and `wue`, `wue_evap` and `evap_share`. The `wue` column is the constant of the continuous scenario.
 - `raw/<CC>.csv`: hourly ERA5 `temperature_2m` (°C) and `relative_humidity_2m` (%) at the site, in UTC. Tracked with Git LFS.
 

@@ -37,6 +37,8 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 WORKLOAD_ROOT = REPOSITORY_ROOT / "workloads and platforms"
 TRACE_ROOT = REPOSITORY_ROOT / "intensities" / "traces"
 WINDOWS_PATH = REPOSITORY_ROOT / "intensities" / "windows.csv"
+FACILITY_ROOT = REPOSITORY_ROOT / "intensities" / "facility"
+FACILITY_SCENARIOS = ("dry", "continuous", "economizer")
 DEFAULT_OUTPUT = Path(__file__).with_name("shift_ceiling_results.csv.gz")
 
 OUTPUT_COLUMNS = [
@@ -203,7 +205,51 @@ def load_windows() -> pd.DataFrame:
     return windows.sort_values(["zone", "start_date"], kind="stable").reset_index(drop=True)
 
 
-def load_trace(row) -> IntensityTrace:
+def load_facility(row, scenario: str, instants: int) -> tuple[float, float | np.ndarray]:
+    """PUE and WUE (L/kWh of IT energy) of the window's facility under a cooling scenario.
+
+    PUE is constant in every scenario. WUE is 0 (dry), the reported national
+    value (continuous) or the economizer trace of the window.
+    """
+    if scenario not in FACILITY_SCENARIOS:
+        raise ValueError(f"Unknown facility scenario {scenario!r}, expected one of {FACILITY_SCENARIOS}")
+    
+    facilities = pd.read_csv(FACILITY_ROOT / "facility.csv").set_index("zone")
+    if row.zone not in facilities.index:
+        raise ValueError(f"No facility for zone {row.zone} in facility.csv")
+    
+    pue = float(facilities.at[row.zone, "pue"])
+    if scenario == "dry":
+        return pue, 0.0
+    
+    if scenario == "continuous":
+        return pue, float(facilities.at[row.zone, "wue"])
+
+    path = FACILITY_ROOT / row.file
+    wide = pd.read_csv(path).pivot(index="timestamp", columns="property", values="value").sort_index()
+    if set(wide.columns) != {"pue", "wue"}:
+        raise ValueError(f"Unexpected facility properties in {path}: {list(wide.columns)}")
+    
+    expected_timestamps = np.arange(instants, dtype=np.int64) * DELTA_SECONDS
+    if not np.array_equal(wide.index.to_numpy(dtype=np.int64), expected_timestamps):
+        raise ValueError(f"Facility timestamps in {path} do not match the intensity extract")
+    
+    if not np.allclose(wide["pue"], pue):
+        raise ValueError(f"PUE in {path} differs from facility.csv")
+    
+    wue = wide["wue"].to_numpy(dtype=float)
+    if not np.all(np.isfinite(wue)) or np.any(wue < 0):
+        raise ValueError(f"Invalid WUE values in {path}")
+    
+    return pue, wue
+
+
+def load_trace(row, facility: str | None = None) -> IntensityTrace:
+    """Intensities of a window, per kWh of IT energy when a facility scenario is given.
+
+    With a facility, carbon is PUE × carbon intensity and water is PUE × water
+    intensity + WUE, the footprint model of Batsim's environmental plugin.
+    """
     path = REPOSITORY_ROOT / "intensities" / row.file
     long = pd.read_csv(path)
     required = {"timestamp", "zone", "property", "value"}
@@ -230,6 +276,11 @@ def load_trace(row) -> IntensityTrace:
         raise ValueError(f"Non-finite intensity values in {path}")
     if np.any(carbon < 0) or np.any(water < 0):
         raise ValueError(f"Negative intensity values in {path}")
+
+    if facility is not None:
+        pue, wue = load_facility(row, facility, len(wide))
+        carbon = pue * carbon
+        water = pue * water + wue
 
     return IntensityTrace(
         name=path.stem,
