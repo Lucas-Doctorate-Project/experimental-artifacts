@@ -13,11 +13,25 @@ cleanest placement it can reach. Workload, capacity and queue are ignored.
     interruptible  pauses at no cost and runs in its cleanest instants before
                    the same deadline, arrival + job length + slack
 
-The reduction is 1 - sum(best) / sum(at arrival) over the arrivals: the
-footprint reduction of the whole set of jobs, not the mean of the per-job
-reductions.
+T2, signal x workload. The same placements for the Mustang jobs, each with
+its own length and submission, still alone on the machine.
 
-Both steps cover carbon and water, on the grid trace alone ("grid", the
+    real           the job arrives at its submission instant
+    uniform        the job arrives at every instant, as in T1. It keeps the
+                   length distribution of the workload and drops when its jobs
+                   arrive, both the hour of the day and the day of the window
+
+T1 to T2 is the cost of the job lengths, and real - uniform is the effect of
+the arrival times. Unlike shift_ceiling_results.cost_matrices, T2 charges no
+idle power while a job waits. The nodes are always on, so the hour a job waits
+in holds idle nodes with or without the job, and charging that idle power to
+the job counts it twice.
+
+The reduction is 1 - sum(best) / sum(at arrival): the footprint reduction of
+the whole set of jobs, not the mean of the per-job reductions. T1 sums over
+the arrivals; T2 weights each job by its energy, nodes x execution time.
+
+Every step covers carbon and water, on the grid trace alone ("grid", the
 campaign's PUE = 1 and WUE = 0) and on the three facility scenarios of
 intensities/facility, where the intensities are per kWh of IT energy.
 
@@ -37,7 +51,8 @@ Usage, from the experimental-artifacts repository root:
 
     python analysis/ceiling/ladder_results.py
 
-Writes t0_inherent.csv and t1_signal.csv next to this script.
+Writes t0_inherent.csv, t1_signal.csv and t2_workload.csv next to this
+script.
 """
 
 from __future__ import annotations
@@ -64,12 +79,21 @@ SIGNALS = ("carbon", "water")
 FACILITIES = ("grid", *scr.FACILITY_SCENARIOS)
 LENGTH_HOURS = (0.25, 1, 3, 6, 12, 16, 24)
 SLACK_HOURS = (6, 12, 24)  # the horizons H of the campaign
+ARRIVAL_KINDS = ("real", "uniform")
 T0_OUTPUT = CEILING_DIR / "t0_inherent.csv"
 T1_OUTPUT = CEILING_DIR / "t1_signal.csv"
+T2_OUTPUT = CEILING_DIR / "t2_workload.csv"
 
 
 def convert_hours_to_instants(hours: float) -> int:
     return int(round(hours * INSTANTS_PER_HOUR))
+
+
+def check_trace_coverage(trace: scr.IntensityTrace, longest_job: int) -> None:
+    """The last arrival, waiting the longest slack, must still finish the longest job inside the extract."""
+    required_instants = SCHEDULING_INSTANTS + longest_job + convert_hours_to_instants(max(SLACK_HOURS)) - 1
+    if len(trace.carbon) < required_instants:
+        raise ValueError(f"{trace.name} has {len(trace.carbon)} instants, the ceiling needs {required_instants}")
 
 
 def compute_mean_by_start(intensity_by_instant: np.ndarray, job_length: int) -> np.ndarray:
@@ -162,15 +186,7 @@ def compute_inherent_footprint(trace: scr.IntensityTrace, workloads: list[scr.Wo
 def compute_signal_ceiling(trace: scr.IntensityTrace, signal: str) -> list[dict]:
     """T1 rows, one per job length, slack and mode, with mean intensities per kWh."""
     intensity_by_instant = getattr(trace, signal)
-
-    # The last arrival, waiting the longest slack, must still finish the longest job inside the extract.
-    longest_job = convert_hours_to_instants(max(LENGTH_HOURS))
-    longest_slack = convert_hours_to_instants(max(SLACK_HOURS))
-    required_instants = SCHEDULING_INSTANTS + longest_job + longest_slack - 1
-    if len(intensity_by_instant) < required_instants:
-        raise ValueError(
-            f"{trace.name} has {len(intensity_by_instant)} instants, the signal ceiling needs {required_instants}"
-        )
+    check_trace_coverage(trace, convert_hours_to_instants(max(LENGTH_HOURS)))
 
     arrival_instants = np.arange(SCHEDULING_INSTANTS)
     rows = []
@@ -196,9 +212,95 @@ def compute_signal_ceiling(trace: scr.IntensityTrace, signal: str) -> list[dict]
     return rows
 
 
-def compute_window_rows(window: tuple, workloads: list[scr.Workload]) -> tuple[list[dict], list[dict]]:
-    """T0 and T1 rows of one row of windows.csv, for every facility scenario."""
-    inherent_rows, signal_rows = [], []
+def compute_job_instants(workload: scr.Workload) -> tuple[np.ndarray, np.ndarray]:
+    """Arrival instant and length in instants of each job of the workload.
+
+    shortcut: submissions are rounded down and execution times to the nearest
+    instant (at least one), so the T1 placements apply as they are. Over the 36
+    windows the deferrable real reduction stays within 0.2 pp of the exact
+    integrals of cost_matrices, with no bias; switch to the integrals if a step
+    needs precision below that.
+    """
+    arrival_instants = (workload.submission_time_s // scr.DELTA_SECONDS).astype(int)
+    job_lengths = np.maximum(1, np.rint(workload.execution_time_s / scr.DELTA_SECONDS)).astype(int)
+    if arrival_instants.max() >= SCHEDULING_INSTANTS:
+        raise ValueError(f"{workload.name} has jobs submitted after the {SCHEDULING_INSTANTS} scheduling instants")
+    return arrival_instants, job_lengths
+
+
+def compute_weighted_means(
+    placements_by_length: dict[int, tuple[np.ndarray, np.ndarray]],
+    arrival_instants: np.ndarray,
+    job_lengths: np.ndarray,
+    job_energy: np.ndarray,
+    arrival_kind: str,
+) -> tuple[float, float]:
+    """Energy-weighted mean intensity at arrival and at the best placement, over the jobs.
+
+    placements_by_length holds, for each job length, the T1 means at every
+    arrival instant. A real job reads them at its own arrival; a uniform job
+    takes their mean over all arrivals, which is the T1 value of its length.
+    """
+    mean_at_arrival = np.empty(len(job_lengths))
+    best_mean = np.empty(len(job_lengths))
+    for job_length, (mean_at_every_arrival, best_at_every_arrival) in placements_by_length.items():
+        has_length = job_lengths == job_length
+        if arrival_kind == "real":
+            mean_at_arrival[has_length] = mean_at_every_arrival[arrival_instants[has_length]]
+            best_mean[has_length] = best_at_every_arrival[arrival_instants[has_length]]
+        else:
+            mean_at_arrival[has_length] = mean_at_every_arrival.mean()
+            best_mean[has_length] = best_at_every_arrival.mean()
+
+    return np.average(mean_at_arrival, weights=job_energy), np.average(best_mean, weights=job_energy)
+
+
+def compute_workload_ceiling(
+    trace: scr.IntensityTrace, signal: str, workloads: list[scr.Workload]
+) -> list[dict]:
+    """T2 rows, one per workload, slack, mode and arrival kind, with mean intensities per kWh."""
+    intensity_by_instant = getattr(trace, signal)
+    job_instants = {workload.name: compute_job_instants(workload) for workload in workloads}
+    all_lengths = np.unique(np.concatenate([job_lengths for _, job_lengths in job_instants.values()]))
+    check_trace_coverage(trace, int(all_lengths.max()))
+
+    every_arrival = np.arange(SCHEDULING_INSTANTS)
+    rows = []
+    for slack_h in SLACK_HOURS:
+        for mode, find_best_placement in PLACEMENT_FINDERS.items():
+            # One T1 call per job length serves every job of that length, in both workloads and arrival kinds.
+            placements_by_length = {
+                int(job_length): find_best_placement(
+                    intensity_by_instant, every_arrival, int(job_length), convert_hours_to_instants(slack_h)
+                )
+                for job_length in all_lengths
+            }
+            for workload in workloads:
+                arrival_instants, job_lengths = job_instants[workload.name]
+                job_energy = workload.nodes * workload.execution_time_s
+                for arrival_kind in ARRIVAL_KINDS:
+                    at_arrival, best = compute_weighted_means(
+                        placements_by_length, arrival_instants, job_lengths, job_energy, arrival_kind
+                    )
+                    rows.append(dict(
+                        workload=workload.name,
+                        signal=signal,
+                        slack_h=slack_h,
+                        mode=mode,
+                        arrivals=arrival_kind,
+                        at_arrival=at_arrival,
+                        best=best,
+                        reduction=1.0 - best / at_arrival,
+                    ))
+
+    return rows
+
+
+def compute_window_rows(
+    window: tuple, workloads: list[scr.Workload]
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """T0, T1 and T2 rows of one row of windows.csv, for every facility scenario."""
+    inherent_rows, signal_rows, workload_rows = [], [], []
     for facility in FACILITIES:
         trace = scr.load_trace(window, facility=None if facility == "grid" else facility)
         labels = dict(zone=trace.zone, intensity_trace=trace.name, season=trace.season,
@@ -208,8 +310,9 @@ def compute_window_rows(window: tuple, workloads: list[scr.Workload]) -> tuple[l
 
         for signal in SIGNALS:
             signal_rows += [{**labels, **row} for row in compute_signal_ceiling(trace, signal)]
+            workload_rows += [{**labels, **row} for row in compute_workload_ceiling(trace, signal, workloads)]
 
-    return inherent_rows, signal_rows
+    return inherent_rows, signal_rows, workload_rows
 
 
 def write_rows(rows: list[dict], path: Path) -> None:
@@ -220,15 +323,17 @@ def write_rows(rows: list[dict], path: Path) -> None:
 def main() -> None:
     workloads = [scr.load_workload(name) for name in WORKLOAD_NAMES]
 
-    inherent_rows, signal_rows = [], []
+    inherent_rows, signal_rows, workload_rows = [], [], []
     for window in scr.load_windows().itertuples(index=False):
-        window_inherent_rows, window_signal_rows = compute_window_rows(window, workloads)
+        window_inherent_rows, window_signal_rows, window_workload_rows = compute_window_rows(window, workloads)
         inherent_rows += window_inherent_rows
         signal_rows += window_signal_rows
+        workload_rows += window_workload_rows
         print(window.file, flush=True)
 
     write_rows(inherent_rows, T0_OUTPUT)
     write_rows(signal_rows, T1_OUTPUT)
+    write_rows(workload_rows, T2_OUTPUT)
 
 
 if __name__ == "__main__":

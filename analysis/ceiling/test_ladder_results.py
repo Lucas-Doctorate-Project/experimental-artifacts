@@ -10,6 +10,7 @@ needed.
 
 from __future__ import annotations
 
+import dataclasses
 import unittest
 
 import numpy as np
@@ -95,6 +96,48 @@ class SignalCeilingTest(unittest.TestCase):
             continuous.at_arrival - continuous.best, dry.at_arrival - dry.best, atol=1e-9
         )
         self.assertTrue((continuous.reduction <= dry.reduction + 1e-12).all())
+
+
+class WorkloadCeilingTest(unittest.TestCase):
+    """T2: consistent with T1, close to the exact integrals, and its invariants on a real window."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.trace = scr.load_trace(next(scr.load_windows().itertuples(index=False)))
+        cls.workload = scr.load_workload("mustang_stress")
+
+    def test_uniform_arrivals_of_one_length_are_the_signal_ceiling(self) -> None:
+        six_hour_jobs = dataclasses.replace(
+            self.workload, execution_time_s=np.full(len(self.workload.job_ids), 6 * 3600.0)
+        )
+        workload_rows = pd.DataFrame(ladder.compute_workload_ceiling(self.trace, "carbon", [six_hour_jobs]))
+        signal_rows = pd.DataFrame(ladder.compute_signal_ceiling(self.trace, "carbon"))
+        uniform = workload_rows[workload_rows.arrivals == "uniform"].set_index(["slack_h", "mode"])
+        six_hours = signal_rows[signal_rows.length_h == 6].set_index(["slack_h", "mode"]).loc[uniform.index]
+        np.testing.assert_allclose(uniform[["at_arrival", "best"]], six_hours[["at_arrival", "best"]])
+
+    def test_real_deferrable_is_close_to_the_exact_integrals(self) -> None:
+        # Without idle power, cost_matrices is the exact footprint of each job at each start.
+        no_idle = dataclasses.replace(
+            self.workload, platform=dataclasses.replace(self.workload.platform, idle_power_w=0.0)
+        )
+        _, carbon_by_start, _ = scr.cost_matrices(no_idle, self.trace)
+        rows = pd.DataFrame(ladder.compute_workload_ceiling(self.trace, "carbon", [self.workload]))
+        for slack_h in ladder.SLACK_HOURS:
+            with self.subTest(slack_h=slack_h):
+                candidates = ladder.convert_hours_to_instants(slack_h) + 1
+                exact = 1 - carbon_by_start[:, :candidates].min(axis=1).sum() / carbon_by_start[:, 0].sum()
+                rounded = rows.query("slack_h == @slack_h and mode == 'deferrable' and arrivals == 'real'")
+                self.assertAlmostEqual(rounded.reduction.item(), exact, delta=0.002)
+
+    def test_real_window_invariants(self) -> None:
+        rows = pd.DataFrame(ladder.compute_workload_ceiling(self.trace, "water", [self.workload]))
+        modes = rows.pivot_table(index=["slack_h", "arrivals"], columns="mode", values="reduction")
+
+        self.assertTrue((modes["deferrable"] >= 0).all())
+        self.assertTrue((modes["interruptible"] >= modes["deferrable"] - 1e-12).all())
+        for _, by_slack in rows.groupby(["mode", "arrivals"]):
+            self.assertTrue(np.all(np.diff(by_slack.sort_values("slack_h").reduction) >= -1e-12))
 
 
 if __name__ == "__main__":
