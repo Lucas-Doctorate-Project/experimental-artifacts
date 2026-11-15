@@ -1,4 +1,4 @@
-"""Compare Greenfilling with the green-window oracle: python analysis/scripts/oracle.py."""
+"""Render the shared policy comparison and the job-class diagnostic."""
 
 import argparse
 from pathlib import Path
@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 
 import helpers
-from opportunity import BASELINE_GROUP, bound_curves, policy_label, realized_points
-from oracle_plots import save_oracle_figures
+from opportunity import BASELINE_GROUP, policy_label
+from oracle_plots import save_class_figure
 
 ORACLE_GROUP = "green-window-scheduling"
 # the oracle campaign was interrupted and resumed into a second output directory
@@ -55,17 +55,16 @@ def moved_intensity_change(easy: pd.DataFrame, policy: pd.DataFrame, signal: dic
     return float(100 * (after.mean() / before.mean() - 1))
 
 
-def paired_diagnostics(source: ModuleType) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Moved-job intensity per pair and class contributions for every Greenfilling and oracle run."""
+def class_diagnostics(source: ModuleType) -> pd.DataFrame:
+    """Job-class contributions for Greenfilling and six-hour head-job shifting."""
     baseline = source.experiments(BASELINE_GROUP)
     easy_runs = baseline.loc[baseline.variant == "easy_bf"].set_index(["workload", "trace"])
     platforms = {path: source.platform(path) for path in baseline.platform.unique()}
-    signals = {path: source.load_signals(path) for path in baseline.environmental_trace.unique()}
     groups = [
         (BASELINE_GROUP, baseline.loc[baseline.variant != "easy_bf"]),
-        (ORACLE_GROUP, source.experiments(ORACLE_GROUP)),
+        (ORACLE_GROUP, source.experiments(ORACLE_GROUP).query("planning_horizon_seconds == 21600")),
     ]
-    moved, classes, easy_jobs = [], [], {}
+    classes, easy_jobs = [], {}
     for group, runs in groups:
         for _, run in runs.iterrows():
             machine = platforms[run.platform]
@@ -77,14 +76,12 @@ def paired_diagnostics(source: ModuleType) -> tuple[pd.DataFrame, pd.DataFrame]:
             if not easy.job_id.equals(policy.job_id):
                 raise ValueError(f"run {run['name']!r} and its EASY baseline contain different jobs")
             labels = {"policy": policy_label(run), "workload": run.workload, "trace": run.trace, "objective": run.objective}
-            signal = signals[run.environmental_trace][run.objective]
-            moved.append(labels | {"intensity_change_pct": moved_intensity_change(easy, policy, signal)})
             classes.append(helpers.class_contributions(easy, policy, machine).assign(**labels))
-    return pd.DataFrame(moved), pd.concat(classes, ignore_index=True)
+    return pd.concat(classes, ignore_index=True)
 
 
 def main() -> None:
-    """Render the oracle figures. Example: python analysis/scripts/oracle.py --output-dir /tmp/results."""
+    """Render policy comparisons and job-class contributions."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--output-dir",
@@ -93,17 +90,12 @@ def main() -> None:
         help="PNG/PDF destination (default: analysis/figures), existing figures are replaced",
     )
     arguments = parser.parse_args()
-    source = OracleSource()
-    savings = pd.concat(
-        [
-            realized_points(BASELINE_GROUP, BASELINE_GROUP, source),
-            realized_points(ORACLE_GROUP, BASELINE_GROUP, source),
-        ],
-        ignore_index=True,
-    )
-    moved, classes = paired_diagnostics(source)
-    save_oracle_figures(savings, bound_curves(BASELINE_GROUP), moved, classes, arguments.output_dir)
-    print(f"Oracle figures saved to {arguments.output_dir.resolve()}")
+    from policy_comparison import generate_figures
+
+    generate_figures(arguments.output_dir)
+    classes = class_diagnostics(OracleSource())
+    save_class_figure(classes, arguments.output_dir)
+    print(f"Comparison and job-class figures saved to {arguments.output_dir.resolve()}")
 
 
 if __name__ == "__main__":
