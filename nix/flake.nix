@@ -36,6 +36,7 @@
           packages = [
             (python.withPackages (python-pkgs: [
               python-pkgs.pandas
+              python-pkgs.scipy
               python-pkgs.matplotlib
               python-pkgs.plotly
               python-pkgs.seaborn
