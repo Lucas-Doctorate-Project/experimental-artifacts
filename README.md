@@ -11,6 +11,7 @@ analysis/
     green-window-scheduling/          # 608 of the 864 oracle runs
     green-window-scheduling-resume/   # the remaining 256 oracle runs
     green-window-scheduling-debug/    # 288 oracle runs at 24 h with decision logs
+    green-window-scheduling-debug-6h/ # 144 carbon oracle runs at 6 h with decision logs
     offline-shifting/                 # results of analysis/scripts/offline_shifting.py
   figures/
     pdf/                  # PDF figures
@@ -35,6 +36,7 @@ experiments/
   green-window-scheduling.toml
   green-window-scheduling-resume.toml
   green-window-scheduling-debug.toml  # the 24 h oracle runs again, with decision logs
+  green-window-scheduling-debug-6h.toml  # the 6 h carbon oracle runs again, with decision logs
   options/
 workloads/                # workload inputs, platforms and preparation
 intensities/              # intensity inputs and preparation
