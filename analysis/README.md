@@ -29,7 +29,7 @@ python analysis/scripts/offline_shifting.py --output-dir /tmp/offline-shifting -
 
 ## Inputs and accounting
 
-Simulation archives live in `analysis/outputs/` and are excluded from Git. Oracle analysis reads both `green-window-scheduling/` and `green-window-scheduling-resume/`. `held_jobs.py`, `held_walltime.py`, and `queue_gain_loss.py` compare job shifting and CATS at the 6 h limit with known future intensity, through `delayed_jobs.py`. They read the job-shifting decision logs in `green-window-scheduling-debug-6h/` and the CATS admissions in `forecast-cross-20261104/full/cats_known_future_*`. The 24 h decision logs in `green-window-scheduling-debug/` are no longer read by any figure. `swing.py` reads `offline-shifting/results.csv`, or a file selected with `--offline-results PATH`.
+Simulation archives live in `analysis/outputs/` and are excluded from Git. Oracle analysis reads both `green-window-scheduling/` and `green-window-scheduling-resume/`. `held_jobs.py`, `held_walltime.py`, and `queue_gain_loss.py` compare job shifting and CATS at the 6 h limit with known future intensity, through `delayed_jobs.py`. They read the job-shifting decision logs in `green-window-scheduling-debug-6h/` and the CATS admissions in `forecast-cross-20261104/full/cats_known_future_*`. The 24 h decision logs of `experiments/green-window-scheduling-debug.toml` are no longer read by any figure. They are kept only on `ime`, in `~/greenfilling/experimental-artifacts-gws-debug-20261103/`. `swing.py` reads `offline-shifting/results.csv`, or a file selected with `--offline-results PATH`.
 
 Footprints include idle nodes and context jobs over 37 days for original campaigns, 35 for alpha sensitivity, and 70 for resampled campaigns. Service metrics exclude context jobs.
 
